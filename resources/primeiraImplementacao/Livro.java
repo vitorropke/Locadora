@@ -3,16 +3,16 @@ import java.util.Calendar;
 class Livro {
 	// Variáveis
 	private String titulo, genero;
-	private int quantidadePaginas, quantidadeExemplares, numeroEmprestimos, diasAlugado, anoLancamento;
+	private int numeroPaginas, numeroExemplares, numeroEmprestimos, diasAlugado, anoLancamento;
 	private float valorAluguel;
 	
 	/*
 	// Construtor
-	public Livro(String titulo, String genero, int quantidadePaginas, int quantidadeExemplares, int anoLancamento, float valorAluguel) {
+	public Livro(String titulo, String genero, int numeroPaginas, int numeroExemplares, int anoLancamento, float valorAluguel) {
 		this.titulo = titulo;
 		this.genero = genero;
-		this.quantidadePaginas = quantidadePaginas;
-		this.quantidadeExemplares = quantidadeExemplares;
+		this.numeroPaginas = numeroPaginas;
+		this.numeroExemplares = numeroExemplares;
 		this.numeroEmprestimos = 0;
 		this.diasAlugado = 0;
 		this.anoLancamento = anoLancamento;
@@ -43,25 +43,25 @@ class Livro {
 		}
 	}
 	
-	public int getQuantidadePaginas() {
-		return quantidadePaginas;
+	public int getNumeroPaginas() {
+		return numeroPaginas;
 	}
-	public void setQuantidadePaginas(int quantidadePaginas) {
-		if (quantidadePaginas > 0) {
-			this.quantidadePaginas = quantidadePaginas;
+	public void setNumeroPaginas(int numeroPaginas) {
+		if (numeroPaginas > 0) {
+			this.numeroPaginas = numeroPaginas;
 		} else {
-			System.out.println("Quantidade de paginas nao pode ser 0!");
+			System.out.println("Numero de paginas nao pode ser 0!");
 		}
 	}
 	
-	public int getQuantidadeExemplares() {
-		return quantidadeExemplares;
+	public int getNumeroExemplares() {
+		return numeroExemplares;
 	}
-	public void setQuantidadeExemplares(int quantidadeExemplares) {
-		if (quantidadeExemplares >= 0) {
-			this.quantidadeExemplares = quantidadeExemplares;
+	public void setNumeroExemplares(int numeroExemplares) {
+		if (numeroExemplares >= 0) {
+			this.numeroExemplares = numeroExemplares;
 		} else {
-			System.out.println("Quantidade de exemplares nao pode ser menor que 0!");
+			System.out.println("Numero de exemplares nao pode ser menor que 0!");
 		}
 	}
 
@@ -115,8 +115,8 @@ class Livro {
 
 		livro.titulo = null;
 		livro.genero = null;
-		livro.quantidadePaginas = null;
-		livro.quantidadeExemplares = null;
+		livro.numeroPaginas = null;
+		livro.numeroExemplares = null;
 		livro.numeroEmprestimos = null;
 		livro.diasAlugado = null;
 		livro.anoLancamento = null;

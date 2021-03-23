@@ -3,7 +3,7 @@ import java.util.Calendar;
 class Disco {
 	// Variáveis
 	String titulo, nomeBanda, estilo;
-	int quantidadeExemplares, numeroEmprestimos, diasAlugado, anoLancamento;
+	int numeroExemplares, numeroEmprestimos, diasAlugado, anoLancamento;
 	float valorAluguel;
 
 	// Getters e Setters
@@ -40,14 +40,14 @@ class Disco {
 		}
 	}
 	
-	public int getQuantidadeExemplares() {
-		return quantidadeExemplares;
+	public int getNumeroExemplares() {
+		return numeroExemplares;
 	}
-	public void setQuantidadeExemplares(int quantidadeExemplares) {
-		if (quantidadeExemplares >= 0) {
-			this.quantidadeExemplares = quantidadeExemplares;
+	public void setNumeroExemplares(int numeroExemplares) {
+		if (numeroExemplares >= 0) {
+			this.numeroExemplares = numeroExemplares;
 		} else {
-			System.out.println("Quantidade de exemplares nao pode ser menor que 0!");
+			System.out.println("Numero de exemplares nao pode ser menor que 0!");
 		}
 	}
 
@@ -113,7 +113,7 @@ class Disco {
 		disco.titulo = null;
 		disco.nomeBanda = null;
 		disco.estilo = null;
-		disco.quantidadeExemplares = null;
+		disco.numeroExemplares = null;
 		disco.numeroEmprestimos = null;
 		disco.diasAlugado = null;
 		disco.anoLancamento = null;

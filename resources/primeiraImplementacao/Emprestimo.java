@@ -12,8 +12,15 @@ class Emprestimo {
 	public void setFaturamento(float faturamento) {
 		this.faturamento = faturamento;
 	}
-
+	
 	/*
+	public Calendar getDataDevolucao() {
+		return dataDevolucao;
+	}
+	public void setDataDevolucao(float dataDevolucao) {
+		this.dataDevolucao = dataDevolucao;
+	}
+	
 	// Métodos
 	public void alugarLivro(Livro[] livro, int[] quantidade, Cliente cliente) {
 		for (int x = 0; x < livro.size(); x++) {
