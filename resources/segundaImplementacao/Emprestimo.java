@@ -125,10 +125,11 @@ class Emprestimo {
 	}
 	
 	public void devolverLivro(Livro livro, int quantidade, Cliente cliente, Calendar dataDevolucaoEfetiva) {
-		int adicionaisMonetarios = 0;	/*	
-											A cada 10 dias de empréstimo há um adicional de 2%
-											do valor de empreśtimo do livro no valor final
-										*/
+		/*	
+			A cada 10 dias de empréstimo há um adicional de 2%
+			do valor de empreśtimo do livro no valor final
+		*/
+		int adicionaisMonetarios = 0;
 
 		livro.setNumeroExemplares(livro.getNumeroExemplares() + quantidade);
 		// Repõe os livros
