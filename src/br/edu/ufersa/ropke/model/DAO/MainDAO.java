@@ -13,6 +13,7 @@ class MainDAO {
 		// titulo, genero, numeroPaginas, numeroExemplares, 'numeroEmprestimos', 'numeroDiasAlugado'
 		// anoLancamento, valorAluguel
 		Livro livro1 = new Livro("oi", "romance", 150, 4, 2010, 12);
+		Livro livro2 = new Livro("em", "acao", 220, 1, 2018, 26);
 		// titulo, nomeBanda, estilo, numeroExemplares, 'numeroEmprestimos', 'numeroDiasAlugado'
 		// anoLancamento, valorAluguel
 		Disco disco1 = new Disco("ola", "ssd", "pagode", 15, 2, 28, 2018, 8.80f);
@@ -33,7 +34,6 @@ class MainDAO {
 		
 		Emprestimo emprestimo1 = new Emprestimo();
 
-
 		LivroDAO livroDAO = new LivroDAO();
 		DiscoDAO discoDAO = new DiscoDAO();
 		ClienteDAO clienteDAO = new ClienteDAO();
@@ -44,6 +44,7 @@ class MainDAO {
 
 		System.out.println("\nLivro\n");
 		livroDAO.cadastrar(livro1);
+		livroDAO.cadastrar(livro2);
 		livroDAO.pesquisar();
 
 		System.out.println();
