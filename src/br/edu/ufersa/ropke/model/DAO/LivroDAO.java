@@ -11,14 +11,42 @@ public class LivroDAO {
 			// Gera o arquivo para armazenar o objeto
 			File arquivo = new File("br/edu/ufersa/ropke/model/DAO/arquivos/livros.dat");
 			FileOutputStream arquivoGravador = new FileOutputStream(arquivo, true);
-			// Classe responsável por inserir os objetos
-			ObjectOutputStream objetoGravador = new ObjectOutputStream(arquivoGravador);
 
-			// Grava o objeto cliente no arquivo
-			objetoGravador.writeObject(livro);
-			objetoGravador.flush();
-			arquivoGravador.close();
-			objetoGravador.close();
+			// Verifica se o objeto já existe
+			boolean objetoExiste = false;
+			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
+				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
+
+				while (arquivoLeitura.available() > 0 && !objetoExiste) {
+					// Classe responsável por recuperar os objetos do arquivo
+					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
+
+					Livro livroLeitura = (Livro)objetoLeitura.readObject();
+
+					// Compara os livros pelo título deles
+					if (livroLeitura.getTitulo().equals(livro.getTitulo())) {
+						objetoExiste = true;
+					}
+				}
+
+				arquivoLeitura.close();
+			}
+
+			// Se o objeto já existe
+			if (objetoExiste) {
+				System.out.println("Esse livro ja foi cadastrado");
+				arquivoGravador.close();
+			// Se não existe, prosseguir com a inserção
+			} else {
+				// Classe responsável por inserir os objetos
+				ObjectOutputStream objetoGravador = new ObjectOutputStream(arquivoGravador);
+
+				// Grava o objeto livro no arquivo
+				objetoGravador.writeObject(livro);
+				objetoGravador.flush();
+				arquivoGravador.close();
+				objetoGravador.close();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -31,16 +59,22 @@ public class LivroDAO {
 
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
-				// Classe responsável por recuperar os objetos do arquivo
-				ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
+				int indiceLivro = 1;
 				while (arquivoLeitura.available() > 0) {
+					// Classe responsável por recuperar os objetos do arquivo
+					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
+
 					Livro livro = (Livro)objetoLeitura.readObject();
+					System.out.println("\nLivro " + indiceLivro + '\n');
 					System.out.println(livro.toString());
+					System.out.println("-----------------------------------------");
+					indiceLivro++;
 				}
 
-				objetoLeitura.close();
 				arquivoLeitura.close();
+			} else {
+				System.out.println("Sem livros");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

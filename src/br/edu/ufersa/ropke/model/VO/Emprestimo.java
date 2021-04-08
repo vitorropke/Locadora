@@ -8,6 +8,7 @@ public class Emprestimo implements Serializable {
 
 	// Variáveis
 	private static float	faturamento = 0;
+	private long			idEmprestimo = -1;
 	private Calendar		dataEmprestimo;
 	private Calendar		dataDevolucao;
 	private Cliente			cliente;
@@ -15,11 +16,20 @@ public class Emprestimo implements Serializable {
 	private Disco[]			disco;
 
 	// Construtor
+	public Emprestimo() {
+		long id = getIdEmprestimo();
+
+		id++;
+
+		setIdEmprestimo(id);
+	}
+
 	public String toString() {
 		String emprestimo = "";
 		String faturamentoDoisDecimais = String.format("%.02f", faturamento);
 
-		emprestimo = "Faturamento:        " + "R$" + faturamentoDoisDecimais;
+		emprestimo = "Id:                 " + idEmprestimo;
+		emprestimo += "\nFaturamento:        " + "R$" + faturamentoDoisDecimais;
 		emprestimo += "\nData de emprestimo: ";
 
 		if (dataEmprestimo != null) {
@@ -36,7 +46,7 @@ public class Emprestimo implements Serializable {
 			emprestimo += "Nao definida";
 		}
 
-		emprestimo += "\n\nLivro:    ";
+		emprestimo += "\n\nLivro:              ";
 
 		if (livro != null) {
 			for (int x = 0; x < livro.length; x++) {
@@ -47,7 +57,7 @@ public class Emprestimo implements Serializable {
 			emprestimo += "Sem livros";
 		}
 
-		emprestimo += "\nDisco:    ";
+		emprestimo += "\nDisco:              ";
 
 		if (disco != null) {
 			for (int x = 0; x < disco.length; x++) {
@@ -62,6 +72,17 @@ public class Emprestimo implements Serializable {
 	}
 
 	// Getters e Setters
+	public long getIdEmprestimo() {
+		return idEmprestimo;
+	}
+	public void setIdEmprestimo(long idEmprestimo) {
+		if (idEmprestimo < 0) {
+			System.out.println("Id nao pode ser negativo!");
+		} else {
+			this.idEmprestimo = idEmprestimo;
+		}
+	}
+
 	public static float getFaturamento() {
 		return Emprestimo.faturamento;
 	}
@@ -77,7 +98,7 @@ public class Emprestimo implements Serializable {
 		// Obtem a data atual
 
 		if (dataEmprestimo.after(dataAtual)) {
-			System.out.println("Data de empréstimo não pode ser no futuro!");
+			System.out.println("Data de empréstimo nao pode ser no futuro!");
 		} else {
 			this.dataEmprestimo = dataEmprestimo;
 		}
