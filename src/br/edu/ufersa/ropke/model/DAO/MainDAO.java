@@ -1,5 +1,7 @@
 package br.edu.ufersa.ropke.model.DAO;
 
+import java.util.Calendar;
+
 import br.edu.ufersa.ropke.model.VO.Livro;
 import br.edu.ufersa.ropke.model.VO.Disco;
 import br.edu.ufersa.ropke.model.VO.Cliente;
@@ -34,61 +36,192 @@ class MainDAO {
 		
 		Emprestimo emprestimo1 = new Emprestimo();
 
-		LivroDAO livroDAO = new LivroDAO();
-		DiscoDAO discoDAO = new DiscoDAO();
-		ClienteDAO clienteDAO = new ClienteDAO();
-		UsuarioDAO usuarioDAO = new UsuarioDAO();
-		FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-		GerenteDAO gerenteDAO = new GerenteDAO();
-		EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
-
+		/*
+		// Livros
+		System.out.println("-------------------------------------------Livros--------------------------------------------");
 		System.out.println("\nLivro\n");
-		livroDAO.cadastrar(livro1);
-		livroDAO.cadastrar(livro2);
-		livroDAO.pesquisar();
+		LivroDAO.cadastrar(livro1);
+		LivroDAO.cadastrar(livro2);
+		LivroDAO.pesquisar();
 
 		System.out.println();
+		System.out.println("---------------------------------------Altera livro 1----------------------------------------");
+		livro1.setNumeroPaginas(140);
+		LivroDAO.alterar(livro1);
+		LivroDAO.pesquisar();
 
-		// Disco
+		System.out.println();
+		System.out.println("---------------------------------------Altera livro 2----------------------------------------");
+		livro2.setAnoLancamento(1999);
+		LivroDAO.alterar(livro2);
+		LivroDAO.pesquisar();
+
+		System.out.println();
+		System.out.println("---------------------------------------Deleta livro 1----------------------------------------");
+		LivroDAO.deletar(livro1);
+		LivroDAO.pesquisar();
+
+		System.out.println();
+		System.out.println("---------------------------------------Pesquisa titulo----------------------------------------");
+		Livro livro = LivroDAO.pesquisarTitulo("em");
+		System.out.println(livro.toString());
+
+		System.out.println();
+		System.out.println("---------------------------------------Pesquisa genero----------------------------------------");
+		Livro[] livros = LivroDAO.pesquisarGenero("acao");
+		int numeroLivros = livros.length;
+		for (int i = 0; i < numeroLivros; i++) {
+			System.out.println(livros[i].toString());
+		}
+
+		System.out.println();
+		System.out.println("---------------------------------------Pesquisa ano-------------------------------------------");
+		livros = LivroDAO.pesquisarAno(1999);
+		numeroLivros = livros.length;
+		for (int i = 0; i < numeroLivros; i++) {
+			System.out.println(livros[i].toString());
+		}
+
+		// Discos
+		System.out.println("-------------------------------------------Discos---------------------------------------------");
 		System.out.println("\nDisco\n");
-		discoDAO.cadastrar(disco1);
-		discoDAO.pesquisar();
+		DiscoDAO.cadastrar(disco1);
+		DiscoDAO.pesquisar();
 
 		System.out.println();
 
-		// Cliente
+		System.out.println();
+		System.out.println("---------------------------------------Altera disco 1----------------------------------------");
+		disco1.setNumeroExemplares(80);
+		DiscoDAO.alterar(disco1);
+		DiscoDAO.pesquisar();
+		
+		System.out.println();
+		System.out.println("---------------------------------------Deleta disco 1----------------------------------------");
+		DiscoDAO.deletar(disco1);
+		DiscoDAO.pesquisar();
+		
+		System.out.println();
+		System.out.println("---------------------------------------Pesquisa titulo----------------------------------------");
+		Disco disco = DiscoDAO.pesquisarTitulo("em");
+		System.out.println(disco.toString());
+
+		System.out.println();
+		System.out.println("---------------------------------------Pesquisa banda-----------------------------------------");
+		Disco[] discos = DiscoDAO.pesquisarBanda("ssd");
+		int numeroDiscos = discos.length;
+		for (int i = 0; i < numeroDiscos; i++) {
+			System.out.println(discos[i].toString());
+		}
+
+		System.out.println();
+		System.out.println("---------------------------------------Pesquisa estilo----------------------------------------");
+		discos = DiscoDAO.pesquisarEstilo("pagode");
+		numeroDiscos = discos.length;
+		for (int i = 0; i < numeroDiscos; i++) {
+			System.out.println(discos[i].toString());
+		}
+
+		System.out.println();
+		System.out.println("---------------------------------------Pesquisa ano-------------------------------------------");
+		discos = DiscoDAO.pesquisarAno(2018);
+		numeroDiscos = discos.length;
+		for (int i = 0; i < numeroDiscos; i++) {
+			System.out.println(discos[i].toString());
+		}
+		
+		// Clientes
+		System.out.println("-------------------------------------------Clientes--------------------------------------------");
 		System.out.println("\nCliente\n");
-		clienteDAO.cadastrar(cliente1);
-		clienteDAO.pesquisar();
+		ClienteDAO.cadastrar(cliente1);
+		ClienteDAO.pesquisar();
 		
 		System.out.println();
-
-		// Usuário
+		System.out.println("---------------------------------------Altera cliente 1----------------------------------------");
+		cliente1.setEndereco("Rua longe do local");
+		ClienteDAO.alterar(cliente1);
+		ClienteDAO.pesquisar();
+		
+		System.out.println();
+		System.out.println("---------------------------------------Deleta cliente 1----------------------------------------");
+		ClienteDAO.deletar(cliente1);
+		ClienteDAO.pesquisar();
+		// Usuários
+		System.out.println("-------------------------------------------Usuarios--------------------------------------------");
 		System.out.println("\nUsuario\n");
-		usuarioDAO.cadastrar(usuario1);
-		usuarioDAO.pesquisar();
+		UsuarioDAO.cadastrar(usuario1);
+		UsuarioDAO.pesquisar();
 
 		System.out.println();
-
-		// Funcionário
-		System.out.println("\nFuncionario\n");
-		funcionarioDAO.cadastrar(funcionario1);
-		funcionarioDAO.pesquisar();
-
-		System.out.println();
-
-		// Gerente
-		System.out.println("\nGerente\n");
-		gerenteDAO.cadastrar(gerente1);
-		gerenteDAO.pesquisar();
-
-		System.out.println();
-
-		// Empréstimo
-		System.out.println("\nEmprestimo\n");
-		emprestimoDAO.cadastrar(emprestimo1);
-		emprestimoDAO.pesquisar();
+		System.out.println("---------------------------------------Altera usuario 1----------------------------------------");
+		usuario1.setEndereco("Rua longe do local");
+		UsuarioDAO.alterar(usuario1);
+		UsuarioDAO.pesquisar();
 		
 		System.out.println();
+		System.out.println("---------------------------------------Deleta usuario 1----------------------------------------");
+		UsuarioDAO.deletar(usuario1);
+		UsuarioDAO.pesquisar();
+
+		// Funcionários
+		System.out.println("-----------------------------------------Funcionarios------------------------------------------");
+		System.out.println("\nFuncionario\n");
+		FuncionarioDAO.cadastrar(funcionario1);
+		FuncionarioDAO.pesquisar();
+
+		System.out.println();
+		System.out.println("---------------------------------------Altera funcionario 1----------------------------------------");
+		funcionario1.setEndereco("Rua longe do local");
+		FuncionarioDAO.alterar(funcionario1);
+		FuncionarioDAO.pesquisar();
+		
+		System.out.println();
+		System.out.println("---------------------------------------Deleta funcionario 1----------------------------------------");
+		FuncionarioDAO.deletar(funcionario1);
+		FuncionarioDAO.pesquisar();
+
+		// Gerentes
+		System.out.println("-------------------------------------------Gerentes--------------------------------------------");
+		System.out.println("\nGerente\n");
+		GerenteDAO.cadastrar(gerente1);
+		GerenteDAO.pesquisar();
+
+		System.out.println();
+		System.out.println("---------------------------------------Altera funcionario 1----------------------------------------");
+		gerente1.setEndereco("Rua longe do local");
+		GerenteDAO.alterar(gerente1);
+		GerenteDAO.pesquisar();
+		
+		System.out.println();
+		System.out.println("---------------------------------------Deleta funcionario 1----------------------------------------");
+		GerenteDAO.deletar(gerente1);
+		GerenteDAO.pesquisar();
+		*/
+		
+		// Empréstimos
+		// https://www.tutorialspoint.com/java/util/calendar_setfield4
+		// create a calendar
+		Calendar cal = Calendar.getInstance();
+		// set the year,month, day, hour, minute, second
+		// the month starts with 0 and goes to 11
+		cal.set(2021, 3, 04, 04, 15, 20);
+
+		System.out.println("------------------------------------------Emprestimos------------------------------------------");
+		System.out.println("\nEmprestimo\n");
+		EmprestimoDAO.cadastrar(emprestimo1);
+		EmprestimoDAO.pesquisar();
+		
+		System.out.println();
+		System.out.println("---------------------------------------Altera emprestimo 1----------------------------------------");
+		emprestimo1.setDataEmprestimo(cal);
+		EmprestimoDAO.alterar(emprestimo1);
+		EmprestimoDAO.pesquisar();
+		
+		System.out.println();
+		System.out.println("---------------------------------------Deleta emprestimo 1----------------------------------------");
+		EmprestimoDAO.deletar(emprestimo1);
+		EmprestimoDAO.pesquisar();
+		/*
+		*/
 	}
 }
