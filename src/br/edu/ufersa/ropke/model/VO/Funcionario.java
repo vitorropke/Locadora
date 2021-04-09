@@ -189,25 +189,4 @@ public class Funcionario implements Serializable {
 			System.out.println("Telefone nao pode ser vazio!");
 		}
 	}
-
-	// Métodos
-	/*
-	public void cadastrar(Funcionario funcionario) {
-		// adiciona o funcionário ao "banco de dados"
-	}
-
-	public void alterar(Funcionario funcionario) {
-		// altera os atributos do funcionário no "banco de dados"
-	}
-	*/
-	public void deletar(Funcionario funcionario) {
-		// remove o funcionário do "banco de dados"
-		funcionario.login = null;
-		funcionario.senha = null;
-		funcionario.nome = null;
-		funcionario.cpf = null;
-		funcionario.endereco = null;
-		funcionario.email = null;
-		funcionario.telefone = null;
-	}
 }

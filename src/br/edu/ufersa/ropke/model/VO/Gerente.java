@@ -189,26 +189,4 @@ public class Gerente implements Serializable {
 			System.out.println("Telefone nao pode ser vazio!");
 		}
 	}
-
-	// Métodos
-	/*
-	public void cadastrar(Gerente gerente) {
-		// adiciona o gerente ao "banco de dados"
-	}
-
-	public void alterar(Gerente gerente) {
-		// altera os atributos do gerente no "banco de dados"
-	}
-
-	public void deletar(Gerente gerente) {
-		// remove o gerente do "banco de dados"
-		gerente.login = null;
-		gerente.senha = null;
-		gerente.nome = null;
-		gerente.cpf = null;
-		gerente.endereco = null;
-		gerente.email = null;
-		gerente.telefone = null;
-	}
-	*/
 }
