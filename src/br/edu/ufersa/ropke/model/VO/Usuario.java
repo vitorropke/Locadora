@@ -15,6 +15,7 @@ public class Usuario implements Serializable {
 	private String	telefone;
 
 	// Construtores
+	public Usuario() {};
 	public Usuario(String login, String senha, String nome, String cpf,
 			String endereco) {
 		setLogin(login);
@@ -188,28 +189,7 @@ public class Usuario implements Serializable {
 			System.out.println("Telefone nao pode ser vazio!");
 		}
 	}
-
-	// Métodos
 	/*
-	public void cadastrar(Usuario usuario) {
-		// adiciona o usuário ao "banco de dados"
-	}
-
-	public void alterar(Usuario usuario) {
-		// altera os atributos do usuário no "banco de dados"
-	}
-
-	public void deletar(Usuario usuario) {
-		// remove o usuário do "banco de dados"
-		usuario.login = null;
-		usuario.senha = null;
-		usuario.nome = null;
-		usuario.cpf = null;
-		usuario.endereco = null;
-		usuario.email = null;
-		usuario.telefone = null;
-	}
-
 	public void login() {
 		// autoriza o acesso do usuário ao sistema
 	}

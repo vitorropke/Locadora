@@ -17,6 +17,7 @@ public class Livro implements Serializable {
 	private float	valorAluguel;
 	
 	// Construtores
+	public Livro() {};
 	public Livro(String titulo, String genero, int numeroPaginas,
 			int numeroExemplares, int anoLancamento, float valorAluguel) {
 		setTitulo(titulo);
@@ -147,40 +148,4 @@ public class Livro implements Serializable {
 			System.out.println("Valor do aluguel nao pode ser menor que 0!");
 		}
 	}
-	
-	/*
-	// Métodos
-	public void cadastrar(Livro livro) {
-		// adiciona o livro ao "banco de dados"
-	}
-	
-	public void alterar(Livro livro) {
-		// altera os atributos do livro no "banco de dados"
-	}
-	
-	public void deletar(Livro livro) {
-		// apaga o livro do "banco de dados"
-
-		livro.titulo = null;
-		livro.genero = null;
-		livro.numeroPaginas = null;
-		livro.numeroExemplares = null;
-		livro.numeroEmprestimos = null;
-		livro.numeroDiasAlugado = null;
-		livro.anoLancamento = null;
-		livro.valorAluguel = null;
-	}
-	
-	public Livro pesquisarTitulo(String titulo) {
-		return Livro;
-	}
-	
-	public Livro[] pesquisarGenero(String genero) {
-		return Livro;
-	}
-	
-	public Livro[] pesquisarAno(Calendar anoLancamento) {
-		return Livro;
-	}
-	*/
 }

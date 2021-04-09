@@ -13,6 +13,7 @@ public class Cliente implements Serializable {
 	private String	telefone;
 
 	// Construtores
+	public Cliente() {};
 	public Cliente(String nome, String cpf, String endereco) {
 		setNome(nome);
 		setCpf(cpf);
@@ -154,33 +155,4 @@ public class Cliente implements Serializable {
 			System.out.println("Telefone nao pode ser vazio!");
 		}
 	}
-
-	/*
-	// Métodos
-	public void cadastrar(Cliente cliente) {
-		// adiciona o cliente ao "banco de dados"
-	}
-	
-	public void alterar(Cliente cliente) {
-		// altera os atributos do cliente no "banco de dados"
-	}
-	*/
-	public void deletar(Cliente cliente) {
-		// apaga o cliente do "banco de dados"
-		
-		cliente.nome = null;
-		cliente.cpf = null;
-		cliente.endereco = null;
-		cliente.email = null;
-		cliente.telefone = null;
-	}
-	/*
-	public Cliente[] pesquisarNome(String nome) {
-		return Cliente;
-	}
-	
-	public Cliente pesquisarCpf(String cpf) {
-		return Cliente;
-	}
-	*/
 }
