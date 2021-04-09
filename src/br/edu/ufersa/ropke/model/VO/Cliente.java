@@ -13,6 +13,7 @@ public class Cliente implements Serializable {
 	private String	telefone;
 
 	// Construtores
+	public Cliente() {};
 	public Cliente(String nome, String cpf, String endereco) {
 		setNome(nome);
 		setCpf(cpf);

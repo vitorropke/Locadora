@@ -15,6 +15,7 @@ public class Funcionario implements Serializable {
 	private String	telefone;
 
 	// Construtores
+	public Funcionario() {};
 	public Funcionario(String login, String senha, String nome, String cpf,
 			String endereco) {
 		setLogin(login);

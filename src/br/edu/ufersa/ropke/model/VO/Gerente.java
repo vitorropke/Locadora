@@ -15,6 +15,7 @@ public class Gerente implements Serializable {
 	private String	telefone;
 
 	// Construtores
+	public Gerente() {};
 	public Gerente(String login, String senha, String nome, String cpf,
 			String endereco) {
 		setLogin(login);

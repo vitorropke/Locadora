@@ -15,6 +15,7 @@ public class Usuario implements Serializable {
 	private String	telefone;
 
 	// Construtores
+	public Usuario() {};
 	public Usuario(String login, String senha, String nome, String cpf,
 			String endereco) {
 		setLogin(login);

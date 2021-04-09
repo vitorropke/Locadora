@@ -8,7 +8,7 @@ public class Disco implements Serializable {
 
 	// Variáveis
 	private String	titulo;
-	private String	nomeBanda;
+	private String	banda;
 	private String	estilo;
 	private int		numeroExemplares;
 	private int		numeroEmprestimos;
@@ -17,10 +17,11 @@ public class Disco implements Serializable {
 	private float	valorAluguel;
 
 	// Construtores
-	public Disco(String titulo, String nomeBanda, String estilo, int numeroExemplares, int anoLancamento, 
+	public Disco() {};
+	public Disco(String titulo, String banda, String estilo, int numeroExemplares, int anoLancamento, 
 			float valorAluguel) {
 		setTitulo(titulo);
-		setNomeBanda(nomeBanda);
+		setBanda(banda);
 		setEstilo(estilo);
 		setNumeroExemplares(numeroExemplares);
 		setNumeroEmprestimos(0);
@@ -28,10 +29,10 @@ public class Disco implements Serializable {
 		setAnoLancamento(anoLancamento);
 		setValorAluguel(valorAluguel);
 	}
-	public Disco(String titulo, String nomeBanda, String estilo, int numeroExemplares, int numeroEmprestimos,
+	public Disco(String titulo, String banda, String estilo, int numeroExemplares, int numeroEmprestimos,
 			int numeroDiasAlugado, int anoLancamento, float valorAluguel) {
 		setTitulo(titulo);
-		setNomeBanda(nomeBanda);
+		setBanda(banda);
 		setEstilo(estilo);
 		setNumeroExemplares(numeroExemplares);
 		setNumeroEmprestimos(numeroEmprestimos);
@@ -45,7 +46,7 @@ public class Disco implements Serializable {
 		String valorAluguelDoisDecimais = String.format("%.02f", valorAluguel);
 
 		disco = "Titulo:                 " + titulo;
-		disco += "\nNome da banda:          " + nomeBanda;
+		disco += "\nBanda:                  " + banda;
 		disco += "\nEstilo:                 " + estilo;
 		disco += "\nNumero de exemplares:   " + numeroExemplares;
 		disco += "\nNumero de emprestimos:  " + numeroEmprestimos;
@@ -68,14 +69,14 @@ public class Disco implements Serializable {
 		}
 	}
 	
-	public String getNomeBanda() {
-		return nomeBanda;
+	public String getBanda() {
+		return banda;
 	}
-	public void setNomeBanda(String nomeBanda) {
-		if ((nomeBanda != null) && (nomeBanda != "")) {
-			this.nomeBanda = nomeBanda;
+	public void setBanda(String banda) {
+		if ((banda != null) && (banda != "")) {
+			this.banda = banda;
 		} else {
-			System.out.println("Nome da banda nao pode ser vazio!");
+			System.out.println("Banda nao pode ser vazia!");
 		}
 	}
 	
@@ -146,44 +147,4 @@ public class Disco implements Serializable {
 			System.out.println("Valor do aluguel nao pode ser menor que 0!");
 		}
 	}
-
-	/*
-	// Métodos
-	public void cadastrar(Disco disco) {
-		// adiciona o disco ao "banco de dados"
-	}
-	
-	public void alterar(Disco disco) {
-		// altera os atributos do disco no "banco de dados"
-	}
-	
-	public void deletar(Disco disco) {
-		// apaga o disco do "banco de dados"
-		
-		disco.titulo = null;
-		disco.nomeBanda = null;
-		disco.estilo = null;
-		disco.numeroExemplares = null;
-		disco.numeroEmprestimos = null;
-		disco.numeroDiasAlugado = null;
-		disco.anoLancamento = null;
-		disco.valorAluguel = null;
-	}
-	
-	public Disco pesquisarTitulo(String titulo) {
-		return Disco;
-	}
-
-	public Disco[] pesquisarBanda(String banda) {
-		return Disco;
-	}
-
-	public Disco[] pesquisarEstilo(String estilo) {
-		return Disco;
-	}
-
-	public Disco[] pesquisarAno(Calendar anoLancamento) {
-		return Disco;
-	}
-	*/
 }

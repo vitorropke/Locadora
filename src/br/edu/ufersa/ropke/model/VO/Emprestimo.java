@@ -23,13 +23,65 @@ public class Emprestimo implements Serializable {
 
 		setIdEmprestimo(id);
 	}
+	public Emprestimo(Calendar dataDevolucao, Cliente cliente, Livro[] livro) {
+		long id = getIdEmprestimo();
+
+		id++;
+
+		setIdEmprestimo(id);
+		setDataDevolucao(dataDevolucao);
+		setCliente(cliente);
+		setLivro(livro);
+	}
+	public Emprestimo(Calendar dataDevolucao, Cliente cliente, Disco[] disco) {
+		long id = getIdEmprestimo();
+
+		id++;
+
+		setIdEmprestimo(id);
+		setDataDevolucao(dataDevolucao);
+		setCliente(cliente);
+		setDisco(disco);
+	}
+	public Emprestimo(Calendar dataEmprestimo, Calendar dataDevolucao,
+			Cliente cliente,Livro[] livro) {
+		long id = getIdEmprestimo();
+
+		id++;
+
+		setIdEmprestimo(id);
+		setDataDevolucao(dataDevolucao);
+		setCliente(cliente);
+		setLivro(livro);
+	}
+	public Emprestimo(Calendar dataEmprestimo, Calendar dataDevolucao,
+			Cliente cliente, Disco[] disco) {
+		long id = getIdEmprestimo();
+
+		id++;
+
+		setIdEmprestimo(id);
+		setDataDevolucao(dataDevolucao);
+		setCliente(cliente);
+		setDisco(disco);
+	}
+	public Emprestimo(Calendar dataEmprestimo, Calendar dataDevolucao,
+			Cliente cliente, Livro[] livro, Disco[] disco) {
+		long id = getIdEmprestimo();
+
+		id++;
+
+		setIdEmprestimo(id);
+		setDataDevolucao(dataDevolucao);
+		setCliente(cliente);
+		setLivro(livro);
+		setDisco(disco);
+	}
 
 	public String toString() {
 		String emprestimo = "";
-		String faturamentoDoisDecimais = String.format("%.02f", faturamento);
 
 		emprestimo = "Id:                 " + idEmprestimo;
-		emprestimo += "\nFaturamento:        " + "R$" + faturamentoDoisDecimais;
 		emprestimo += "\nData de emprestimo: ";
 
 		if (dataEmprestimo != null) {
@@ -46,6 +98,14 @@ public class Emprestimo implements Serializable {
 			emprestimo += "Nao definida";
 		}
 
+		emprestimo += "\n\nCliente:            ";
+
+		if (cliente != null) {
+			emprestimo += cliente.toString();
+		} else {
+			emprestimo += "Sem cliente";
+		}
+
 		emprestimo += "\n\nLivro:              ";
 
 		if (livro != null) {
@@ -57,7 +117,7 @@ public class Emprestimo implements Serializable {
 			emprestimo += "Sem livros";
 		}
 
-		emprestimo += "\nDisco:              ";
+		emprestimo += "\n\nDisco:              ";
 
 		if (disco != null) {
 			for (int x = 0; x < disco.length; x++) {
@@ -118,9 +178,22 @@ public class Emprestimo implements Serializable {
 		}
 	}
 
+	public Cliente getCliente() {
+		return cliente;
+	}
+	public void setCliente(Cliente cliente) {
+		if (cliente != null) {
+			this.cliente = cliente;
+		} else {
+			System.out.println("Cliente nao pode ser vazio!");
+		}
+	}
+
 	public Livro[] getLivro() {
 		if (this.livro == null) {
-			return null;
+			System.out.println("Sem livros nesse emprestimo!");
+			Livro[] semLivros = new Livro[0];
+			return semLivros;
 		}
 
 		Livro[] livros = new Livro[this.livro.length];
@@ -137,7 +210,9 @@ public class Emprestimo implements Serializable {
 	
 	public Disco[] getDisco() {
 		if (this.disco == null) {
-			return null;
+			System.out.println("Sem discos nesse emprestimo!");
+			Disco[] semDiscos = new Disco[0];
+			return semDiscos;
 		}
 
 		Disco[] discos = new Disco[this.disco.length];
