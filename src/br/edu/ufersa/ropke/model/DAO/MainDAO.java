@@ -36,7 +36,6 @@ class MainDAO {
 		
 		Emprestimo emprestimo1 = new Emprestimo();
 
-		/*
 		// Livros
 		System.out.println("-------------------------------------------Livros--------------------------------------------");
 		System.out.println("\nLivro\n");
@@ -56,10 +55,12 @@ class MainDAO {
 		LivroDAO.alterar(livro2);
 		LivroDAO.pesquisar();
 
+		/*
 		System.out.println();
 		System.out.println("---------------------------------------Deleta livro 1----------------------------------------");
 		LivroDAO.deletar(livro1);
 		LivroDAO.pesquisar();
+		*/
 
 		System.out.println();
 		System.out.println("---------------------------------------Pesquisa titulo----------------------------------------");
@@ -96,10 +97,12 @@ class MainDAO {
 		DiscoDAO.alterar(disco1);
 		DiscoDAO.pesquisar();
 		
+		/*
 		System.out.println();
 		System.out.println("---------------------------------------Deleta disco 1----------------------------------------");
 		DiscoDAO.deletar(disco1);
 		DiscoDAO.pesquisar();
+		*/
 		
 		System.out.println();
 		System.out.println("---------------------------------------Pesquisa titulo----------------------------------------");
@@ -142,10 +145,13 @@ class MainDAO {
 		ClienteDAO.alterar(cliente1);
 		ClienteDAO.pesquisar();
 		
+		/*
 		System.out.println();
 		System.out.println("---------------------------------------Deleta cliente 1----------------------------------------");
 		ClienteDAO.deletar(cliente1);
 		ClienteDAO.pesquisar();
+		*/
+
 		// Usuários
 		System.out.println("-------------------------------------------Usuarios--------------------------------------------");
 		System.out.println("\nUsuario\n");
@@ -157,11 +163,13 @@ class MainDAO {
 		usuario1.setEndereco("Rua longe do local");
 		UsuarioDAO.alterar(usuario1);
 		UsuarioDAO.pesquisar();
-		
+
+		/*
 		System.out.println();
 		System.out.println("---------------------------------------Deleta usuario 1----------------------------------------");
 		UsuarioDAO.deletar(usuario1);
 		UsuarioDAO.pesquisar();
+		*/
 
 		// Funcionários
 		System.out.println("-----------------------------------------Funcionarios------------------------------------------");
@@ -175,10 +183,12 @@ class MainDAO {
 		FuncionarioDAO.alterar(funcionario1);
 		FuncionarioDAO.pesquisar();
 		
+		/*
 		System.out.println();
 		System.out.println("---------------------------------------Deleta funcionario 1----------------------------------------");
 		FuncionarioDAO.deletar(funcionario1);
 		FuncionarioDAO.pesquisar();
+		*/
 
 		// Gerentes
 		System.out.println("-------------------------------------------Gerentes--------------------------------------------");
@@ -192,6 +202,7 @@ class MainDAO {
 		GerenteDAO.alterar(gerente1);
 		GerenteDAO.pesquisar();
 		
+		/*
 		System.out.println();
 		System.out.println("---------------------------------------Deleta funcionario 1----------------------------------------");
 		GerenteDAO.deletar(gerente1);
@@ -217,11 +228,11 @@ class MainDAO {
 		EmprestimoDAO.alterar(emprestimo1);
 		EmprestimoDAO.pesquisar();
 		
+		/*
 		System.out.println();
 		System.out.println("---------------------------------------Deleta emprestimo 1----------------------------------------");
 		EmprestimoDAO.deletar(emprestimo1);
 		EmprestimoDAO.pesquisar();
-		/*
 		*/
 	}
 }
