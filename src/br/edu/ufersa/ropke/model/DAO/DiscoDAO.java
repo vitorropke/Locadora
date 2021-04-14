@@ -1,16 +1,19 @@
 package br.edu.ufersa.ropke.model.DAO;
 
-import java.io.*;
-import java.util.List;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-import br.edu.ufersa.ropke.model.VO.Disco;
+import br.edu.ufersa.ropke.model.VO.DiscoVO;
 
 public class DiscoDAO {
-	public static void cadastrar(Disco disco) {
+	public static void cadastrar(DiscoVO disco) {
 		try {
 			// Gera o arquivo para armazenar o objeto
-			File arquivo = new File("br/edu/ufersa/ropke/model/DAO/arquivos/discos.dat");
+			File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/discos.dat");
 
 			// Verifica se o objeto já existe
 			boolean discoExiste = false;
@@ -21,7 +24,7 @@ public class DiscoDAO {
 					// Classe responsável por recuperar os objetos do arquivo
 					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					Disco discoLeitura = (Disco)objetoLeitura.readObject();
+					DiscoVO discoLeitura = (DiscoVO) objetoLeitura.readObject();
 
 					// Compara os discos pelo título deles
 					if (discoLeitura.getTitulo().equals(disco.getTitulo())) {
@@ -35,7 +38,7 @@ public class DiscoDAO {
 			// Se o objeto já existe
 			if (discoExiste) {
 				System.out.println("Esse disco ja foi cadastrado");
-			// Se não existe, prosseguir com a inserção
+				// Se não existe, prosseguir com a inserção
 			} else {
 				FileOutputStream arquivoGravador = new FileOutputStream(arquivo, true);
 				// Classe responsável por inserir os objetos
@@ -52,13 +55,13 @@ public class DiscoDAO {
 		}
 	}
 
-	public static void alterar(Disco disco) {
+	public static void alterar(DiscoVO disco) {
 		try {
 			// Gera o arquivo para armazenar o objeto
-			File arquivo = new File("br/edu/ufersa/ropke/model/DAO/arquivos/discos.dat");
+			File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/discos.dat");
 
 			boolean discoExiste = false;
-			ArrayList<Disco> discos = new ArrayList<Disco>();
+			ArrayList<DiscoVO> discos = new ArrayList<DiscoVO>();
 			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
@@ -67,7 +70,7 @@ public class DiscoDAO {
 					// Classe responsável por recuperar os objetos do arquivo
 					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					Disco discoLeitura = (Disco)objetoLeitura.readObject();
+					DiscoVO discoLeitura = (DiscoVO) objetoLeitura.readObject();
 
 					// Compara os discos pelo título deles
 					if (discoLeitura.getTitulo().equals(disco.getTitulo())) {
@@ -86,11 +89,11 @@ public class DiscoDAO {
 			// Se o objeto a ser alterado não existe
 			if (!discoExiste) {
 				System.out.println("Esse disco nao existe");
-			// Se existe, prosseguir com a alteração
+				// Se existe, prosseguir com a alteração
 			} else {
 				FileOutputStream arquivoGravador = new FileOutputStream(arquivo);
 				int tamanhoVetorDiscos = discos.size();
-				
+
 				for (int i = 0; i < tamanhoVetorDiscos; i++) {
 					// Classe responsável por inserir os objetos
 					ObjectOutputStream objetoGravador = new ObjectOutputStream(arquivoGravador);
@@ -99,21 +102,21 @@ public class DiscoDAO {
 					objetoGravador.writeObject(discos.get(i));
 					objetoGravador.flush();
 				}
-				
+
 				arquivoGravador.close();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void deletar(Disco disco) {
+
+	public static void deletar(DiscoVO disco) {
 		try {
 			// Gera o arquivo para armazenar o objeto
-			File arquivo = new File("br/edu/ufersa/ropke/model/DAO/arquivos/discos.dat");
+			File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/discos.dat");
 
 			boolean discoExiste = false;
-			ArrayList<Disco> discos = new ArrayList<Disco>();
+			ArrayList<DiscoVO> discos = new ArrayList<DiscoVO>();
 			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
@@ -122,7 +125,7 @@ public class DiscoDAO {
 					// Classe responsável por recuperar os objetos do arquivo
 					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					Disco discoLeitura = (Disco)objetoLeitura.readObject();
+					DiscoVO discoLeitura = (DiscoVO) objetoLeitura.readObject();
 
 					// Compara os discos pelo título deles
 					if (discoLeitura.getTitulo().equals(disco.getTitulo())) {
@@ -139,11 +142,11 @@ public class DiscoDAO {
 			// Se o objeto a ser alterado não existe
 			if (!discoExiste) {
 				System.out.println("Esse disco nao existe");
-			// Se existe, prosseguir com a alteração
+				// Se existe, prosseguir com a alteração
 			} else {
 				FileOutputStream arquivoGravador = new FileOutputStream(arquivo);
 				int tamanhoVetorDiscos = discos.size();
-				
+
 				for (int i = 0; i < tamanhoVetorDiscos; i++) {
 					// Classe responsável por inserir os objetos
 					ObjectOutputStream objetoGravador = new ObjectOutputStream(arquivoGravador);
@@ -152,7 +155,7 @@ public class DiscoDAO {
 					objetoGravador.writeObject(discos.get(i));
 					objetoGravador.flush();
 				}
-				
+
 				arquivoGravador.close();
 			}
 		} catch (Exception e) {
@@ -163,7 +166,7 @@ public class DiscoDAO {
 	public static void pesquisar() {
 		try {
 			// Carrega o arquivo
-			File arquivo = new File("br/edu/ufersa/ropke/model/DAO/arquivos/discos.dat");
+			File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/discos.dat");
 
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
@@ -173,7 +176,7 @@ public class DiscoDAO {
 					// Classe responsável por recuperar os objetos do arquivo
 					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					Disco disco = (Disco)objetoLeitura.readObject();
+					DiscoVO disco = (DiscoVO) objetoLeitura.readObject();
 					System.out.println("\nDisco " + indiceDisco + '\n');
 					System.out.println(disco.toString());
 					System.out.println("-----------------------------------------");
@@ -188,11 +191,11 @@ public class DiscoDAO {
 			e.printStackTrace();
 		}
 	}
-	
-	public static Disco pesquisarTitulo(String titulo) {
+
+	public static DiscoVO pesquisarTitulo(String titulo) {
 		try {
 			// Gera o arquivo para armazenar o objeto
-			File arquivo = new File("br/edu/ufersa/ropke/model/DAO/arquivos/discos.dat");
+			File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/discos.dat");
 
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
@@ -201,11 +204,12 @@ public class DiscoDAO {
 					// Classe responsável por recuperar os objetos do arquivo
 					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					Disco discoLeitura = (Disco)objetoLeitura.readObject();
+					DiscoVO discoLeitura = (DiscoVO) objetoLeitura.readObject();
 
 					// Retorna o disco quando obter o mesmo título
 					if (discoLeitura.getTitulo().equals(titulo)) {
 						arquivoLeitura.close();
+						objetoLeitura.close();
 						return discoLeitura;
 					}
 				}
@@ -217,16 +221,16 @@ public class DiscoDAO {
 		}
 
 		System.out.println("Esse disco nao existe no sistema!");
-		Disco semDisco = new Disco();
+		DiscoVO semDisco = new DiscoVO();
 		return semDisco;
 	}
 
-	public static Disco[] pesquisarBanda(String banda) {
+	public static DiscoVO[] pesquisarBanda(String banda) {
 		try {
 			// Gera o arquivo para armazenar o objeto
-			File arquivo = new File("br/edu/ufersa/ropke/model/DAO/arquivos/discos.dat");
+			File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/discos.dat");
 
-			List<Disco> discos = new ArrayList<Disco>();
+			ArrayList<DiscoVO> discos = new ArrayList<DiscoVO>();
 			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
@@ -235,7 +239,7 @@ public class DiscoDAO {
 					// Classe responsável por recuperar os objetos do arquivo
 					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					Disco discoLeitura = (Disco)objetoLeitura.readObject();
+					DiscoVO discoLeitura = (DiscoVO) objetoLeitura.readObject();
 
 					// Salva o disco no vetor quando a banda for igual ao parametro
 					if (discoLeitura.getBanda().equals(banda)) {
@@ -249,12 +253,12 @@ public class DiscoDAO {
 			// Verifica se existem discos desse genero
 			if (discos.size() != 0) {
 				// ArrayList discos para vetor 'vetorDiscos'
-				Disco[] vetorDiscos = new Disco[discos.size()];
+				DiscoVO[] vetorDiscos = new DiscoVO[discos.size()];
 				vetorDiscos = discos.toArray(vetorDiscos);
 				return vetorDiscos;
 			} else {
 				System.out.println("Sem discos com essa banda!");
-				Disco[] semDiscos = new Disco[0];
+				DiscoVO[] semDiscos = new DiscoVO[0];
 				return semDiscos;
 			}
 		} catch (Exception e) {
@@ -262,16 +266,16 @@ public class DiscoDAO {
 		}
 
 		System.out.println("Sem discos com essa banda!");
-		Disco[] semDiscos = new Disco[0];
+		DiscoVO[] semDiscos = new DiscoVO[0];
 		return semDiscos;
 	}
 
-	public static Disco[] pesquisarEstilo(String estilo) {
+	public static DiscoVO[] pesquisarEstilo(String estilo) {
 		try {
 			// Gera o arquivo para armazenar o objeto
-			File arquivo = new File("br/edu/ufersa/ropke/model/DAO/arquivos/discos.dat");
+			File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/discos.dat");
 
-			List<Disco> discos = new ArrayList<Disco>();
+			ArrayList<DiscoVO> discos = new ArrayList<DiscoVO>();
 			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
@@ -280,7 +284,7 @@ public class DiscoDAO {
 					// Classe responsável por recuperar os objetos do arquivo
 					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					Disco discoLeitura = (Disco)objetoLeitura.readObject();
+					DiscoVO discoLeitura = (DiscoVO) objetoLeitura.readObject();
 
 					// Salva o disco no vetor quando a banda for igual ao parametro
 					if (discoLeitura.getEstilo().equals(estilo)) {
@@ -294,12 +298,12 @@ public class DiscoDAO {
 			// Verifica se existem discos desse genero
 			if (discos.size() != 0) {
 				// ArrayList discos para vetor 'vetorDiscos'
-				Disco[] vetorDiscos = new Disco[discos.size()];
+				DiscoVO[] vetorDiscos = new DiscoVO[discos.size()];
 				vetorDiscos = discos.toArray(vetorDiscos);
 				return vetorDiscos;
 			} else {
 				System.out.println("Sem discos com essa banda!");
-				Disco[] semDiscos = new Disco[0];
+				DiscoVO[] semDiscos = new DiscoVO[0];
 				return semDiscos;
 			}
 		} catch (Exception e) {
@@ -307,16 +311,16 @@ public class DiscoDAO {
 		}
 
 		System.out.println("Sem discos com essa banda!");
-		Disco[] semDiscos = new Disco[0];
+		DiscoVO[] semDiscos = new DiscoVO[0];
 		return semDiscos;
 	}
 
-	public static Disco[] pesquisarAno(int anoLancamento) {
+	public static DiscoVO[] pesquisarAno(int anoLancamento) {
 		try {
 			// Gera o arquivo para armazenar o objeto
-			File arquivo = new File("br/edu/ufersa/ropke/model/DAO/arquivos/discos.dat");
+			File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/discos.dat");
 
-			List<Disco> discos = new ArrayList<Disco>();
+			ArrayList<DiscoVO> discos = new ArrayList<DiscoVO>();
 			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
@@ -325,7 +329,7 @@ public class DiscoDAO {
 					// Classe responsável por recuperar os objetos do arquivo
 					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					Disco discoLeitura = (Disco)objetoLeitura.readObject();
+					DiscoVO discoLeitura = (DiscoVO) objetoLeitura.readObject();
 
 					// Salva o disco no vetor quando a banda for igual ao parametro
 					if (discoLeitura.getAnoLancamento() == anoLancamento) {
@@ -339,12 +343,12 @@ public class DiscoDAO {
 			// Verifica se existem discos desse genero
 			if (discos.size() != 0) {
 				// ArrayList discos para vetor 'vetorDiscos'
-				Disco[] vetorDiscos = new Disco[discos.size()];
+				DiscoVO[] vetorDiscos = new DiscoVO[discos.size()];
 				vetorDiscos = discos.toArray(vetorDiscos);
 				return vetorDiscos;
 			} else {
 				System.out.println("Sem discos nesse ano!");
-				Disco[] semDiscos = new Disco[0];
+				DiscoVO[] semDiscos = new DiscoVO[0];
 				return semDiscos;
 			}
 		} catch (Exception e) {
@@ -352,7 +356,7 @@ public class DiscoDAO {
 		}
 
 		System.out.println("Sem discos nesse ano!");
-		Disco[] semDiscos = new Disco[0];
+		DiscoVO[] semDiscos = new DiscoVO[0];
 		return semDiscos;
 	}
 }
