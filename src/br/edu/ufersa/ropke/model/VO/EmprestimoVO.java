@@ -66,7 +66,7 @@ public class EmprestimoVO implements Serializable {
 				emprestimo += "\t\t\t\tSem discos\n";
 			} else {
 				for (int x = 0; x < dataDevolucaoDisco.length; x++) {
-					emprestimo += "\t\t\t\t" + dataDevolucaoDisco[x] + "\n";
+					emprestimo += "\t\t\t\t" + dataDevolucaoDisco[x].getTime() + "\n";
 				}
 			}
 		} else {
