@@ -27,7 +27,7 @@ public class MainBO {
 		// anoLancamento, valorAluguel
 		DiscoVO disco1 = new DiscoVO("ola", "ssd", "pagode", 15, 2, 28, 2018, 8.80f);
 		DiscoVO[] discos = { disco1 };
-		
+
 		// nome, cpf, endereco, 'email', 'telefone'
 		ClienteVO cliente1 = new ClienteVO("joao", "19315322061", enderecos, emails, telefones);
 
@@ -40,8 +40,8 @@ public class MainBO {
 		Calendar cal0 = Calendar.getInstance();
 		// set the year, month, day, hour, minute, second
 		// the month starts with 0 and goes to 11
-		cal.set(2021, 6, 04, 04, 15, 20);
-		cal0.set(2021, 4, 2, 04, 15, 20);
+		cal.set(2021, 3, 26, 04, 15, 20);
+		cal0.set(2021, 4, 1, 04, 15, 20);
 		Calendar[] datas = { cal, cal0 };
 		EmprestimoBO.alugarLivro(emprestimoVO, livros, quantidades, datas, cliente1);
 
@@ -50,6 +50,17 @@ public class MainBO {
 		EmprestimoBO.alugarDisco(emprestimoVO, discos, quantidades0, datas0, cliente1);
 
 		// System.out.println(emprestimo);
+		System.out.println(emprestimoVO);
+
+		System.out.println("----------------------------------------Devolucao-------------------------------------");
+		LivroVO[] livros0 = { livro1, livro2 };
+		quantidades[0] = 3;
+		quantidades[1] = 1;
+		EmprestimoBO.devolverLivro(emprestimoVO, livros0, quantidades, datas);
+		
+		
+		EmprestimoBO.devolverDisco(emprestimoVO, discos, quantidades0, datas0);
+		
 		System.out.println(emprestimoVO);
 	}
 }
