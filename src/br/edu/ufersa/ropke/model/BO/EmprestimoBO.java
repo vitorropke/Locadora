@@ -214,7 +214,7 @@ public class EmprestimoBO {
 				long diferencaMilissegundos;
 				// Percorre os livros
 				for (int x = 0; x < numeroLivros; x++) {
-					// Verifica se o livro e a data não são nulos
+					// Verifica se o livro e a data não são nulos e a quantidade não é 0
 					if ((livro[x] != null) && (dataDevolucaoEfetiva[x] != null) && (quantidade[x] != 0)) {
 						// Obtem a posição no vetor de livros
 						posicaoLivro = livros.indexOf(livro[x]);
@@ -377,7 +377,7 @@ public class EmprestimoBO {
 				long diferencaMilissegundos;
 				// Percorre os discos
 				for (int x = 0; x < numeroDiscos; x++) {
-					// Verifica se o disco e a data não são nulos
+					// Verifica se o disco e a data não são nulos e a quantidade não é 0
 					if ((disco[x] != null) && (dataDevolucaoEfetiva[x] != null) && (quantidade[x] != 0)) {
 						// Obtem a posição no vetor de discos
 						posicaoDisco = discos.indexOf(disco[x]);
@@ -510,35 +510,236 @@ public class EmprestimoBO {
 		EmprestimoBO.alugarLivro(emprestimo, livro, quantidade, dataDevolucaoEfetiva, cliente);
 		EmprestimoBO.alugarDisco(emprestimo, disco, quantidade, dataDevolucaoEfetiva, cliente);
 	}
-	
+
 	public static void devolverLivroDisco(EmprestimoVO emprestimo, LivroVO[] livro, DiscoVO[] disco, int[] quantidade,
 			Calendar[] dataDevolucaoEfetiva) {
 		EmprestimoBO.devolverLivro(emprestimo, livro, quantidade, dataDevolucaoEfetiva);
 		EmprestimoBO.devolverDisco(emprestimo, disco, quantidade, dataDevolucaoEfetiva);
 	}
-	
+
 	public static void gerarRelatorio(Calendar dataInicio, Calendar dataFim) {
-		
+
 	}
 
 	public static void gerarRelatorioCliente(ClienteVO cliente, Calendar dataInicio, Calendar dataFim) {
-		
+
 	}
-	
-	public static float simularMultaLivro(LivroVO[] livro, Calendar dataDevolucaoProposta, Calendar[] dataDevolucaoEfetiva) {
+
+	public static float simularMultaLivro(LivroVO[] livro, Calendar dataDevolucaoProposta,
+			Calendar[] dataDevolucaoEfetiva) {
 		float somaMultas = 0;
-		
+
+		// Verifica se os parâmetros não são nulos
 		if ((livro != null) && (dataDevolucaoProposta != null) && (dataDevolucaoEfetiva != null)) {
+			// Verifica se os vetores possuem o mesmo tamanho
 			if (livro.length == dataDevolucaoEfetiva.length) {
 				int numeroLivros = livro.length;
-				
+				int adicionaisMonetarios;
+				int diferencaDias;
+				long diferencaMilissegundos;
+
 				// Percorre os livros
 				for (int x = 0; x < numeroLivros; x++) {
-					
+					// Verifica se o livro e a data não são nulos
+					if ((livro[x] != null) && (dataDevolucaoEfetiva[x] != null)) {
+						// Verifica se há multa
+						// a data de devolução efetiva ocorre depois da data de devolução proposta
+						if (dataDevolucaoEfetiva[x].after(dataDevolucaoProposta)) {
+							// A multa será de 5% do valor de empréstimo do livro e se repetirá a cada 3
+							// dias até a data de devolução
+
+							adicionaisMonetarios = 0;
+
+							// difereça entre o dia de devolução proposto e o dia de devolução atual
+							diferencaMilissegundos = dataDevolucaoEfetiva[x].getTimeInMillis()
+									- dataDevolucaoProposta.getTimeInMillis();
+
+							// Get difference between two dates in days
+							diferencaDias = (int) diferencaMilissegundos / (24 * 60 * 60 * 1000);
+
+							// Calcula os ciclos de 3 dias de multa
+							adicionaisMonetarios = (int) (diferencaDias) / 3;
+
+							// Atualiza o faturamento com a multa
+							somaMultas += livro[x].getValorAluguel() * adicionaisMonetarios * 0.05f;
+						}
+					}
 				}
 			}
 		}
-		
+
 		return somaMultas;
+	}
+
+	public static float simularMultaDisco(DiscoVO[] disco, Calendar dataDevolucaoProposta,
+			Calendar[] dataDevolucaoEfetiva) {
+		float somaMultas = 0;
+
+		// Verifica se os parâmetros não são nulos
+		if ((disco != null) && (dataDevolucaoProposta != null) && (dataDevolucaoEfetiva != null)) {
+			// Verifica se os vetores possuem o mesmo tamanho
+			if (disco.length == dataDevolucaoEfetiva.length) {
+				int numeroDiscos = disco.length;
+				int adicionaisMonetarios;
+				int diferencaDias;
+				long diferencaMilissegundos;
+
+				// Percorre os discos
+				for (int x = 0; x < numeroDiscos; x++) {
+					// Verifica se o disco e a data não são nulos
+					if ((disco[x] != null) && (dataDevolucaoEfetiva[x] != null)) {
+						// Verifica se há multa
+						// a data de devolução efetiva ocorre depois da data de devolução proposta
+						if (dataDevolucaoEfetiva[x].after(dataDevolucaoProposta)) {
+							// A multa será de 5% do valor de empréstimo do disco e se repetirá a cada 3
+							// dias até a data de devolução
+
+							adicionaisMonetarios = 0;
+
+							// difereça entre o dia de devolução proposto e o dia de devolução atual
+							diferencaMilissegundos = dataDevolucaoEfetiva[x].getTimeInMillis()
+									- dataDevolucaoProposta.getTimeInMillis();
+
+							// Get difference between two dates in days
+							diferencaDias = (int) diferencaMilissegundos / (24 * 60 * 60 * 1000);
+
+							// Calcula os ciclos de 3 dias de multa
+							adicionaisMonetarios = (int) (diferencaDias) / 3;
+
+							// Atualiza o faturamento com a multa
+							somaMultas += disco[x].getValorAluguel() * adicionaisMonetarios * 0.05f;
+						}
+					}
+				}
+			}
+		}
+
+		return somaMultas;
+	}
+
+	public static float simularMultaLivroDisco(LivroVO[] livro, DiscoVO[] disco, Calendar dataDevolucaoProposta,
+			Calendar[] dataDevolucaoEfetiva) {
+		float somaMultas = 0;
+
+		somaMultas += EmprestimoBO.simularMultaLivro(livro, dataDevolucaoProposta, dataDevolucaoEfetiva);
+		somaMultas += EmprestimoBO.simularMultaDisco(disco, dataDevolucaoProposta, dataDevolucaoEfetiva);
+
+		return somaMultas;
+	}
+
+	public static float simularEmprestimoLivro(LivroVO[] livro, int[] quantidade, Calendar dataEmprestimo,
+			Calendar[] dataDevolucaoProposta) {
+		float valorTotal = 0;
+
+		// Verifica se os parâmetros não são nulos
+		if ((livro != null) && (quantidade != null) && (dataDevolucaoProposta != null)) {
+			// Verifica se os vetores possuem o mesmo tamanho
+			if ((livro.length == dataDevolucaoProposta.length) && (livro.length == quantidade.length)) {
+				int numeroLivros = livro.length;
+				int adicionaisMonetarios;
+				int diferencaDias;
+				long diferencaMilissegundos;
+
+				// Percorre os livros
+				for (int x = 0; x < numeroLivros; x++) {
+					// Verifica se o livro e a data não são nulos e a quantidade não é 0
+					if ((livro[x] != null) && (dataDevolucaoProposta[x] != null) && (quantidade[x] != 0)) {
+						// Verifica se a data de devolução é depois da data de empréstimo
+						if (dataDevolucaoProposta[x].after(dataEmprestimo)) {
+							// Primeira adição de valor
+							valorTotal += livro[x].getValorAluguel() * quantidade[x];
+
+							// Cálculo de adicionais e multa se existirem
+							adicionaisMonetarios = 0;
+							// A cada 10 dias de empréstimo há um adicional de 2% do valor de empréstimo do
+							// livro no valor final
+
+							// http://burnignorance.com/java-web-development-tips/calculating-difference-between-two-dates-using-java/
+							diferencaMilissegundos = 0;
+							diferencaDias = 0;
+
+							// Get the difference between two dates in milliseconds
+							// diferença entre data de empréstimo e data de devolução
+							diferencaMilissegundos = dataDevolucaoProposta[x].getTimeInMillis()
+									- dataEmprestimo.getTimeInMillis();
+
+							// Get difference between two dates in days
+							diferencaDias = (int) diferencaMilissegundos / (24 * 60 * 60 * 1000);
+
+							// Calcula os ciclos de 10 dias de empréstimo
+							adicionaisMonetarios = (int) (diferencaDias) / 10;
+
+							// Adicionais ao valor total
+							valorTotal += livro[x].getValorAluguel() * adicionaisMonetarios * 0.02f;
+						}
+					}
+				}
+			}
+		}
+
+		return valorTotal;
+	}
+
+	public static float simularEmprestimoDisco(DiscoVO[] disco, int[] quantidade, Calendar dataEmprestimo,
+			Calendar[] dataDevolucaoProposta) {
+		float valorTotal = 0;
+
+		// Verifica se os parâmetros não são nulos
+		if ((disco != null) && (quantidade != null) && (dataDevolucaoProposta != null)) {
+			// Verifica se os vetores possuem o mesmo tamanho
+			if ((disco.length == dataDevolucaoProposta.length) && (disco.length == quantidade.length)) {
+				int numeroDiscos = disco.length;
+				int adicionaisMonetarios;
+				int diferencaDias;
+				long diferencaMilissegundos;
+
+				// Percorre os discos
+				for (int x = 0; x < numeroDiscos; x++) {
+					// Verifica se o disco e a data não são nulos e a quantidade não é 0
+					if ((disco[x] != null) && (dataDevolucaoProposta[x] != null) && (quantidade[x] != 0)) {
+						// Verifica se a data de devolução é depois da data de empréstimo
+						if (dataDevolucaoProposta[x].after(dataEmprestimo)) {
+							// Primeira adição de valor
+							valorTotal += disco[x].getValorAluguel() * quantidade[x];
+
+							// Cálculo de adicionais e multa se existirem
+							adicionaisMonetarios = 0;
+							// A cada 10 dias de empréstimo há um adicional de 2% do valor de empréstimo do
+							// disco no valor final
+
+							// http://burnignorance.com/java-web-development-tips/calculating-difference-between-two-dates-using-java/
+							diferencaMilissegundos = 0;
+							diferencaDias = 0;
+
+							// Get the difference between two dates in milliseconds
+							// diferença entre data de empréstimo e data de devolução
+							diferencaMilissegundos = dataDevolucaoProposta[x].getTimeInMillis()
+									- dataEmprestimo.getTimeInMillis();
+
+							// Get difference between two dates in days
+							diferencaDias = (int) diferencaMilissegundos / (24 * 60 * 60 * 1000);
+
+							// Calcula os ciclos de 10 dias de empréstimo
+							adicionaisMonetarios = (int) (diferencaDias) / 10;
+
+							// Adicionais ao valor total
+							valorTotal += disco[x].getValorAluguel() * adicionaisMonetarios * 0.02f;
+						}
+					}
+				}
+			}
+		}
+
+		return valorTotal;
+	}
+
+	public static float simularEmprestimoLivroDisco(LivroVO[] livro, DiscoVO[] disco, int[] quantidade,
+			Calendar dataEmprestimo, Calendar[] dataDevolucaoProposta) {
+		float valorTotal = 0;
+
+		valorTotal += EmprestimoBO.simularEmprestimoLivro(livro, quantidade, dataEmprestimo, dataDevolucaoProposta);
+		valorTotal += EmprestimoBO.simularEmprestimoDisco(disco, quantidade, dataEmprestimo, dataDevolucaoProposta);
+
+		return valorTotal;
 	}
 }
