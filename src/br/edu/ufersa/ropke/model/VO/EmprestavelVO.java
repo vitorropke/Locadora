@@ -47,6 +47,7 @@ public class EmprestavelVO implements Serializable {
 	}
 
 	// toString
+	@Override
 	public String toString() {
 		String emprestavel = "";
 		String valorAluguelDoisDecimais = String.format("%.02f", valorAluguel);

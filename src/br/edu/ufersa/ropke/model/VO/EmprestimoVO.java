@@ -29,6 +29,7 @@ public class EmprestimoVO implements Serializable {
 	}
 
 	// toString
+	@Override
 	public String toString() {
 		String emprestimo = "";
 		String faturamentoDoisDecimais = String.format("%.02f", faturamento);
@@ -110,7 +111,7 @@ public class EmprestimoVO implements Serializable {
 		if (cliente != null) {
 			emprestimo += cliente.toString();
 		} else {
-			emprestimo += "\t\t\tSem cliente\n";
+			emprestimo += "\t\t\t\tSem cliente\n";
 		}
 
 		return emprestimo;

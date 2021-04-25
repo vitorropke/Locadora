@@ -1,194 +1,25 @@
 package br.edu.ufersa.ropke.model.DAO;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 
 import br.edu.ufersa.ropke.model.VO.GerenteVO;
 
-public class GerenteDAO {
+public class GerenteDAO extends UsuarioDAO {
+	private static final File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/gerentes.dat");
+
 	public static void cadastrar(GerenteVO gerente) {
-		try {
-			// Gera o arquivo para armazenar o objeto
-			File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/gerentes.dat");
-
-			// Verifica se o objeto já existe
-			boolean gerenteExiste = false;
-			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
-				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
-
-				while (arquivoLeitura.available() > 0 && !gerenteExiste) {
-					// Classe responsável por recuperar os objetos do arquivo
-					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
-
-					GerenteVO gerenteLeitura = (GerenteVO) objetoLeitura.readObject();
-
-					// Compara os gerentes pelo cpf deles
-					if (gerenteLeitura.getCpf().equals(gerente.getCpf())) {
-						gerenteExiste = true;
-					}
-				}
-
-				arquivoLeitura.close();
-			}
-
-			// Se o objeto já existe
-			if (gerenteExiste) {
-				System.out.println("Esse gerente ja foi cadastrado");
-				// Se não existe, prosseguir com a inserção
-			} else {
-				FileOutputStream arquivoGravador = new FileOutputStream(arquivo, true);
-				// Classe responsável por inserir os objetos
-				ObjectOutputStream objetoGravador = new ObjectOutputStream(arquivoGravador);
-
-				// Grava o objeto gerente no arquivo
-				objetoGravador.writeObject(gerente);
-				objetoGravador.flush();
-				arquivoGravador.close();
-				objetoGravador.close();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		UsuarioDAO.cadastrar(gerente, arquivo);
 	}
 
 	public static void alterar(GerenteVO gerente) {
-		try {
-			// Gera o arquivo para armazenar o objeto
-			File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/gerentes.dat");
-
-			boolean gerenteExiste = false;
-			ArrayList<GerenteVO> gerentes = new ArrayList<GerenteVO>();
-			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
-			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
-				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
-
-				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os objetos do arquivo
-					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
-
-					GerenteVO gerenteLeitura = (GerenteVO) objetoLeitura.readObject();
-
-					// Compara os gerentes pelo CPF deles
-					if (gerenteLeitura.getCpf().equals(gerente.getCpf())) {
-						gerenteExiste = true;
-						// Quando for o gerente a ser alterado, insere do parâmetro do método
-						gerentes.add(gerente);
-					} else {
-						// Quando não for o gerente a ser alterado, insere do arquivo
-						gerentes.add(gerenteLeitura);
-					}
-				}
-
-				arquivoLeitura.close();
-			}
-
-			// Se o objeto a ser alterado não existe
-			if (!gerenteExiste) {
-				System.out.println("Esse gerente nao existe");
-				// Se existe, prosseguir com a alteração
-			} else {
-				FileOutputStream arquivoGravador = new FileOutputStream(arquivo);
-				int tamanhoVetorGerentes = gerentes.size();
-
-				for (int i = 0; i < tamanhoVetorGerentes; i++) {
-					// Classe responsável por inserir os objetos
-					ObjectOutputStream objetoGravador = new ObjectOutputStream(arquivoGravador);
-
-					// Grava o objeto gerente no arquivo
-					objetoGravador.writeObject(gerentes.get(i));
-					objetoGravador.flush();
-				}
-
-				arquivoGravador.close();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		UsuarioDAO.alterar(gerente, arquivo);
 	}
 
 	public static void deletar(GerenteVO gerente) {
-		try {
-			// Gera o arquivo para armazenar o objeto
-			File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/gerentes.dat");
-
-			boolean gerenteExiste = false;
-			ArrayList<GerenteVO> gerentes = new ArrayList<GerenteVO>();
-			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
-			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
-				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
-
-				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os objetos do arquivo
-					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
-
-					GerenteVO gerenteLeitura = (GerenteVO) objetoLeitura.readObject();
-
-					// Compara os gerentes pelo CPF deles
-					if (gerenteLeitura.getCpf().equals(gerente.getCpf())) {
-						gerenteExiste = true;
-					} else {
-						// Quando não for o gerente a ser alterado, insere do arquivo
-						gerentes.add(gerenteLeitura);
-					}
-				}
-
-				arquivoLeitura.close();
-			}
-
-			// Se o objeto a ser alterado não existe
-			if (!gerenteExiste) {
-				System.out.println("Esse gerente nao existe");
-				// Se existe, prosseguir com a alteração
-			} else {
-				FileOutputStream arquivoGravador = new FileOutputStream(arquivo);
-				int tamanhoVetorGerentes = gerentes.size();
-
-				for (int i = 0; i < tamanhoVetorGerentes; i++) {
-					// Classe responsável por inserir os objetos
-					ObjectOutputStream objetoGravador = new ObjectOutputStream(arquivoGravador);
-
-					// Grava o objeto gerente no arquivo
-					objetoGravador.writeObject(gerentes.get(i));
-					objetoGravador.flush();
-				}
-
-				arquivoGravador.close();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		UsuarioDAO.deletar(gerente, arquivo);
 	}
 
 	public static void pesquisar() {
-		try {
-			// Carrega o arquivo
-			File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/gerentes.dat");
-
-			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
-				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
-
-				int indiceGerente = 1;
-				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os objetos do arquivo
-					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
-
-					GerenteVO gerente = (GerenteVO) objetoLeitura.readObject();
-					System.out.println("\nGerente " + indiceGerente + '\n');
-					System.out.println(gerente.toString());
-					System.out.println("-----------------------------------------");
-					indiceGerente++;
-				}
-
-				arquivoLeitura.close();
-			} else {
-				System.out.println("Sem gerentes");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		UsuarioDAO.pesquisar(arquivo);
 	}
 }

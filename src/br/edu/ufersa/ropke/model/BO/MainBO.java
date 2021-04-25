@@ -12,6 +12,7 @@ public class MainBO {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		EmprestimoVO emprestimoVO = new EmprestimoVO();
+		EmprestimoVO emprestimoVO1 = new EmprestimoVO();
 
 		String[] enderecos = { "rua 1" };
 		String[] emails = { "123abc@gmail.com" };
@@ -43,11 +44,11 @@ public class MainBO {
 		cal.set(2021, 3, 26, 04, 15, 20);
 		cal0.set(2021, 4, 1, 04, 15, 20);
 		Calendar[] datas = { cal, cal0 };
-		EmprestimoBO.alugarLivro(emprestimoVO, livros, quantidades, datas, cliente1);
+		//EmprestimoBO.alugarLivro(emprestimoVO, livros, quantidades, datas, cliente1);
 
 		Calendar[] datas0 = { cal };
 		int[] quantidades0 = { 3 };
-		EmprestimoBO.alugarDisco(emprestimoVO, discos, quantidades0, datas0, cliente1);
+		//EmprestimoBO.alugarDisco(emprestimoVO, discos, quantidades0, datas0, cliente1);
 
 		// System.out.println(emprestimo);
 		System.out.println(emprestimoVO);
@@ -56,11 +57,11 @@ public class MainBO {
 		LivroVO[] livros0 = { livro1, livro2 };
 		quantidades[0] = 3;
 		quantidades[1] = 1;
-		EmprestimoBO.devolverLivro(emprestimoVO, livros0, quantidades, datas);
+		//EmprestimoBO.devolverLivro(emprestimoVO, livros0, quantidades, datas);
 		
 		
-		EmprestimoBO.devolverDisco(emprestimoVO, discos, quantidades0, datas0);
+		//EmprestimoBO.devolverDisco(emprestimoVO, discos, quantidades0, datas0);
 		
-		System.out.println(emprestimoVO);
+		System.out.println(emprestimoVO1);
 	}
 }
