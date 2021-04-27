@@ -41,16 +41,16 @@ public class MainBO {
 		Calendar cal0 = Calendar.getInstance();
 		// set the year, month, day, hour, minute, second
 		// the month starts with 0 and goes to 11
-		cal.set(2021, 3, 26, 04, 15, 20);
+		cal.set(2021, 3, 27, 04, 15, 20);
 		cal0.set(2021, 4, 1, 04, 15, 20);
 		Calendar[] datas = { cal, cal0 };
-		//EmprestimoBO.alugarLivro(emprestimoVO, livros, quantidades, datas, cliente1);
+		EmprestimoBO.alugar(emprestimoVO, quantidades, datas, cliente1, livros);
 
 		Calendar[] datas0 = { cal };
 		int[] quantidades0 = { 3 };
 		//EmprestimoBO.alugarDisco(emprestimoVO, discos, quantidades0, datas0, cliente1);
 
-		// System.out.println(emprestimo);
+		//System.out.println(emprestimo);
 		System.out.println(emprestimoVO);
 
 		System.out.println("----------------------------------------Devolucao-------------------------------------");
@@ -62,6 +62,6 @@ public class MainBO {
 		
 		//EmprestimoBO.devolverDisco(emprestimoVO, discos, quantidades0, datas0);
 		
-		System.out.println(emprestimoVO1);
+		//System.out.println(emprestimoVO1);
 	}
 }
