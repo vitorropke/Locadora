@@ -20,6 +20,10 @@ public class ClienteBO extends PessoaBO {
 		PessoaBO.deletar(cliente, arquivo);
 	}
 
+	public static void pesquisar() {
+		PessoaBO.pesquisar(arquivo);
+	}
+
 	public static ClienteVO[] pesquisarNome(String nome) {
 		if (nome != null && nome != "") {
 			return ClienteDAO.pesquisarNome(nome);

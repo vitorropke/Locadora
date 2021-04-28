@@ -4,12 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import br.edu.ufersa.ropke.model.DAO.EmprestimoDAO;
+
 public class EmprestimoVO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	// Variáveis
 	private static float faturamento = 0;
-	private long idEmprestimo = -1;
+	private long idEmprestimo;
 	private Calendar dataEmprestimo;
 	private Calendar[] dataDevolucaoLivro;
 	private Calendar[] dataDevolucaoDisco;
@@ -24,8 +26,8 @@ public class EmprestimoVO implements Serializable {
 		// TODO Auto-generated constructor stub
 		Calendar dataAtual = Calendar.getInstance();
 
-		
-		setIdEmprestimo(getIdEmprestimo() + 1);
+		setIdEmprestimo(EmprestimoDAO.pesquisar() + 1);
+
 		setDataEmprestimo(dataAtual);
 	}
 

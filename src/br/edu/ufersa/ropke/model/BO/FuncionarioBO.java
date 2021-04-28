@@ -20,6 +20,10 @@ public class FuncionarioBO extends UsuarioBO {
 		UsuarioBO.deletar(funcionario, arquivo);
 	}
 
+	public static void pesquisar() {
+		UsuarioBO.pesquisar(arquivo);
+	}
+
 	public static boolean autenticar(FuncionarioVO funcionario, File arquivo, String login, String senha) {
 		return UsuarioBO.autenticar(funcionario, arquivo, login, senha);
 	}

@@ -24,7 +24,7 @@ public class EmprestimoBO extends OperacaoBO {
 			}
 		}
 	}
-	
+
 	public static void alterar(EmprestimoVO emprestimo) {
 		// Verifica se a entrada de argumentos não é nula
 		if (emprestimo != null) {
@@ -38,7 +38,7 @@ public class EmprestimoBO extends OperacaoBO {
 			}
 		}
 	}
-	
+
 	public static void deletar(EmprestimoVO emprestimo) {
 		// Verifica se a entrada de argumentos não é nula
 		if (emprestimo != null) {
@@ -51,6 +51,10 @@ public class EmprestimoBO extends OperacaoBO {
 				}
 			}
 		}
+	}
+
+	public static void pesquisar() {
+		EmprestimoDAO.pesquisar();
 	}
 
 	public static EmprestimoVO pesquisar(EmprestimoVO emprestimo) {
@@ -217,14 +221,13 @@ public class EmprestimoBO extends OperacaoBO {
 					}
 
 					emprestimo.setCliente(cliente);
-					
+
 					// Adiciona no arquivo
 					if (EmprestimoBO.pesquisar(emprestimo) == null) {
 						EmprestimoBO.cadastrar(emprestimo);
 					} else {
 						EmprestimoBO.alterar(emprestimo);
 					}
-
 				} else {
 					System.out.println("Sem emprestaveis validos!");
 				}
@@ -495,6 +498,11 @@ public class EmprestimoBO extends OperacaoBO {
 						emprestimo.setQuantidadeDisco(vetorQuantidades);
 						emprestimo.setDataDevolucaoDisco(vetorDatas);
 					}
+				}
+
+				// Altera o empréstimo no arquivo
+				if (EmprestimoBO.pesquisar(emprestimo) != null) {
+					EmprestimoBO.alterar(emprestimo);
 				}
 			} else {
 				System.out.println("Dados inconsistentes!");

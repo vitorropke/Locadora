@@ -20,7 +20,11 @@ public class GerenteBO extends UsuarioBO {
 		UsuarioBO.deletar(gerente, arquivo);
 	}
 
-	public static boolean autenticar(GerenteVO gerente, File arquivo, String login, String senha) {
+	public static void pesquisar() {
+		UsuarioBO.pesquisar(arquivo);
+	}
+
+	public static boolean autenticar(GerenteVO gerente, String login, String senha) {
 		return UsuarioBO.autenticar(gerente, arquivo, login, senha);
 	}
 }
