@@ -128,7 +128,9 @@ public class EmprestimoDAO extends OperacaoDAO {
 		}
 	}
 
-	public static void pesquisar() {
+	public static long pesquisar() {
+		long numeroEmprestimos = -1;
+
 		try {
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
@@ -145,6 +147,7 @@ public class EmprestimoDAO extends OperacaoDAO {
 					System.out.println(emprestimo.toString());
 					System.out.println("-----------------------------------------");
 					indiceEmprestimo++;
+					numeroEmprestimos++;
 				}
 
 				arquivoLeitura.close();
@@ -154,8 +157,10 @@ public class EmprestimoDAO extends OperacaoDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		return numeroEmprestimos;
 	}
-	
+
 	public static EmprestimoVO pesquisar(EmprestimoVO emprestimo) {
 		try {
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
@@ -166,7 +171,7 @@ public class EmprestimoDAO extends OperacaoDAO {
 				while (arquivoLeitura.available() > 0) {
 					// Classe responsável por recuperar os objetos do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
-					
+
 					emprestimoLeitura = (EmprestimoVO) objetoLeitura.readObject();
 
 					// Compara os emprestimos pelo id deles
@@ -182,7 +187,7 @@ public class EmprestimoDAO extends OperacaoDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 }
