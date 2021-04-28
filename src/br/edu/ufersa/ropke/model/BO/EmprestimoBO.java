@@ -10,7 +10,7 @@ import br.edu.ufersa.ropke.model.VO.EmprestavelVO;
 import br.edu.ufersa.ropke.model.VO.EmprestimoVO;
 import br.edu.ufersa.ropke.model.VO.LivroVO;
 
-public class EmprestimoBO {
+public class EmprestimoBO extends OperacaoBO {
 	public static void alugar(EmprestimoVO emprestimo, int[] quantidade, Calendar[] dataDevolucaoProposta,
 			ClienteVO cliente, EmprestavelVO[] emprestavel) {
 		// Verifica se os dados estão consistentes
@@ -184,7 +184,8 @@ public class EmprestimoBO {
 			if (emprestavel[0].getClass() == LivroVO.class) {
 				isLivro = true;
 			}
-			
+
+			// Sai da função se não existirem emprestáveis emprestados
 			if (isLivro) {
 				// Se não houver livros a serem devolvidos
 				if (emprestimo.getLivro() == null) {
@@ -202,30 +203,60 @@ public class EmprestimoBO {
 			// Se os vetores possuem o mesmo tamanho
 			if ((emprestavel.length == quantidade.length) && (emprestavel.length == dataDevolucaoEfetiva.length)) {
 				int numeroEmprestaveis = emprestavel.length;
-				int numeroEmprestaveisEmprestados = emprestimo.getEmprestavel().length;
+				int numeroEmprestaveisEmprestadosAnteriormente;
 
 				// Insere os atributos do empréstimo relacionados ao emprestavel
 				ArrayList<EmprestavelVO> emprestaveis = new ArrayList<EmprestavelVO>();
-				// Array de emprestaveis
-				for (int x = 0; x < numeroEmprestaveisEmprestados; x++) {
-					emprestaveis.add(emprestimo.getEmprestavel()[x]);
-				}
 				ArrayList<Integer> quantidades = new ArrayList<Integer>();
-				// Array de quantidade de emprestaveis
-				for (int x = 0; x < numeroEmprestaveisEmprestados; x++) {
-					quantidades.add(emprestimo.getQuantidadeEmprestavel()[x]);
-				}
 				ArrayList<Calendar> datas = new ArrayList<Calendar>();
-				// Array com datas de devolução
-				for (int x = 0; x < numeroEmprestaveisEmprestados; x++) {
-					datas.add(emprestimo.getDataDevolucaoEmprestavel()[x]);
+
+				if (isLivro) {
+					// Inicializa arrays com livros
+
+					numeroEmprestaveisEmprestadosAnteriormente = emprestimo.getLivro().length;
+
+					// Array de emprestaveis antigos
+					for (int x = 0; x < numeroEmprestaveisEmprestadosAnteriormente; x++) {
+						emprestaveis.add(emprestimo.getLivro()[x]);
+					}
+
+					// Array de quantidade de emprestaveis
+					for (int x = 0; x < numeroEmprestaveisEmprestadosAnteriormente; x++) {
+						quantidades.add(emprestimo.getQuantidadeLivro()[x]);
+					}
+
+					// Array com datas de devolução
+					for (int x = 0; x < numeroEmprestaveisEmprestadosAnteriormente; x++) {
+						datas.add(emprestimo.getDataDevolucaoLivro()[x]);
+					}
+
+				} else {
+					// Inicializa arrays com discos
+
+					numeroEmprestaveisEmprestadosAnteriormente = emprestimo.getDisco().length;
+
+					// Array de emprestaveis antigos
+					for (int x = 0; x < numeroEmprestaveisEmprestadosAnteriormente; x++) {
+						emprestaveis.add(emprestimo.getDisco()[x]);
+					}
+					// Array de quantidade de emprestaveis
+					for (int x = 0; x < numeroEmprestaveisEmprestadosAnteriormente; x++) {
+						quantidades.add(emprestimo.getQuantidadeDisco()[x]);
+					}
+					// Array com datas de devolução
+					for (int x = 0; x < numeroEmprestaveisEmprestadosAnteriormente; x++) {
+						datas.add(emprestimo.getDataDevolucaoDisco()[x]);
+					}
+
 				}
 
 				int posicaoEmprestavel;
 				int quantidadeEmprestaveis;
 				int adicionaisMonetarios;
 				int diferencaDias;
+				int quantidadeDeterminadoEmprestavelEmprestadoAnteriormente;
 				long diferencaMilissegundos;
+				Calendar dataDevolucaoDeterminadoEmprestavelEmprestadoAnteriormente;
 				// Percorre os emprestaveis
 				for (int x = 0; x < numeroEmprestaveis; x++) {
 					// Verifica se o emprestavel e a data não são nulos e a quantidade não é 0
@@ -238,8 +269,20 @@ public class EmprestimoBO {
 							System.out.println("Emprestavel nao emprestado!");
 						} else {
 							// Verifica se a quantidade a ser devolvida é menor ou igual a quantidade de
-							// emprestaveis que foram emprestados
-							if (quantidade[x] <= emprestimo.getQuantidadeEmprestavel()[posicaoEmprestavel]) {
+							// emprestaveis que foram emprestados anteriormente
+
+							if (isLivro) {
+								quantidadeDeterminadoEmprestavelEmprestadoAnteriormente = emprestimo
+										.getQuantidadeLivro()[posicaoEmprestavel];
+								dataDevolucaoDeterminadoEmprestavelEmprestadoAnteriormente = emprestimo
+										.getDataDevolucaoLivro()[posicaoEmprestavel];
+							} else {
+								quantidadeDeterminadoEmprestavelEmprestadoAnteriormente = emprestimo
+										.getQuantidadeDisco()[posicaoEmprestavel];
+								dataDevolucaoDeterminadoEmprestavelEmprestadoAnteriormente = emprestimo
+										.getDataDevolucaoDisco()[posicaoEmprestavel];
+							}
+							if (quantidade[x] <= quantidadeDeterminadoEmprestavelEmprestadoAnteriormente) {
 								// Verifica se a data de devolução é depois da data de empréstimo
 								if (dataDevolucaoEfetiva[x].after(emprestimo.getDataEmprestimo())) {
 									// Repõe os emprestaveis
@@ -291,7 +334,7 @@ public class EmprestimoBO {
 									// Verifica se há multa
 									// a data de devolução efetiva ocorre depois da data de devolução proposta
 									if (dataDevolucaoEfetiva[x]
-											.after(emprestimo.getDataDevolucaoEmprestavel()[posicaoEmprestavel])) {
+											.after(dataDevolucaoDeterminadoEmprestavelEmprestadoAnteriormente)) {
 										// A multa será de 5% do valor de empréstimo do emprestavel e se repetirá a cada
 										// 3
 										// dias até a data de devolução
@@ -300,7 +343,7 @@ public class EmprestimoBO {
 
 										// difereça entre o dia de devolução proposto e o dia de devolução atual
 										diferencaMilissegundos = dataDevolucaoEfetiva[x].getTimeInMillis()
-												- emprestimo.getDataDevolucaoEmprestavel()[posicaoEmprestavel]
+												- dataDevolucaoDeterminadoEmprestavelEmprestadoAnteriormente
 														.getTimeInMillis();
 
 										// Get difference between two dates in days
@@ -325,8 +368,9 @@ public class EmprestimoBO {
 				}
 
 				// Define os novos valores dos atributos do empréstimo
-				if (emprestaveis.size() != 0) {
-					EmprestavelVO[] vetorEmprestaveis = new EmprestavelVO[emprestaveis.size()];
+				int tamanhoVetorEmprestaveis = emprestaveis.size();
+				if (tamanhoVetorEmprestaveis != 0) {
+					EmprestavelVO[] vetorEmprestaveis = new EmprestavelVO[tamanhoVetorEmprestaveis];
 					int[] vetorQuantidades = new int[quantidades.size()];
 					Calendar[] vetorDatas = new Calendar[datas.size()];
 
@@ -340,19 +384,56 @@ public class EmprestimoBO {
 					vetorDatas = datas.toArray(vetorDatas);
 
 					// Atualiza os atributos da classe emprestimo
-					emprestimo.setEmprestavel(vetorEmprestaveis);
-					emprestimo.setQuantidadeEmprestavel(vetorQuantidades);
-					emprestimo.setDataDevolucaoEmprestavel(vetorDatas);
-				} else {
-					// Esvazia os vetores relacionados ao emprestavel
-					EmprestavelVO[] vetorEmprestaveis = new EmprestavelVO[0];
-					int[] vetorQuantidades = new int[0];
-					Calendar[] vetorDatas = new Calendar[0];
+					if (isLivro) {
+						// Atributos são livros
 
-					// Atualiza os atributos da classe emprestimo
-					emprestimo.setEmprestavel(vetorEmprestaveis);
-					emprestimo.setQuantidadeEmprestavel(vetorQuantidades);
-					emprestimo.setDataDevolucaoEmprestavel(vetorDatas);
+						LivroVO[] livros = new LivroVO[tamanhoVetorEmprestaveis];
+
+						// cast de cada posição do vetor emprestável para livro
+						for (int i = 0; i < tamanhoVetorEmprestaveis; i++) {
+							livros[i] = (LivroVO) vetorEmprestaveis[i];
+						}
+
+						emprestimo.setLivro(livros);
+						emprestimo.setQuantidadeLivro(vetorQuantidades);
+						emprestimo.setDataDevolucaoLivro(vetorDatas);
+					} else {
+						// Atributos são discos
+
+						DiscoVO[] discos = new DiscoVO[tamanhoVetorEmprestaveis];
+
+						// cast de cada posição do vetor emprestável para disco
+						for (int i = 0; i < tamanhoVetorEmprestaveis; i++) {
+							discos[i] = (DiscoVO) vetorEmprestaveis[i];
+						}
+
+						emprestimo.setDisco(discos);
+						emprestimo.setQuantidadeDisco(vetorQuantidades);
+						emprestimo.setDataDevolucaoDisco(vetorDatas);
+					}
+				} else {
+					// Quando não sobrarem emprestáveis
+					if (isLivro) {
+						// Esvazia os vetores relacionados ao livro
+						LivroVO[] vetorLivros = new LivroVO[0];
+						int[] vetorQuantidades = new int[0];
+						Calendar[] vetorDatas = new Calendar[0];
+
+						// Atualiza os atributos da classe emprestimo
+						emprestimo.setLivro(vetorLivros);
+						emprestimo.setQuantidadeLivro(vetorQuantidades);
+						emprestimo.setDataDevolucaoLivro(vetorDatas);
+					} else {
+						// Esvazia os vetores relacionados ao disco
+						DiscoVO[] vetorDiscos = new DiscoVO[0];
+						int[] vetorQuantidades = new int[0];
+						Calendar[] vetorDatas = new Calendar[0];
+
+						// Atualiza os atributos da classe emprestimo
+						emprestimo.setDisco(vetorDiscos);
+						emprestimo.setQuantidadeDisco(vetorQuantidades);
+						emprestimo.setDataDevolucaoDisco(vetorDatas);
+					}
 				}
 			} else {
 				System.out.println("Dados inconsistentes!");

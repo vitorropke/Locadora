@@ -125,7 +125,9 @@ public class MainDAO {
 		System.out.println(
 				"---------------------------------------Pesquisa titulo----------------------------------------");
 		DiscoVO disco = DiscoDAO.pesquisarTitulo("em");
-		System.out.println(disco.toString());
+		if (disco != null) {
+			System.out.println(disco.toString());
+		}
 
 		System.out.println();
 		System.out.println(

@@ -10,6 +10,10 @@ import br.edu.ufersa.ropke.model.VO.ClienteVO;
 public class ClienteDAO extends PessoaDAO {
 	private static final File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/clientes.dat");
 
+	public static File getArquivo() {
+		return arquivo;
+	}
+
 	public static void cadastrar(ClienteVO cliente) {
 		PessoaDAO.cadastrar(cliente, arquivo);
 	}
@@ -28,18 +32,18 @@ public class ClienteDAO extends PessoaDAO {
 
 	public static ClienteVO[] pesquisarNome(String nome) {
 		try {
-			// Carrega o arquivo
-			File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/clientes.dat");
-
 			ArrayList<ClienteVO> clientes = new ArrayList<ClienteVO>();
+			
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
+				ObjectInputStream objetoLeitura;
+				ClienteVO clienteLeitura;
 
 				while (arquivoLeitura.available() > 0) {
 					// Classe responsável por recuperar os objetos do arquivo
-					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
+					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					ClienteVO clienteLeitura = (ClienteVO) objetoLeitura.readObject();
+					clienteLeitura = (ClienteVO) objetoLeitura.readObject();
 
 					// Salva o cliente no vetor quando o nome for igual ao parametro
 					if (clienteLeitura.getNome() == nome) {
@@ -68,19 +72,20 @@ public class ClienteDAO extends PessoaDAO {
 
 	public static ClienteVO pesquisarCpf(String cpf) {
 		try {
-			// Gera o arquivo para armazenar o objeto
-			File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/clientes.dat");
-
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
 
 				cpf = cpf.replaceAll("\\D+", "");
 				// Reduz o CPF, removendo tudo que não é dígito
+
+				ObjectInputStream objetoLeitura;
+				ClienteVO clienteLeitura;
+
 				while (arquivoLeitura.available() > 0) {
 					// Classe responsável por recuperar os objetos do arquivo
-					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
+					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					ClienteVO clienteLeitura = (ClienteVO) objetoLeitura.readObject();
+					clienteLeitura = (ClienteVO) objetoLeitura.readObject();
 
 					// Retorna o cliente quando obter o mesmo cpf
 					if (clienteLeitura.getCpf().equals(cpf)) {
@@ -96,8 +101,6 @@ public class ClienteDAO extends PessoaDAO {
 			e.printStackTrace();
 		}
 
-		System.out.println("Esse cliente nao existe no sistema!");
-		ClienteVO semCliente = new ClienteVO();
-		return semCliente;
+		return null;
 	}
 }

@@ -3,7 +3,7 @@ package br.edu.ufersa.ropke.model.VO;
 import java.io.Serializable;
 import java.util.Calendar;
 
-public class EmprestavelVO implements Serializable {
+public abstract class EmprestavelVO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	// Variáveis

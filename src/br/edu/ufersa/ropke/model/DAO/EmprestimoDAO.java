@@ -9,47 +9,24 @@ import java.util.ArrayList;
 
 import br.edu.ufersa.ropke.model.VO.EmprestimoVO;
 
-public class EmprestimoDAO {
+public class EmprestimoDAO extends OperacaoDAO {
+	private static final File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/emprestimos.dat");
+
+	public static File getArquivo() {
+		return arquivo;
+	}
+
 	public static void cadastrar(EmprestimoVO emprestimo) {
 		try {
-			// Gera o arquivo para armazenar o objeto
-			File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/emprestimos.dat");
+			FileOutputStream arquivoGravador = new FileOutputStream(arquivo, true);
+			// Classe responsável por inserir os objetos
+			ObjectOutputStream objetoGravador = new ObjectOutputStream(arquivoGravador);
 
-			// Verifica se o objeto já existe
-			boolean objetoExiste = false;
-			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
-				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
-
-				while (arquivoLeitura.available() > 0 && !objetoExiste) {
-					// Classe responsável por recuperar os objetos do arquivo
-					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
-
-					EmprestimoVO emprestimoLeitura = (EmprestimoVO) objetoLeitura.readObject();
-
-					// Compara os emprestimos pelo id deles
-					if (emprestimoLeitura.getIdEmprestimo() == (emprestimo.getIdEmprestimo())) {
-						objetoExiste = true;
-					}
-				}
-
-				arquivoLeitura.close();
-			}
-
-			// Se o objeto já existe
-			if (objetoExiste) {
-				System.out.println("Esse emprestimo ja foi cadastrado");
-				// Se não existe, prosseguir com a inserção
-			} else {
-				FileOutputStream arquivoGravador = new FileOutputStream(arquivo, true);
-				// Classe responsável por inserir os objetos
-				ObjectOutputStream objetoGravador = new ObjectOutputStream(arquivoGravador);
-
-				// Grava o objeto emprestimo no arquivo
-				objetoGravador.writeObject(emprestimo);
-				objetoGravador.flush();
-				arquivoGravador.close();
-				objetoGravador.close();
-			}
+			// Grava o objeto emprestimo no arquivo
+			objetoGravador.writeObject(emprestimo);
+			objetoGravador.flush();
+			arquivoGravador.close();
+			objetoGravador.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -57,25 +34,24 @@ public class EmprestimoDAO {
 
 	public static void alterar(EmprestimoVO emprestimo) {
 		try {
-			// Gera o arquivo para armazenar o objeto
-			File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/emprestimos.dat");
-
-			boolean emprestimoExiste = false;
 			ArrayList<EmprestimoVO> emprestimos = new ArrayList<EmprestimoVO>();
+
 			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
+				ObjectInputStream objetoLeitura;
+				EmprestimoVO emprestimoLeitura;
 
 				while (arquivoLeitura.available() > 0) {
 					// Classe responsável por recuperar os objetos do arquivo
-					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
+					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					EmprestimoVO emprestimoLeitura = (EmprestimoVO) objetoLeitura.readObject();
+					emprestimoLeitura = (EmprestimoVO) objetoLeitura.readObject();
 
 					// Compara os emprestimos pelo id deles
 					if (emprestimoLeitura.getIdEmprestimo() == (emprestimo.getIdEmprestimo())) {
-						emprestimoExiste = true;
-						// Quando for o emprestimo a ser alterado, insere do parâmetro do método
+						// Quando for o objeto a ser alterado, insere no vetor, o objeto que vem do
+						// parâmetro do método 'alterar'
 						emprestimos.add(emprestimo);
 					} else {
 						// Quando não for o emprestimo a ser alterado, insere do arquivo
@@ -86,25 +62,21 @@ public class EmprestimoDAO {
 				arquivoLeitura.close();
 			}
 
-			// Se o objeto a ser alterado não existe
-			if (!emprestimoExiste) {
-				System.out.println("Esse emprestimo nao existe");
-				// Se existe, prosseguir com a alteração
-			} else {
-				FileOutputStream arquivoGravador = new FileOutputStream(arquivo);
-				int tamanhoVetorEmprestimos = emprestimos.size();
+			FileOutputStream arquivoGravador = new FileOutputStream(arquivo);
+			ObjectOutputStream objetoGravador;
+			int tamanhoVetorEmprestimos = emprestimos.size();
 
-				for (int i = 0; i < tamanhoVetorEmprestimos; i++) {
-					// Classe responsável por inserir os objetos
-					ObjectOutputStream objetoGravador = new ObjectOutputStream(arquivoGravador);
+			for (int i = 0; i < tamanhoVetorEmprestimos; i++) {
+				// Classe responsável por inserir os objetos
+				objetoGravador = new ObjectOutputStream(arquivoGravador);
 
-					// Grava o objeto emprestimo no arquivo
-					objetoGravador.writeObject(emprestimos.get(i));
-					objetoGravador.flush();
-				}
-
-				arquivoGravador.close();
+				// Grava o objeto emprestimo no arquivo
+				objetoGravador.writeObject(emprestimos.get(i));
+				objetoGravador.flush();
 			}
+
+			arquivoGravador.close();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -112,26 +84,24 @@ public class EmprestimoDAO {
 
 	public static void deletar(EmprestimoVO emprestimo) {
 		try {
-			// Gera o arquivo para armazenar o objeto
-			File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/emprestimos.dat");
-
-			boolean emprestimoExiste = false;
 			ArrayList<EmprestimoVO> emprestimos = new ArrayList<EmprestimoVO>();
+
 			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
+				ObjectInputStream objetoLeitura;
+				EmprestimoVO emprestimoLeitura;
 
 				while (arquivoLeitura.available() > 0) {
 					// Classe responsável por recuperar os objetos do arquivo
-					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
+					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					EmprestimoVO emprestimoLeitura = (EmprestimoVO) objetoLeitura.readObject();
+					emprestimoLeitura = (EmprestimoVO) objetoLeitura.readObject();
 
 					// Compara os emprestimos pelo id deles
-					if (emprestimoLeitura.getIdEmprestimo() == (emprestimo.getIdEmprestimo())) {
-						emprestimoExiste = true;
-					} else {
-						// Quando não for o emprestimo a ser alterado, insere do arquivo
+					if (emprestimoLeitura.getIdEmprestimo() != (emprestimo.getIdEmprestimo())) {
+						// Quando não encontrar o empréstimo, insere no vetor
+						// Quando encontrar a empréstimo, não insere no vetor
 						emprestimos.add(emprestimoLeitura);
 					}
 				}
@@ -139,25 +109,20 @@ public class EmprestimoDAO {
 				arquivoLeitura.close();
 			}
 
-			// Se o objeto a ser alterado não existe
-			if (!emprestimoExiste) {
-				System.out.println("Esse emprestimo nao existe");
-				// Se existe, prosseguir com a alteração
-			} else {
-				FileOutputStream arquivoGravador = new FileOutputStream(arquivo);
-				int tamanhoVetorEmprestimos = emprestimos.size();
+			FileOutputStream arquivoGravador = new FileOutputStream(arquivo);
+			ObjectOutputStream objetoGravador;
+			int tamanhoVetorEmprestimos = emprestimos.size();
 
-				for (int i = 0; i < tamanhoVetorEmprestimos; i++) {
-					// Classe responsável por inserir os objetos
-					ObjectOutputStream objetoGravador = new ObjectOutputStream(arquivoGravador);
+			for (int i = 0; i < tamanhoVetorEmprestimos; i++) {
+				// Classe responsável por inserir os objetos
+				objetoGravador = new ObjectOutputStream(arquivoGravador);
 
-					// Grava o objeto emprestimo no arquivo
-					objetoGravador.writeObject(emprestimos.get(i));
-					objetoGravador.flush();
-				}
-
-				arquivoGravador.close();
+				// Grava o objeto emprestimo no arquivo
+				objetoGravador.writeObject(emprestimos.get(i));
+				objetoGravador.flush();
 			}
+
+			arquivoGravador.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -165,18 +130,17 @@ public class EmprestimoDAO {
 
 	public static void pesquisar() {
 		try {
-			// Carrega o arquivo
-			File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/emprestimos.dat");
-
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
+				ObjectInputStream objetoLeitura;
+				EmprestimoVO emprestimo;
 
 				int indiceEmprestimo = 1;
 				while (arquivoLeitura.available() > 0) {
 					// Classe responsável por recuperar os objetos do arquivo
-					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
+					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					EmprestimoVO emprestimo = (EmprestimoVO) objetoLeitura.readObject();
+					emprestimo = (EmprestimoVO) objetoLeitura.readObject();
 					System.out.println("\nEmprestimo " + indiceEmprestimo + '\n');
 					System.out.println(emprestimo.toString());
 					System.out.println("-----------------------------------------");
@@ -190,5 +154,35 @@ public class EmprestimoDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static EmprestimoVO pesquisar(EmprestimoVO emprestimo) {
+		try {
+			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
+				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
+				ObjectInputStream objetoLeitura;
+				EmprestimoVO emprestimoLeitura;
+
+				while (arquivoLeitura.available() > 0) {
+					// Classe responsável por recuperar os objetos do arquivo
+					objetoLeitura = new ObjectInputStream(arquivoLeitura);
+					
+					emprestimoLeitura = (EmprestimoVO) objetoLeitura.readObject();
+
+					// Compara os emprestimos pelo id deles
+					if (emprestimoLeitura.getIdEmprestimo() == (emprestimo.getIdEmprestimo())) {
+						arquivoLeitura.close();
+						objetoLeitura.close();
+						return emprestimoLeitura;
+					}
+				}
+
+				arquivoLeitura.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 }

@@ -11,6 +11,10 @@ import br.edu.ufersa.ropke.model.VO.EmprestavelVO;
 public class DiscoDAO extends EmprestavelDAO {
 	private static final File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/discos.dat");
 
+	public static File getArquivo() {
+		return arquivo;
+	}
+
 	public static void cadastrar(DiscoVO disco) {
 		EmprestavelDAO.cadastrar(disco, arquivo);
 	}
@@ -28,15 +32,7 @@ public class DiscoDAO extends EmprestavelDAO {
 	}
 
 	public static DiscoVO pesquisarTitulo(String titulo) {
-		EmprestavelVO emprestavel = EmprestavelDAO.pesquisarTitulo(titulo, arquivo);
-
-		// Só retorna o disco se ele não for nulo
-		if (emprestavel.getTitulo() == null) {
-			DiscoVO discoVazio = new DiscoVO();
-			return discoVazio;
-		} else {
-			return (DiscoVO) emprestavel;
-		}
+		return (DiscoVO) EmprestavelDAO.pesquisarTitulo(titulo, arquivo);
 	}
 
 	public static DiscoVO[] pesquisarAnoLancamento(int anoLancamento) {
@@ -55,19 +51,19 @@ public class DiscoDAO extends EmprestavelDAO {
 
 	public static DiscoVO[] pesquisarBanda(String banda) {
 		try {
-			// Gera o arquivo para armazenar o objeto
-			File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/discos.dat");
-
 			ArrayList<DiscoVO> discos = new ArrayList<DiscoVO>();
+
 			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
+				ObjectInputStream objetoLeitura;
+				DiscoVO discoLeitura;
 
 				while (arquivoLeitura.available() > 0) {
 					// Classe responsável por recuperar os objetos do arquivo
-					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
+					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					DiscoVO discoLeitura = (DiscoVO) objetoLeitura.readObject();
+					discoLeitura = (DiscoVO) objetoLeitura.readObject();
 
 					// Salva o disco no vetor quando a banda for igual ao parametro
 					if (discoLeitura.getBanda().equals(banda)) {
@@ -84,35 +80,30 @@ public class DiscoDAO extends EmprestavelDAO {
 				DiscoVO[] vetorDiscos = new DiscoVO[discos.size()];
 				vetorDiscos = discos.toArray(vetorDiscos);
 				return vetorDiscos;
-			} else {
-				System.out.println("Sem discos com essa banda!");
-				DiscoVO[] semDiscos = new DiscoVO[0];
-				return semDiscos;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		System.out.println("Sem discos com essa banda!");
 		DiscoVO[] semDiscos = new DiscoVO[0];
 		return semDiscos;
 	}
 
 	public static DiscoVO[] pesquisarEstilo(String estilo) {
 		try {
-			// Gera o arquivo para armazenar o objeto
-			File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/discos.dat");
-
 			ArrayList<DiscoVO> discos = new ArrayList<DiscoVO>();
+
 			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
+				ObjectInputStream objetoLeitura;
+				DiscoVO discoLeitura;
 
 				while (arquivoLeitura.available() > 0) {
 					// Classe responsável por recuperar os objetos do arquivo
-					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
+					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					DiscoVO discoLeitura = (DiscoVO) objetoLeitura.readObject();
+					discoLeitura = (DiscoVO) objetoLeitura.readObject();
 
 					// Salva o disco no vetor quando a banda for igual ao parametro
 					if (discoLeitura.getEstilo().equals(estilo)) {
@@ -129,16 +120,11 @@ public class DiscoDAO extends EmprestavelDAO {
 				DiscoVO[] vetorDiscos = new DiscoVO[discos.size()];
 				vetorDiscos = discos.toArray(vetorDiscos);
 				return vetorDiscos;
-			} else {
-				System.out.println("Sem discos com essa banda!");
-				DiscoVO[] semDiscos = new DiscoVO[0];
-				return semDiscos;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		System.out.println("Sem discos com essa banda!");
 		DiscoVO[] semDiscos = new DiscoVO[0];
 		return semDiscos;
 	}

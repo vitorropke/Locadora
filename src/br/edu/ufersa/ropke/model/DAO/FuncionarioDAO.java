@@ -7,6 +7,10 @@ import br.edu.ufersa.ropke.model.VO.FuncionarioVO;
 public class FuncionarioDAO extends UsuarioDAO {
 	private static final File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/funcionarios.dat");
 
+	public static File getArquivo() {
+		return arquivo;
+	}
+
 	public static void cadastrar(FuncionarioVO funcionario) {
 		UsuarioDAO.cadastrar(funcionario, arquivo);
 	}

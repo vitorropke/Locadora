@@ -7,6 +7,10 @@ import br.edu.ufersa.ropke.model.VO.GerenteVO;
 public class GerenteDAO extends UsuarioDAO {
 	private static final File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/gerentes.dat");
 
+	public static File getArquivo() {
+		return arquivo;
+	}
+
 	public static void cadastrar(GerenteVO gerente) {
 		UsuarioDAO.cadastrar(gerente, arquivo);
 	}

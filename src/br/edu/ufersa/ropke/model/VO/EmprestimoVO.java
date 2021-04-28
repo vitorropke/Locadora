@@ -24,6 +24,7 @@ public class EmprestimoVO implements Serializable {
 		// TODO Auto-generated constructor stub
 		Calendar dataAtual = Calendar.getInstance();
 
+		
 		setIdEmprestimo(getIdEmprestimo() + 1);
 		setDataEmprestimo(dataAtual);
 	}

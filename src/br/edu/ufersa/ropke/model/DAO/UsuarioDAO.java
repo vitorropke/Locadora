@@ -4,7 +4,7 @@ import java.io.File;
 
 import br.edu.ufersa.ropke.model.VO.UsuarioVO;
 
-public class UsuarioDAO extends PessoaDAO {
+public abstract class UsuarioDAO extends PessoaDAO {
 	public static void cadastrar(UsuarioVO usuario, File arquivo) {
 		PessoaDAO.cadastrar(usuario, arquivo);
 	}
@@ -20,10 +20,4 @@ public class UsuarioDAO extends PessoaDAO {
 	public static void pesquisar(File arquivo) {
 		PessoaDAO.pesquisar(arquivo);
 	}
-	/*
-	 * public static void autenticar(UsuarioVO usuario, String login, String senha,
-	 * File arquivo) {
-	 * 
-	 * }
-	 */
 }

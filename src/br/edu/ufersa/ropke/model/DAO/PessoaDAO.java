@@ -9,44 +9,18 @@ import java.util.ArrayList;
 
 import br.edu.ufersa.ropke.model.VO.PessoaVO;
 
-public class PessoaDAO extends OperacaoDAO {
+public abstract class PessoaDAO extends OperacaoDAO {
 	public static void cadastrar(PessoaVO pessoa, File arquivo) {
 		try {
-			// Verifica se o objeto já existe
-			boolean pessoaExiste = false;
-			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
-				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
+			FileOutputStream arquivoGravador = new FileOutputStream(arquivo, true);
+			// Classe responsável por inserir os objetos
+			ObjectOutputStream objetoGravador = new ObjectOutputStream(arquivoGravador);
 
-				while (arquivoLeitura.available() > 0 && !pessoaExiste) {
-					// Classe responsável por recuperar os objetos do arquivo
-					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
-
-					PessoaVO pessoaLeitura = (PessoaVO) objetoLeitura.readObject();
-
-					// Compara os pessoas pelo cpf deles
-					if (pessoaLeitura.getCpf().equals(pessoa.getCpf())) {
-						pessoaExiste = true;
-					}
-				}
-
-				arquivoLeitura.close();
-			}
-
-			// Se o objeto já existe
-			if (pessoaExiste) {
-				System.out.println("Essa pessoa ja foi cadastrada");
-				// Se não existe, prosseguir com a inserção
-			} else {
-				FileOutputStream arquivoGravador = new FileOutputStream(arquivo, true);
-				// Classe responsável por inserir os objetos
-				ObjectOutputStream objetoGravador = new ObjectOutputStream(arquivoGravador);
-
-				// Grava o objeto pessoa no arquivo
-				objetoGravador.writeObject(pessoa);
-				objetoGravador.flush();
-				arquivoGravador.close();
-				objetoGravador.close();
-			}
+			// Grava o objeto pessoa no arquivo
+			objetoGravador.writeObject(pessoa);
+			objetoGravador.flush();
+			arquivoGravador.close();
+			objetoGravador.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -54,23 +28,25 @@ public class PessoaDAO extends OperacaoDAO {
 
 	public static void alterar(PessoaVO pessoa, File arquivo) {
 		try {
-			// Verifica se o objeto existe
-			boolean pessoaExiste = false;
 			ArrayList<PessoaVO> pessoas = new ArrayList<PessoaVO>();
+
 			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
+			// O arquivo será reescrito com o objeto modificado
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
+				ObjectInputStream objetoLeitura;
+				PessoaVO pessoaLeitura;
 
 				while (arquivoLeitura.available() > 0) {
 					// Classe responsável por recuperar os objetos do arquivo
-					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
+					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					PessoaVO pessoaLeitura = (PessoaVO) objetoLeitura.readObject();
+					pessoaLeitura = (PessoaVO) objetoLeitura.readObject();
 
 					// Compara os pessoas pelo CPF deles
 					if (pessoaLeitura.getCpf().equals(pessoa.getCpf())) {
-						pessoaExiste = true;
-						// Quando for o objeto a ser alterado, insere do parâmetro do método
+						// Quando for o objeto a ser alterado, insere no vetor, o objeto que vem do
+						// parâmetro do método 'alterar'
 						pessoas.add(pessoa);
 					} else {
 						// Quando não for o objeto a ser alterado, insere do arquivo
@@ -81,25 +57,21 @@ public class PessoaDAO extends OperacaoDAO {
 				arquivoLeitura.close();
 			}
 
-			// Se o objeto a ser alterado não existe
-			if (!pessoaExiste) {
-				System.out.println("Essa pessoa nao existe");
-				// Se existe, prosseguir com a alteração
-			} else {
-				FileOutputStream arquivoGravador = new FileOutputStream(arquivo);
-				int tamanhoVetorPessoas = pessoas.size();
+			// Escrita com o objeto modificado
+			FileOutputStream arquivoGravador = new FileOutputStream(arquivo);
+			ObjectOutputStream objetoGravador;
+			int tamanhoVetorPessoas = pessoas.size();
 
-				for (int i = 0; i < tamanhoVetorPessoas; i++) {
-					// Classe responsável por inserir os objetos
-					ObjectOutputStream objetoGravador = new ObjectOutputStream(arquivoGravador);
+			for (int i = 0; i < tamanhoVetorPessoas; i++) {
+				// Classe responsável por inserir os objetos
+				objetoGravador = new ObjectOutputStream(arquivoGravador);
 
-					// Grava o objeto pessoa no arquivo
-					objetoGravador.writeObject(pessoas.get(i));
-					objetoGravador.flush();
-				}
-
-				arquivoGravador.close();
+				// Grava o objeto cliente no arquivo
+				objetoGravador.writeObject(pessoas.get(i));
+				objetoGravador.flush();
 			}
+
+			arquivoGravador.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -107,24 +79,24 @@ public class PessoaDAO extends OperacaoDAO {
 
 	public static void deletar(PessoaVO pessoa, File arquivo) {
 		try {
-			// Verifica se o objeto existe
-			boolean pessoaExiste = false;
 			ArrayList<PessoaVO> pessoas = new ArrayList<PessoaVO>();
+			
 			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
+				ObjectInputStream objetoLeitura;
+				PessoaVO pessoaLeitura;
 
 				while (arquivoLeitura.available() > 0) {
 					// Classe responsável por recuperar os objetos do arquivo
-					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
+					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					PessoaVO pessoaLeitura = (PessoaVO) objetoLeitura.readObject();
+					pessoaLeitura = (PessoaVO) objetoLeitura.readObject();
 
 					// Compara os pessoas pelo CPF deles
-					if (pessoaLeitura.getCpf().equals(pessoa.getCpf())) {
-						pessoaExiste = true;
-					} else {
-						// Quando não for o pessoa a ser alterado, insere do arquivo
+					if (!pessoaLeitura.getCpf().equals(pessoa.getCpf())) {
+						// Quando não encontrar a pessoa, insere no vetor
+						// Quando encontrar a pessoa, não insere no vetor
 						pessoas.add(pessoaLeitura);
 					}
 				}
@@ -132,41 +104,39 @@ public class PessoaDAO extends OperacaoDAO {
 				arquivoLeitura.close();
 			}
 
-			// Se o objeto a ser alterado não existe
-			if (!pessoaExiste) {
-				System.out.println("Essa pessoa nao existe");
-				// Se existe, prosseguir com a alteração
-			} else {
-				FileOutputStream arquivoGravador = new FileOutputStream(arquivo);
-				int tamanhoVetorPessoas = pessoas.size();
+			// Escrita com o objeto removido
+			FileOutputStream arquivoGravador = new FileOutputStream(arquivo);
+			ObjectOutputStream objetoGravador;
+			int tamanhoVetorPessoas = pessoas.size();
 
-				for (int i = 0; i < tamanhoVetorPessoas; i++) {
-					// Classe responsável por inserir os objetos
-					ObjectOutputStream objetoGravador = new ObjectOutputStream(arquivoGravador);
+			for (int i = 0; i < tamanhoVetorPessoas; i++) {
+				// Classe responsável por inserir os objetos
+				objetoGravador = new ObjectOutputStream(arquivoGravador);
 
-					// Grava o objeto pessoa no arquivo
-					objetoGravador.writeObject(pessoas.get(i));
-					objetoGravador.flush();
-				}
-
-				arquivoGravador.close();
+				// Grava o objeto cliente no arquivo
+				objetoGravador.writeObject(pessoas.get(i));
+				objetoGravador.flush();
 			}
+
+			arquivoGravador.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void pesquisar(File arquivo) {
 		try {
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
-
+				ObjectInputStream objetoLeitura;
+				PessoaVO pessoa;
 				int indicePessoa = 1;
+
 				while (arquivoLeitura.available() > 0) {
 					// Classe responsável por recuperar os objetos do arquivo
-					ObjectInputStream objetoLeitura = new ObjectInputStream(arquivoLeitura);
+					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					PessoaVO pessoa = (PessoaVO) objetoLeitura.readObject();
+					pessoa = (PessoaVO) objetoLeitura.readObject();
 					System.out.println("\nPessoa " + indicePessoa + '\n');
 					System.out.println(pessoa.toString());
 					System.out.println("-----------------------------------------");
@@ -180,5 +150,40 @@ public class PessoaDAO extends OperacaoDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static PessoaVO pesquisar(PessoaVO pessoa, File arquivo) {
+		try {
+			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
+				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
+				String cpf;
+
+				// Reduz o CPF, removendo tudo que não é dígito
+				cpf = pessoa.getCpf().replaceAll("\\D+", "");
+
+				ObjectInputStream objetoLeitura;
+				PessoaVO pessoaLeitura;
+
+				while (arquivoLeitura.available() > 0) {
+					// Classe responsável por recuperar os objetos do arquivo
+					objetoLeitura = new ObjectInputStream(arquivoLeitura);
+
+					pessoaLeitura = (PessoaVO) objetoLeitura.readObject();
+
+					// Retorna a pessoa quando obter o mesmo cpf
+					if (pessoaLeitura.getCpf().equals(cpf)) {
+						arquivoLeitura.close();
+						objetoLeitura.close();
+						return pessoaLeitura;
+					}
+				}
+
+				arquivoLeitura.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }
