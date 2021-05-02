@@ -15,8 +15,7 @@ public class EmprestimoBO extends OperacaoBO {
 		// Verifica se a entrada de argumentos não é nula
 		if (emprestimo != null) {
 			// Verifica se parâmetros importantes não são nulos
-			if ((emprestimo.getIdEmprestimo() != -1) && (emprestimo.getCliente() != null)
-					&& (emprestimo.getDataEmprestimo() != null)) {
+			if ((emprestimo.getCliente() != null) && (emprestimo.getDataEmprestimo() != null)) {
 				// Verifica se o emprestimo não existe no sistema
 				if (EmprestimoDAO.pesquisar(emprestimo) == null) {
 					EmprestimoDAO.cadastrar(emprestimo);
@@ -59,8 +58,7 @@ public class EmprestimoBO extends OperacaoBO {
 
 	public static EmprestimoVO pesquisar(EmprestimoVO emprestimo) {
 		if (emprestimo != null) {
-			if ((emprestimo.getIdEmprestimo() != -1) && (emprestimo.getCliente() != null)
-					&& (emprestimo.getDataEmprestimo() != null)) {
+			if ((emprestimo.getCliente() != null) && (emprestimo.getDataEmprestimo() != null)) {
 				return EmprestimoDAO.pesquisar(emprestimo);
 			} else {
 				return null;

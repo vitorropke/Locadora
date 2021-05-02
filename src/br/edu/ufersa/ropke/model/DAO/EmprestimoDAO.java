@@ -128,9 +128,7 @@ public class EmprestimoDAO extends OperacaoDAO {
 		}
 	}
 
-	public static long pesquisar() {
-		long numeroEmprestimos = -1;
-
+	public static void pesquisar() {
 		try {
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
@@ -147,7 +145,6 @@ public class EmprestimoDAO extends OperacaoDAO {
 					System.out.println(emprestimo.toString());
 					System.out.println("-----------------------------------------");
 					indiceEmprestimo++;
-					numeroEmprestimos++;
 				}
 
 				arquivoLeitura.close();
@@ -157,8 +154,6 @@ public class EmprestimoDAO extends OperacaoDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		return numeroEmprestimos;
 	}
 
 	public static EmprestimoVO pesquisar(EmprestimoVO emprestimo) {
