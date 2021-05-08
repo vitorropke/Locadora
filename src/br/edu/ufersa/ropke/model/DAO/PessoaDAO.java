@@ -43,7 +43,7 @@ public abstract class PessoaDAO extends OperacaoDAO {
 
 					pessoaLeitura = (PessoaVO) objetoLeitura.readObject();
 
-					// Compara os pessoas pelo CPF deles
+					// Compara as pessoas pelo CPF delas
 					if (pessoaLeitura.getCpf().equals(pessoa.getCpf())) {
 						// Quando for o objeto a ser alterado, insere no vetor, o objeto que vem do
 						// parâmetro do método 'alterar'
@@ -66,7 +66,7 @@ public abstract class PessoaDAO extends OperacaoDAO {
 				// Classe responsável por inserir os objetos
 				objetoGravador = new ObjectOutputStream(arquivoGravador);
 
-				// Grava o objeto cliente no arquivo
+				// Grava o objeto pessoa no arquivo
 				objetoGravador.writeObject(pessoas.get(i));
 				objetoGravador.flush();
 			}
@@ -80,7 +80,7 @@ public abstract class PessoaDAO extends OperacaoDAO {
 	public static void deletar(PessoaVO pessoa, File arquivo) {
 		try {
 			ArrayList<PessoaVO> pessoas = new ArrayList<PessoaVO>();
-			
+
 			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
@@ -93,7 +93,7 @@ public abstract class PessoaDAO extends OperacaoDAO {
 
 					pessoaLeitura = (PessoaVO) objetoLeitura.readObject();
 
-					// Compara os pessoas pelo CPF deles
+					// Compara as pessoas pelo CPF delas
 					if (!pessoaLeitura.getCpf().equals(pessoa.getCpf())) {
 						// Quando não encontrar a pessoa, insere no vetor
 						// Quando encontrar a pessoa, não insere no vetor
@@ -113,7 +113,7 @@ public abstract class PessoaDAO extends OperacaoDAO {
 				// Classe responsável por inserir os objetos
 				objetoGravador = new ObjectOutputStream(arquivoGravador);
 
-				// Grava o objeto cliente no arquivo
+				// Grava o objeto pessoa no arquivo
 				objetoGravador.writeObject(pessoas.get(i));
 				objetoGravador.flush();
 			}
@@ -184,6 +184,7 @@ public abstract class PessoaDAO extends OperacaoDAO {
 			e.printStackTrace();
 		}
 
+		System.out.println("Pessoa nao encontrada");
 		return null;
 	}
 }

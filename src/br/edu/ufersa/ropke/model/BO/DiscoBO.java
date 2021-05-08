@@ -29,8 +29,18 @@ public class DiscoBO extends EmprestavelBO {
 		EmprestavelBO.pesquisar(disco, arquivo);
 	}
 
-	public static DiscoVO pesquisarTitulo(String titulo) {
-		return (DiscoVO) EmprestavelBO.pesquisarTitulo(titulo, arquivo);
+	public static DiscoVO[] pesquisarTitulo(String titulo) {
+		EmprestavelVO[] emprestaveis = EmprestavelBO.pesquisarTitulo(titulo, arquivo);
+		int tamanhoVetorEmprestaveis = emprestaveis.length;
+
+		DiscoVO[] discos = new DiscoVO[tamanhoVetorEmprestaveis];
+
+		// cast de cada posição do vetor emprestável para disco
+		for (int i = 0; i < tamanhoVetorEmprestaveis; i++) {
+			discos[i] = (DiscoVO) emprestaveis[i];
+		}
+
+		return discos;
 	}
 
 	public static DiscoVO[] pesquisarAnoLancamento(int anoLancamento) {

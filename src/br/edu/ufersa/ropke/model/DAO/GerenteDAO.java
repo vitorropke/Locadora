@@ -26,4 +26,8 @@ public class GerenteDAO extends UsuarioDAO {
 	public static void pesquisar() {
 		UsuarioDAO.pesquisar(arquivo);
 	}
+
+	public static GerenteVO pesquisar(GerenteVO gerente) {
+		return (GerenteVO) UsuarioDAO.pesquisar(gerente, arquivo);
+	}
 }

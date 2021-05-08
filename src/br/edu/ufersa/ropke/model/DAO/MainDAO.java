@@ -78,14 +78,17 @@ public class MainDAO {
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa titulo----------------------------------------");
-		LivroVO livro = LivroDAO.pesquisarTitulo("em");
-		System.out.println(livro.toString());
+		LivroVO livro[] = LivroDAO.pesquisarTitulo("em");
+		int numeroLivros = livro.length;
+		for (int i = 0; i < numeroLivros; i++) {
+			System.out.println(livro[i].toString());
+		}
 
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa genero----------------------------------------");
 		LivroVO[] livros = LivroDAO.pesquisarGenero("acao");
-		int numeroLivros = livros.length;
+		numeroLivros = livros.length;
 		for (int i = 0; i < numeroLivros; i++) {
 			System.out.println(livros[i].toString());
 		}
@@ -124,7 +127,7 @@ public class MainDAO {
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa titulo----------------------------------------");
-		DiscoVO disco = DiscoDAO.pesquisarTitulo("em");
+		DiscoVO[] disco = DiscoDAO.pesquisarTitulo("em");
 		if (disco != null) {
 			System.out.println(disco.toString());
 		}
@@ -170,7 +173,12 @@ public class MainDAO {
 		cliente1.setEndereco(enderecos);
 		ClienteDAO.alterar(cliente1);
 		ClienteDAO.pesquisar();
-
+		ClienteVO[] clientes = ClienteDAO.pesquisarNome("ao");
+		
+		for (int i = 0; i < clientes.length; i++) {
+			System.out.println(clientes[i]);
+		}
+		
 		/*
 		 * System.out.println(); System.out.
 		 * println("---------------------------------------Deleta cliente 1----------------------------------------"

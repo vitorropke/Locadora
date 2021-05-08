@@ -65,7 +65,7 @@ public abstract class EmprestavelBO extends OperacaoBO {
 		}
 	}
 
-	public static EmprestavelVO pesquisarTitulo(String titulo, File arquivo) {
+	public static EmprestavelVO[] pesquisarTitulo(String titulo, File arquivo) {
 		// Verifica se a entrada de argumentos não é nula
 		if ((titulo != null) && (arquivo != null)) {
 			// Verifica se parâmetros importantes não são nulos
@@ -73,10 +73,12 @@ public abstract class EmprestavelBO extends OperacaoBO {
 				// Verifica se o emprestavel existe no sistema
 				return EmprestavelDAO.pesquisarTitulo(titulo, arquivo);
 			} else {
-				return null;
+				EmprestavelVO[] semEmprestaveis = new EmprestavelVO[0];
+				return semEmprestaveis;
 			}
 		} else {
-			return null;
+			EmprestavelVO[] semEmprestaveis = new EmprestavelVO[0];
+			return semEmprestaveis;
 		}
 	}
 

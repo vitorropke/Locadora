@@ -30,10 +30,14 @@ public class ClienteDAO extends PessoaDAO {
 		PessoaDAO.pesquisar(arquivo);
 	}
 
+	public static ClienteVO pesquisar(ClienteVO cliente) {
+		return (ClienteVO) PessoaDAO.pesquisar(cliente, arquivo);
+	}
+
 	public static ClienteVO[] pesquisarNome(String nome) {
 		try {
 			ArrayList<ClienteVO> clientes = new ArrayList<ClienteVO>();
-			
+
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
 				ObjectInputStream objetoLeitura;
@@ -45,8 +49,9 @@ public class ClienteDAO extends PessoaDAO {
 
 					clienteLeitura = (ClienteVO) objetoLeitura.readObject();
 
-					// Salva o cliente no vetor quando o nome for igual ao parametro
-					if (clienteLeitura.getNome() == nome) {
+					// Salva o cliente no vetor quando o nome conter parte da string que vem do
+					// parâmetro
+					if (clienteLeitura.getNome().contains(nome)) {
 						clientes.add(clienteLeitura);
 					}
 				}
@@ -54,9 +59,9 @@ public class ClienteDAO extends PessoaDAO {
 				arquivoLeitura.close();
 			}
 
-			// Verifica se existem discos desse genero
+			// Verifica se o vetor de clientes não é vazio
 			if (clientes.size() != 0) {
-				// ArrayList discos para vetor 'vetorDiscos'
+				// ArrayList clientes para vetor 'vetorClientes'
 				ClienteVO[] vetorClientes = new ClienteVO[clientes.size()];
 				vetorClientes = clientes.toArray(vetorClientes);
 				return vetorClientes;
@@ -74,12 +79,11 @@ public class ClienteDAO extends PessoaDAO {
 		try {
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
-
-				cpf = cpf.replaceAll("\\D+", "");
-				// Reduz o CPF, removendo tudo que não é dígito
-
 				ObjectInputStream objetoLeitura;
 				ClienteVO clienteLeitura;
+
+				// Reduz o CPF, removendo tudo que não é dígito
+				cpf = cpf.replaceAll("\\D+", "");
 
 				while (arquivoLeitura.available() > 0) {
 					// Classe responsável por recuperar os objetos do arquivo
@@ -101,6 +105,7 @@ public class ClienteDAO extends PessoaDAO {
 			e.printStackTrace();
 		}
 
+		System.out.println("O cliente nao existe no sistema!");
 		return null;
 	}
 }

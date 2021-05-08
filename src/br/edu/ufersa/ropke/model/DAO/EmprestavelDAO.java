@@ -178,11 +178,15 @@ public abstract class EmprestavelDAO extends OperacaoDAO {
 			e.printStackTrace();
 		}
 
+		System.out.println("Emprestavel nao encontrado");
 		return null;
 	}
 
-	public static EmprestavelVO pesquisarTitulo(String titulo, File arquivo) {
+	public static EmprestavelVO[] pesquisarTitulo(String titulo, File arquivo) {
 		try {
+			ArrayList<EmprestavelVO> emprestaveis = new ArrayList<EmprestavelVO>();
+
+			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
 				ObjectInputStream objetoLeitura;
@@ -194,49 +198,17 @@ public abstract class EmprestavelDAO extends OperacaoDAO {
 
 					emprestavelLeitura = (EmprestavelVO) objetoLeitura.readObject();
 
-					// Retorna o emprestavel quando obter o mesmo título
-					if (emprestavelLeitura.getTitulo().equals(titulo)) {
-						arquivoLeitura.close();
-						objetoLeitura.close();
-						return emprestavelLeitura;
-					}
-				}
-
-				arquivoLeitura.close();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	public static EmprestavelVO[] pesquisarAnoLancamento(int anoLancamento, File arquivo) {
-		try {
-			ArrayList<EmprestavelVO> emprestaveis = new ArrayList<EmprestavelVO>();
-
-			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
-			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
-				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
-				ObjectInputStream objetoLeitura;
-				EmprestavelVO livroLeitura;
-
-				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os objetos do arquivo
-					objetoLeitura = new ObjectInputStream(arquivoLeitura);
-
-					livroLeitura = (EmprestavelVO) objetoLeitura.readObject();
-
-					// Salva o livro no vetor quando o genero for igual ao parametro
-					if (livroLeitura.getAnoLancamento() == anoLancamento) {
-						emprestaveis.add(livroLeitura);
+					// Salva o emprestável no vetor quando parte do nome do título coincidir com o
+					// parâmetro
+					if (emprestavelLeitura.getTitulo().contains(titulo)) {
+						emprestaveis.add(emprestavelLeitura);
 					}
 				}
 
 				arquivoLeitura.close();
 			}
 
-			// Verifica se existem emprestaveis nesse ano
+			// Verifica se o vetor de emprestáveis não é vazio
 			if (emprestaveis.size() != 0) {
 				// ArrayList emprestaveis para vetor 'vetorEmprestaveis'
 				EmprestavelVO[] vetorEmprestaveis = new EmprestavelVO[emprestaveis.size()];
@@ -247,6 +219,48 @@ public abstract class EmprestavelDAO extends OperacaoDAO {
 			e.printStackTrace();
 		}
 
+		System.out.println("Sem emprestaveis com esse titulo");
+		EmprestavelVO[] semEmprestaveis = new EmprestavelVO[0];
+		return semEmprestaveis;
+	}
+
+	public static EmprestavelVO[] pesquisarAnoLancamento(int anoLancamento, File arquivo) {
+		try {
+			ArrayList<EmprestavelVO> emprestaveis = new ArrayList<EmprestavelVO>();
+
+			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
+			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
+				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
+				ObjectInputStream objetoLeitura;
+				EmprestavelVO emprestavelLeitura;
+
+				while (arquivoLeitura.available() > 0) {
+					// Classe responsável por recuperar os objetos do arquivo
+					objetoLeitura = new ObjectInputStream(arquivoLeitura);
+
+					emprestavelLeitura = (EmprestavelVO) objetoLeitura.readObject();
+
+					// Salva o emprestável no vetor quando o ano for igual ao parametro
+					if (emprestavelLeitura.getAnoLancamento() == anoLancamento) {
+						emprestaveis.add(emprestavelLeitura);
+					}
+				}
+
+				arquivoLeitura.close();
+			}
+
+			// Verifica se o vetor de emprestáveis não é vazio
+			if (emprestaveis.size() != 0) {
+				// ArrayList emprestaveis para vetor 'vetorEmprestaveis'
+				EmprestavelVO[] vetorEmprestaveis = new EmprestavelVO[emprestaveis.size()];
+				vetorEmprestaveis = emprestaveis.toArray(vetorEmprestaveis);
+				return vetorEmprestaveis;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("Sem emprestaveis nesse ano");
 		EmprestavelVO[] semEmprestaveis = new EmprestavelVO[0];
 		return semEmprestaveis;
 	}

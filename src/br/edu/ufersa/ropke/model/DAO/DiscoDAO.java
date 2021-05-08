@@ -31,8 +31,22 @@ public class DiscoDAO extends EmprestavelDAO {
 		EmprestavelDAO.pesquisar(arquivo);
 	}
 
-	public static DiscoVO pesquisarTitulo(String titulo) {
-		return (DiscoVO) EmprestavelDAO.pesquisarTitulo(titulo, arquivo);
+	public static DiscoVO pesquisar(DiscoVO disco) {
+		return (DiscoVO) EmprestavelDAO.pesquisar(disco, arquivo);
+	}
+
+	public static DiscoVO[] pesquisarTitulo(String titulo) {
+		EmprestavelVO[] emprestaveis = EmprestavelDAO.pesquisarTitulo(titulo, arquivo);
+		int tamanhoVetorEmprestaveis = emprestaveis.length;
+
+		DiscoVO[] discos = new DiscoVO[tamanhoVetorEmprestaveis];
+
+		// cast de cada posição do vetor emprestável para disco
+		for (int i = 0; i < tamanhoVetorEmprestaveis; i++) {
+			discos[i] = (DiscoVO) emprestaveis[i];
+		}
+
+		return discos;
 	}
 
 	public static DiscoVO[] pesquisarAnoLancamento(int anoLancamento) {
@@ -65,8 +79,9 @@ public class DiscoDAO extends EmprestavelDAO {
 
 					discoLeitura = (DiscoVO) objetoLeitura.readObject();
 
-					// Salva o disco no vetor quando a banda for igual ao parametro
-					if (discoLeitura.getBanda().equals(banda)) {
+					// Salva o disco no vetor quando parte do nome da banda coincidir com o
+					// parâmetro
+					if (discoLeitura.getBanda().contains(banda)) {
 						discos.add(discoLeitura);
 					}
 				}
@@ -74,7 +89,7 @@ public class DiscoDAO extends EmprestavelDAO {
 				arquivoLeitura.close();
 			}
 
-			// Verifica se existem discos desse genero
+			// Verifica se o vetor de discos não é vazio
 			if (discos.size() != 0) {
 				// ArrayList discos para vetor 'vetorDiscos'
 				DiscoVO[] vetorDiscos = new DiscoVO[discos.size()];
@@ -85,6 +100,7 @@ public class DiscoDAO extends EmprestavelDAO {
 			e.printStackTrace();
 		}
 
+		System.out.println("Nao existem discos dessa banda");
 		DiscoVO[] semDiscos = new DiscoVO[0];
 		return semDiscos;
 	}
@@ -105,8 +121,9 @@ public class DiscoDAO extends EmprestavelDAO {
 
 					discoLeitura = (DiscoVO) objetoLeitura.readObject();
 
-					// Salva o disco no vetor quando a banda for igual ao parametro
-					if (discoLeitura.getEstilo().equals(estilo)) {
+					// Salva o disco no vetor quando parte do nome do estilo coincidir com o
+					// parâmetro
+					if (discoLeitura.getEstilo().contains(estilo)) {
 						discos.add(discoLeitura);
 					}
 				}
@@ -114,7 +131,7 @@ public class DiscoDAO extends EmprestavelDAO {
 				arquivoLeitura.close();
 			}
 
-			// Verifica se existem discos desse genero
+			// Verifica se o vetor de discos não é vazio
 			if (discos.size() != 0) {
 				// ArrayList discos para vetor 'vetorDiscos'
 				DiscoVO[] vetorDiscos = new DiscoVO[discos.size()];
@@ -125,6 +142,7 @@ public class DiscoDAO extends EmprestavelDAO {
 			e.printStackTrace();
 		}
 
+		System.out.println("Nao existem discos nesse estilo");
 		DiscoVO[] semDiscos = new DiscoVO[0];
 		return semDiscos;
 	}

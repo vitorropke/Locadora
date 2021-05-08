@@ -111,14 +111,17 @@ public class MainBO {
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa titulo----------------------------------------");
-		LivroVO livro = LivroBO.pesquisarTitulo("em");
-		System.out.println(livro.toString());
+		LivroVO[] livro = LivroBO.pesquisarTitulo("em");
+		int numeroLivros = livro.length;
+		for (int i = 0; i < numeroLivros; i++) {
+			System.out.println(livro[i].toString());
+		}
 
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa genero----------------------------------------");
 		livros = LivroBO.pesquisarGenero("acao");
-		int numeroLivros = livros.length;
+		numeroLivros = livros.length;
 		for (int i = 0; i < numeroLivros; i++) {
 			System.out.println(livros[i].toString());
 		}
@@ -157,16 +160,17 @@ public class MainBO {
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa titulo----------------------------------------");
-		DiscoVO disco = DiscoBO.pesquisarTitulo("em");
-		if (disco != null) {
-			System.out.println(disco.toString());
+		DiscoVO[] disco = DiscoBO.pesquisarTitulo("em");
+		int numeroDiscos = disco.length;
+		for (int i = 0; i < numeroDiscos; i++) {
+			System.out.println(disco[i].toString());
 		}
 
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa banda-----------------------------------------");
 		discos = DiscoBO.pesquisarBanda("ssd");
-		int numeroDiscos = discos.length;
+		numeroDiscos = discos.length;
 		for (int i = 0; i < numeroDiscos; i++) {
 			System.out.println(discos[i].toString());
 		}

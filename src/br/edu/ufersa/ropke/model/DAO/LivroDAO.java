@@ -31,8 +31,22 @@ public class LivroDAO extends EmprestavelDAO {
 		EmprestavelDAO.pesquisar(arquivo);
 	}
 
-	public static LivroVO pesquisarTitulo(String titulo) {
-		return (LivroVO) EmprestavelDAO.pesquisarTitulo(titulo, arquivo);
+	public static LivroVO pesquisar(LivroVO livro) {
+		return (LivroVO) EmprestavelDAO.pesquisar(livro, arquivo);
+	}
+
+	public static LivroVO[] pesquisarTitulo(String titulo) {
+		EmprestavelVO[] emprestaveis = EmprestavelDAO.pesquisarTitulo(titulo, arquivo);
+		int tamanhoVetorEmprestaveis = emprestaveis.length;
+
+		LivroVO[] livros = new LivroVO[tamanhoVetorEmprestaveis];
+
+		// cast de cada posição do vetor emprestável para livro
+		for (int i = 0; i < tamanhoVetorEmprestaveis; i++) {
+			livros[i] = (LivroVO) emprestaveis[i];
+		}
+
+		return livros;
 	}
 
 	public static LivroVO[] pesquisarAnoLancamento(int anoLancamento) {
@@ -65,8 +79,9 @@ public class LivroDAO extends EmprestavelDAO {
 
 					livroLeitura = (LivroVO) objetoLeitura.readObject();
 
-					// Salva o livro no vetor quando o genero for igual ao parametro
-					if (livroLeitura.getGenero().equals(genero)) {
+					// Salva o livro no vetor quando parte do nome do gênero coincidir com o
+					// parâmetro
+					if (livroLeitura.getGenero().contains(genero)) {
 						livros.add(livroLeitura);
 					}
 				}
@@ -74,7 +89,7 @@ public class LivroDAO extends EmprestavelDAO {
 				arquivoLeitura.close();
 			}
 
-			// Verifica se existem livros desse genero
+			// Verifica se o vetor de livros não é vazio
 			if (livros.size() != 0) {
 				// ArrayList livros para vetor 'vetorLivros'
 				LivroVO[] vetorLivros = new LivroVO[livros.size()];
@@ -85,6 +100,7 @@ public class LivroDAO extends EmprestavelDAO {
 			e.printStackTrace();
 		}
 
+		System.out.println("Sem livros nesse genero");
 		LivroVO[] semLivros = new LivroVO[0];
 		return semLivros;
 	}

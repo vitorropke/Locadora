@@ -20,4 +20,8 @@ public abstract class UsuarioDAO extends PessoaDAO {
 	public static void pesquisar(File arquivo) {
 		PessoaDAO.pesquisar(arquivo);
 	}
+
+	public static UsuarioVO pesquisar(UsuarioVO usuario, File arquivo) {
+		return (UsuarioVO) PessoaDAO.pesquisar(usuario, arquivo);
+	}
 }

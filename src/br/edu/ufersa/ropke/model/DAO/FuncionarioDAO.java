@@ -26,4 +26,8 @@ public class FuncionarioDAO extends UsuarioDAO {
 	public static void pesquisar() {
 		UsuarioDAO.pesquisar(arquivo);
 	}
+
+	public static FuncionarioVO pesquisar(FuncionarioVO funcionario) {
+		return (FuncionarioVO) UsuarioDAO.pesquisar(funcionario, arquivo);
+	}
 }
