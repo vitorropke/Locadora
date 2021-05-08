@@ -8,8 +8,9 @@ public class EmprestimoVO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	// Variáveis
+	private static long contadorId = 0;
 	private static float faturamento = 0;
-	private long idEmprestimo = -1;
+	private long idEmprestimo;
 	private Calendar dataEmprestimo;
 	private Calendar[] dataDevolucaoLivro;
 	private Calendar[] dataDevolucaoDisco;
@@ -24,11 +25,12 @@ public class EmprestimoVO implements Serializable {
 		// TODO Auto-generated constructor stub
 		Calendar dataAtual = Calendar.getInstance();
 
-		setIdEmprestimo(getIdEmprestimo() + 1);
+		setIdEmprestimo(contadorId++);
 		setDataEmprestimo(dataAtual);
 	}
 
 	// toString
+	@Override
 	public String toString() {
 		String emprestimo = "";
 		String faturamentoDoisDecimais = String.format("%.02f", faturamento);
@@ -110,7 +112,7 @@ public class EmprestimoVO implements Serializable {
 		if (cliente != null) {
 			emprestimo += cliente.toString();
 		} else {
-			emprestimo += "\t\t\tSem cliente\n";
+			emprestimo += "\t\t\t\tSem cliente\n";
 		}
 
 		return emprestimo;

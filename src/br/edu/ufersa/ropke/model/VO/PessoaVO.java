@@ -3,7 +3,7 @@ package br.edu.ufersa.ropke.model.VO;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PessoaVO implements Serializable {
+public abstract class PessoaVO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	// Variáveis
 	private String nome;
@@ -38,6 +38,7 @@ public class PessoaVO implements Serializable {
 	}
 
 	// toString
+	@Override
 	public String toString() {
 		String pessoa = "";
 

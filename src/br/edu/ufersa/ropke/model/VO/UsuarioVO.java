@@ -1,6 +1,6 @@
 package br.edu.ufersa.ropke.model.VO;
 
-public class UsuarioVO extends PessoaVO {
+public abstract class UsuarioVO extends PessoaVO {
 	private static final long serialVersionUID = 1L;
 	
 	// Variáveis
@@ -39,6 +39,7 @@ public class UsuarioVO extends PessoaVO {
 	}
 
 	// toString
+	@Override
 	public String toString() {
 		String usuario = "";
 

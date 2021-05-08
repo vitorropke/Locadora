@@ -7,23 +7,17 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-import br.edu.ufersa.ropke.model.VO.EmprestimoVO;
+import br.edu.ufersa.ropke.model.VO.PessoaVO;
 
-public class EmprestimoDAO extends OperacaoDAO {
-	private static final File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/emprestimos.dat");
-
-	public static File getArquivo() {
-		return arquivo;
-	}
-
-	public static void cadastrar(EmprestimoVO emprestimo) {
+public abstract class PessoaDAO extends OperacaoDAO {
+	public static void cadastrar(PessoaVO pessoa, File arquivo) {
 		try {
 			FileOutputStream arquivoGravador = new FileOutputStream(arquivo, true);
 			// Classe responsável por inserir os objetos
 			ObjectOutputStream objetoGravador = new ObjectOutputStream(arquivoGravador);
 
-			// Grava o objeto emprestimo no arquivo
-			objetoGravador.writeObject(emprestimo);
+			// Grava o objeto pessoa no arquivo
+			objetoGravador.writeObject(pessoa);
 			objetoGravador.flush();
 			arquivoGravador.close();
 			objetoGravador.close();
@@ -32,93 +26,95 @@ public class EmprestimoDAO extends OperacaoDAO {
 		}
 	}
 
-	public static void alterar(EmprestimoVO emprestimo) {
+	public static void alterar(PessoaVO pessoa, File arquivo) {
 		try {
-			ArrayList<EmprestimoVO> emprestimos = new ArrayList<EmprestimoVO>();
+			ArrayList<PessoaVO> pessoas = new ArrayList<PessoaVO>();
 
 			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
+			// O arquivo será reescrito com o objeto modificado
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
 				ObjectInputStream objetoLeitura;
-				EmprestimoVO emprestimoLeitura;
+				PessoaVO pessoaLeitura;
 
 				while (arquivoLeitura.available() > 0) {
 					// Classe responsável por recuperar os objetos do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					emprestimoLeitura = (EmprestimoVO) objetoLeitura.readObject();
+					pessoaLeitura = (PessoaVO) objetoLeitura.readObject();
 
-					// Compara os emprestimos pelo id deles
-					if (emprestimoLeitura.getIdEmprestimo() == (emprestimo.getIdEmprestimo())) {
+					// Compara os pessoas pelo CPF deles
+					if (pessoaLeitura.getCpf().equals(pessoa.getCpf())) {
 						// Quando for o objeto a ser alterado, insere no vetor, o objeto que vem do
 						// parâmetro do método 'alterar'
-						emprestimos.add(emprestimo);
+						pessoas.add(pessoa);
 					} else {
-						// Quando não for o emprestimo a ser alterado, insere do arquivo
-						emprestimos.add(emprestimoLeitura);
+						// Quando não for o objeto a ser alterado, insere do arquivo
+						pessoas.add(pessoaLeitura);
 					}
 				}
 
 				arquivoLeitura.close();
 			}
 
+			// Escrita com o objeto modificado
 			FileOutputStream arquivoGravador = new FileOutputStream(arquivo);
 			ObjectOutputStream objetoGravador;
-			int tamanhoVetorEmprestimos = emprestimos.size();
+			int tamanhoVetorPessoas = pessoas.size();
 
-			for (int i = 0; i < tamanhoVetorEmprestimos; i++) {
+			for (int i = 0; i < tamanhoVetorPessoas; i++) {
 				// Classe responsável por inserir os objetos
 				objetoGravador = new ObjectOutputStream(arquivoGravador);
 
-				// Grava o objeto emprestimo no arquivo
-				objetoGravador.writeObject(emprestimos.get(i));
+				// Grava o objeto cliente no arquivo
+				objetoGravador.writeObject(pessoas.get(i));
 				objetoGravador.flush();
 			}
 
 			arquivoGravador.close();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void deletar(EmprestimoVO emprestimo) {
+	public static void deletar(PessoaVO pessoa, File arquivo) {
 		try {
-			ArrayList<EmprestimoVO> emprestimos = new ArrayList<EmprestimoVO>();
-
+			ArrayList<PessoaVO> pessoas = new ArrayList<PessoaVO>();
+			
 			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
 				ObjectInputStream objetoLeitura;
-				EmprestimoVO emprestimoLeitura;
+				PessoaVO pessoaLeitura;
 
 				while (arquivoLeitura.available() > 0) {
 					// Classe responsável por recuperar os objetos do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					emprestimoLeitura = (EmprestimoVO) objetoLeitura.readObject();
+					pessoaLeitura = (PessoaVO) objetoLeitura.readObject();
 
-					// Compara os emprestimos pelo id deles
-					if (emprestimoLeitura.getIdEmprestimo() != (emprestimo.getIdEmprestimo())) {
-						// Quando não encontrar o empréstimo, insere no vetor
-						// Quando encontrar a empréstimo, não insere no vetor
-						emprestimos.add(emprestimoLeitura);
+					// Compara os pessoas pelo CPF deles
+					if (!pessoaLeitura.getCpf().equals(pessoa.getCpf())) {
+						// Quando não encontrar a pessoa, insere no vetor
+						// Quando encontrar a pessoa, não insere no vetor
+						pessoas.add(pessoaLeitura);
 					}
 				}
 
 				arquivoLeitura.close();
 			}
 
+			// Escrita com o objeto removido
 			FileOutputStream arquivoGravador = new FileOutputStream(arquivo);
 			ObjectOutputStream objetoGravador;
-			int tamanhoVetorEmprestimos = emprestimos.size();
+			int tamanhoVetorPessoas = pessoas.size();
 
-			for (int i = 0; i < tamanhoVetorEmprestimos; i++) {
+			for (int i = 0; i < tamanhoVetorPessoas; i++) {
 				// Classe responsável por inserir os objetos
 				objetoGravador = new ObjectOutputStream(arquivoGravador);
 
-				// Grava o objeto emprestimo no arquivo
-				objetoGravador.writeObject(emprestimos.get(i));
+				// Grava o objeto cliente no arquivo
+				objetoGravador.writeObject(pessoas.get(i));
 				objetoGravador.flush();
 			}
 
@@ -128,52 +124,57 @@ public class EmprestimoDAO extends OperacaoDAO {
 		}
 	}
 
-	public static void pesquisar() {
+	public static void pesquisar(File arquivo) {
 		try {
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
 				ObjectInputStream objetoLeitura;
-				EmprestimoVO emprestimo;
+				PessoaVO pessoa;
+				int indicePessoa = 1;
 
-				int indiceEmprestimo = 1;
 				while (arquivoLeitura.available() > 0) {
 					// Classe responsável por recuperar os objetos do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					emprestimo = (EmprestimoVO) objetoLeitura.readObject();
-					System.out.println("\nEmprestimo " + indiceEmprestimo + '\n');
-					System.out.println(emprestimo.toString());
+					pessoa = (PessoaVO) objetoLeitura.readObject();
+					System.out.println("\nPessoa " + indicePessoa + '\n');
+					System.out.println(pessoa.toString());
 					System.out.println("-----------------------------------------");
-					indiceEmprestimo++;
+					indicePessoa++;
 				}
 
 				arquivoLeitura.close();
 			} else {
-				System.out.println("Sem emprestimos");
+				System.out.println("Sem pessoas");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static EmprestimoVO pesquisar(EmprestimoVO emprestimo) {
+	public static PessoaVO pesquisar(PessoaVO pessoa, File arquivo) {
 		try {
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
+				String cpf;
+
+				// Reduz o CPF, removendo tudo que não é dígito
+				cpf = pessoa.getCpf().replaceAll("\\D+", "");
+
 				ObjectInputStream objetoLeitura;
-				EmprestimoVO emprestimoLeitura;
+				PessoaVO pessoaLeitura;
 
 				while (arquivoLeitura.available() > 0) {
 					// Classe responsável por recuperar os objetos do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					emprestimoLeitura = (EmprestimoVO) objetoLeitura.readObject();
+					pessoaLeitura = (PessoaVO) objetoLeitura.readObject();
 
-					// Compara os emprestimos pelo id deles
-					if (emprestimoLeitura.getIdEmprestimo() == (emprestimo.getIdEmprestimo())) {
+					// Retorna a pessoa quando obter o mesmo cpf
+					if (pessoaLeitura.getCpf().equals(cpf)) {
 						arquivoLeitura.close();
 						objetoLeitura.close();
-						return emprestimoLeitura;
+						return pessoaLeitura;
 					}
 				}
 

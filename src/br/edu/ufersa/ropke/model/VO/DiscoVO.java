@@ -2,7 +2,7 @@ package br.edu.ufersa.ropke.model.VO;
 
 public class DiscoVO extends EmprestavelVO {
 	private static final long serialVersionUID = 1L;
-	
+
 	// Variáveis
 	private String banda;
 	private String estilo;
@@ -35,6 +35,7 @@ public class DiscoVO extends EmprestavelVO {
 	}
 
 	// toString
+	@Override
 	public String toString() {
 		String disco = "";
 

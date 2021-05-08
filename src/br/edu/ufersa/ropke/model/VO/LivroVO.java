@@ -35,6 +35,7 @@ public class LivroVO extends EmprestavelVO {
 	}
 
 	// toString
+	@Override
 	public String toString() {
 		String livro = "";
 

@@ -93,7 +93,7 @@ public class MainDAO {
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa ano-------------------------------------------");
-		livros = LivroDAO.pesquisarAno(1999);
+		livros = LivroDAO.pesquisarAnoLancamento(1999);
 		numeroLivros = livros.length;
 		for (int i = 0; i < numeroLivros; i++) {
 			System.out.println(livros[i].toString());
@@ -125,7 +125,9 @@ public class MainDAO {
 		System.out.println(
 				"---------------------------------------Pesquisa titulo----------------------------------------");
 		DiscoVO disco = DiscoDAO.pesquisarTitulo("em");
-		System.out.println(disco.toString());
+		if (disco != null) {
+			System.out.println(disco.toString());
+		}
 
 		System.out.println();
 		System.out.println(
@@ -148,7 +150,7 @@ public class MainDAO {
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa ano-------------------------------------------");
-		discos = DiscoDAO.pesquisarAno(2018);
+		discos = DiscoDAO.pesquisarAnoLancamento(2018);
 		numeroDiscos = discos.length;
 		for (int i = 0; i < numeroDiscos; i++) {
 			System.out.println(discos[i].toString());
