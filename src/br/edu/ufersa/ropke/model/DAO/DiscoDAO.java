@@ -89,10 +89,11 @@ public class DiscoDAO extends EmprestavelDAO {
 				arquivoLeitura.close();
 			}
 
+			int numeroDiscos = discos.size();
 			// Verifica se o vetor de discos não é vazio
-			if (discos.size() != 0) {
+			if (numeroDiscos != 0) {
 				// ArrayList discos para vetor 'vetorDiscos'
-				DiscoVO[] vetorDiscos = new DiscoVO[discos.size()];
+				DiscoVO[] vetorDiscos = new DiscoVO[numeroDiscos];
 				vetorDiscos = discos.toArray(vetorDiscos);
 				return vetorDiscos;
 			}
@@ -131,10 +132,11 @@ public class DiscoDAO extends EmprestavelDAO {
 				arquivoLeitura.close();
 			}
 
+			int numeroDiscos = discos.size();
 			// Verifica se o vetor de discos não é vazio
-			if (discos.size() != 0) {
+			if (numeroDiscos != 0) {
 				// ArrayList discos para vetor 'vetorDiscos'
-				DiscoVO[] vetorDiscos = new DiscoVO[discos.size()];
+				DiscoVO[] vetorDiscos = new DiscoVO[numeroDiscos];
 				vetorDiscos = discos.toArray(vetorDiscos);
 				return vetorDiscos;
 			}

@@ -59,10 +59,11 @@ public class ClienteDAO extends PessoaDAO {
 				arquivoLeitura.close();
 			}
 
+			int numeroClientes = clientes.size();
 			// Verifica se o vetor de clientes não é vazio
-			if (clientes.size() != 0) {
+			if (numeroClientes != 0) {
 				// ArrayList clientes para vetor 'vetorClientes'
-				ClienteVO[] vetorClientes = new ClienteVO[clientes.size()];
+				ClienteVO[] vetorClientes = new ClienteVO[numeroClientes];
 				vetorClientes = clientes.toArray(vetorClientes);
 				return vetorClientes;
 			}

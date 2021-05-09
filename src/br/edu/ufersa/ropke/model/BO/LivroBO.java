@@ -25,27 +25,22 @@ public class LivroBO extends EmprestavelBO {
 		EmprestavelBO.pesquisar(arquivo);
 	}
 
-	public static void pesquisar(LivroVO livro) {
-		EmprestavelBO.pesquisar(livro, arquivo);
+	public static LivroVO pesquisar(LivroVO livro) {
+		return (LivroVO) EmprestavelBO.pesquisar(livro, arquivo);
 	}
 
 	public static LivroVO[] pesquisarTitulo(String titulo) {
-		if (titulo != null && titulo != "") {
-			EmprestavelVO[] emprestaveis = EmprestavelBO.pesquisarTitulo(titulo, arquivo);
-			int tamanhoVetorEmprestaveis = emprestaveis.length;
+		EmprestavelVO[] emprestaveis = EmprestavelBO.pesquisarTitulo(titulo, arquivo);
+		int tamanhoVetorEmprestaveis = emprestaveis.length;
 
-			LivroVO[] livros = new LivroVO[tamanhoVetorEmprestaveis];
+		LivroVO[] livros = new LivroVO[tamanhoVetorEmprestaveis];
 
-			// cast de cada posição do vetor emprestável para livro
-			for (int i = 0; i < tamanhoVetorEmprestaveis; i++) {
-				livros[i] = (LivroVO) emprestaveis[i];
-			}
-
-			return livros;
-		} else {
-			LivroVO[] semLivros = new LivroVO[0];
-			return semLivros;
+		// cast de cada posição do vetor emprestável para livro
+		for (int i = 0; i < tamanhoVetorEmprestaveis; i++) {
+			livros[i] = (LivroVO) emprestaveis[i];
 		}
+
+		return livros;
 	}
 
 	public static LivroVO[] pesquisarAnoLancamento(int anoLancamento) {

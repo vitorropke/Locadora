@@ -13,7 +13,7 @@ public abstract class UsuarioBO extends PessoaBO {
 			}
 		}
 	}
-	
+
 	public static void alterar(UsuarioVO usuario, File arquivo) {
 		if ((usuario != null) && (arquivo != null)) {
 			// Verifica se parâmetros importantes não são nulos
@@ -22,7 +22,7 @@ public abstract class UsuarioBO extends PessoaBO {
 			}
 		}
 	}
-	
+
 	public static void deletar(UsuarioVO usuario, File arquivo) {
 		if ((usuario != null) && (arquivo != null)) {
 			// Verifica se parâmetros importantes não são nulos
@@ -31,7 +31,7 @@ public abstract class UsuarioBO extends PessoaBO {
 			}
 		}
 	}
-	
+
 	public static void pesquisar(File arquivo) {
 		if (arquivo != null) {
 			PessoaBO.pesquisar(arquivo);
@@ -43,7 +43,6 @@ public abstract class UsuarioBO extends PessoaBO {
 		if ((usuario != null) && (arquivo != null)) {
 			// Verifica se parâmetros importantes não são nulos
 			if ((usuario.getLogin() != null) && (usuario.getSenha() != null)) {
-				// Verifica se a pessoa existe no sistema
 				return (UsuarioVO) PessoaBO.pesquisar(usuario, arquivo);
 			} else {
 				return null;
@@ -52,12 +51,12 @@ public abstract class UsuarioBO extends PessoaBO {
 			return null;
 		}
 	}
-	
+
 	public static boolean autenticar(UsuarioVO usuario, File arquivo, String login, String senha) {
 		if ((usuario != null) && (arquivo != null) && (login != null) && (senha != null)) {
 			if ((login != "") && (senha != "")) {
 				UsuarioVO usuarioEncontrado = (UsuarioVO) PessoaBO.pesquisar(usuario, arquivo);
-				
+
 				if (usuarioEncontrado == null) {
 					return false;
 				}
@@ -71,8 +70,10 @@ public abstract class UsuarioBO extends PessoaBO {
 					return false;
 				}
 			}
+
 			return false;
 		}
+
 		return false;
 	}
 }

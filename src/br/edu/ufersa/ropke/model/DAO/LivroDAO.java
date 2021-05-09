@@ -89,10 +89,11 @@ public class LivroDAO extends EmprestavelDAO {
 				arquivoLeitura.close();
 			}
 
+			int numeroLivros = livros.size();
 			// Verifica se o vetor de livros não é vazio
-			if (livros.size() != 0) {
+			if (numeroLivros != 0) {
 				// ArrayList livros para vetor 'vetorLivros'
-				LivroVO[] vetorLivros = new LivroVO[livros.size()];
+				LivroVO[] vetorLivros = new LivroVO[numeroLivros];
 				vetorLivros = livros.toArray(vetorLivros);
 				return vetorLivros;
 			}

@@ -208,10 +208,11 @@ public abstract class EmprestavelDAO extends OperacaoDAO {
 				arquivoLeitura.close();
 			}
 
+			int numeroEmprestaveis = emprestaveis.size();
 			// Verifica se o vetor de emprestáveis não é vazio
-			if (emprestaveis.size() != 0) {
+			if (numeroEmprestaveis != 0) {
 				// ArrayList emprestaveis para vetor 'vetorEmprestaveis'
-				EmprestavelVO[] vetorEmprestaveis = new EmprestavelVO[emprestaveis.size()];
+				EmprestavelVO[] vetorEmprestaveis = new EmprestavelVO[numeroEmprestaveis];
 				vetorEmprestaveis = emprestaveis.toArray(vetorEmprestaveis);
 				return vetorEmprestaveis;
 			}
@@ -249,10 +250,11 @@ public abstract class EmprestavelDAO extends OperacaoDAO {
 				arquivoLeitura.close();
 			}
 
+			int numeroEmprestaveis = emprestaveis.size();
 			// Verifica se o vetor de emprestáveis não é vazio
-			if (emprestaveis.size() != 0) {
+			if (numeroEmprestaveis != 0) {
 				// ArrayList emprestaveis para vetor 'vetorEmprestaveis'
-				EmprestavelVO[] vetorEmprestaveis = new EmprestavelVO[emprestaveis.size()];
+				EmprestavelVO[] vetorEmprestaveis = new EmprestavelVO[numeroEmprestaveis];
 				vetorEmprestaveis = emprestaveis.toArray(vetorEmprestaveis);
 				return vetorEmprestaveis;
 			}

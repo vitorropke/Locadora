@@ -56,7 +56,6 @@ public abstract class PessoaBO extends OperacaoBO {
 		if ((pessoa != null) && (arquivo != null)) {
 			// Verifica se parâmetros importantes não são nulos
 			if ((pessoa.getNome() != null) && (pessoa.getCpf() != null) && (pessoa.getEndereco() != null)) {
-				// Verifica se a pessoa existe no sistema
 				return PessoaDAO.pesquisar(pessoa, arquivo);
 			} else {
 				return null;

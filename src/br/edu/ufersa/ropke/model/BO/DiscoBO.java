@@ -25,8 +25,8 @@ public class DiscoBO extends EmprestavelBO {
 		EmprestavelBO.pesquisar(arquivo);
 	}
 
-	public static void pesquisar(DiscoVO disco) {
-		EmprestavelBO.pesquisar(disco, arquivo);
+	public static DiscoVO pesquisar(DiscoVO disco) {
+		return (DiscoVO) EmprestavelBO.pesquisar(disco, arquivo);
 	}
 
 	public static DiscoVO[] pesquisarTitulo(String titulo) {

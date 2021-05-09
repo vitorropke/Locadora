@@ -174,11 +174,11 @@ public class MainDAO {
 		ClienteDAO.alterar(cliente1);
 		ClienteDAO.pesquisar();
 		ClienteVO[] clientes = ClienteDAO.pesquisarNome("ao");
-		
+
 		for (int i = 0; i < clientes.length; i++) {
 			System.out.println(clientes[i]);
 		}
-		
+
 		/*
 		 * System.out.println(); System.out.
 		 * println("---------------------------------------Deleta cliente 1----------------------------------------"

@@ -24,6 +24,10 @@ public class ClienteBO extends PessoaBO {
 		PessoaBO.pesquisar(arquivo);
 	}
 
+	public static ClienteVO pesquisar(ClienteVO cliente) {
+		return (ClienteVO) PessoaBO.pesquisar(cliente, arquivo);
+	}
+
 	public static ClienteVO[] pesquisarNome(String nome) {
 		if (nome != null && nome != "") {
 			return ClienteDAO.pesquisarNome(nome);

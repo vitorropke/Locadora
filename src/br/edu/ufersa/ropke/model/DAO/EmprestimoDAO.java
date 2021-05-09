@@ -185,4 +185,43 @@ public class EmprestimoDAO extends OperacaoDAO {
 
 		return null;
 	}
+
+	public static EmprestimoVO[] listar() {
+		try {
+			ArrayList<EmprestimoVO> emprestimos = new ArrayList<EmprestimoVO>();
+
+			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
+			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
+				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
+				ObjectInputStream objetoLeitura;
+				EmprestimoVO emprestimoLeitura;
+
+				while (arquivoLeitura.available() > 0) {
+					// Classe responsável por recuperar os objetos do arquivo
+					objetoLeitura = new ObjectInputStream(arquivoLeitura);
+
+					emprestimoLeitura = (EmprestimoVO) objetoLeitura.readObject();
+
+					emprestimos.add(emprestimoLeitura);
+				}
+
+				arquivoLeitura.close();
+			}
+
+			int numeroEmprestimos = emprestimos.size();
+			// Verifica se o vetor de empréstimos não é vazio
+			if (numeroEmprestimos != 0) {
+				// ArrayList empréstimos para vetor 'vetorEmprestimos'
+				EmprestimoVO[] vetorEmprestimos = new EmprestimoVO[numeroEmprestimos];
+				vetorEmprestimos = emprestimos.toArray(vetorEmprestimos);
+				return vetorEmprestimos;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("Sem emprestimos");
+		EmprestimoVO[] semEmprestimos = new EmprestimoVO[0];
+		return semEmprestimos;
+	}
 }

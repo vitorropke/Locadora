@@ -15,7 +15,8 @@ public class EmprestimoBO extends OperacaoBO {
 		// Verifica se a entrada de argumentos não é nula
 		if (emprestimo != null) {
 			// Verifica se parâmetros importantes não são nulos
-			if ((emprestimo.getCliente() != null) && (emprestimo.getDataEmprestimo() != null)) {
+			if ((emprestimo.getIdEmprestimo() != -1) && (emprestimo.getCliente() != null)
+					&& (emprestimo.getDataEmprestimo() != null)) {
 				// Verifica se o emprestimo não existe no sistema
 				if (EmprestimoDAO.pesquisar(emprestimo) == null) {
 					EmprestimoDAO.cadastrar(emprestimo);
@@ -58,7 +59,8 @@ public class EmprestimoBO extends OperacaoBO {
 
 	public static EmprestimoVO pesquisar(EmprestimoVO emprestimo) {
 		if (emprestimo != null) {
-			if ((emprestimo.getCliente() != null) && (emprestimo.getDataEmprestimo() != null)) {
+			if ((emprestimo.getIdEmprestimo() != -1) && (emprestimo.getCliente() != null)
+					&& (emprestimo.getDataEmprestimo() != null)) {
 				return EmprestimoDAO.pesquisar(emprestimo);
 			} else {
 				return null;
@@ -66,6 +68,10 @@ public class EmprestimoBO extends OperacaoBO {
 		} else {
 			return null;
 		}
+	}
+
+	public static EmprestimoVO[] listar() {
+		return EmprestimoDAO.listar();
 	}
 
 	public static void alugar(EmprestimoVO emprestimo, int[] quantidade, Calendar[] dataDevolucaoProposta,
@@ -509,11 +515,43 @@ public class EmprestimoBO extends OperacaoBO {
 	}
 
 	public static void gerarRelatorio(Calendar dataInicio, Calendar dataFim) {
+		EmprestimoVO[] emprestimos = EmprestimoDAO.listar();
+		ArrayList<EmprestimoVO> emprestimosValidos = new ArrayList<EmprestimoVO>();
+		int numeroEmprestimos = emprestimos.length;
 
+		// Obtém os empréstimos válidos
+		for (int i = 0; i < numeroEmprestimos; i++) {
+			if (emprestimos[i].getDataEmprestimo().after(dataInicio)
+					&& emprestimos[i].getDataEmprestimo().before(dataFim)) {
+				emprestimosValidos.add(emprestimos[i]);
+			}
+		}
+
+		int numeroEmprestimosValidos = emprestimosValidos.size();
+
+		for (int i = 0; i < numeroEmprestimosValidos; i++) {
+			System.out.println(emprestimosValidos.get(i));
+		}
 	}
 
 	public static void gerarRelatorioCliente(ClienteVO cliente, Calendar dataInicio, Calendar dataFim) {
+		EmprestimoVO[] emprestimos = EmprestimoDAO.listar();
+		ArrayList<EmprestimoVO> emprestimosValidos = new ArrayList<EmprestimoVO>();
+		int numeroEmprestimos = emprestimos.length;
 
+		// Obtém os empréstimos válidos
+		for (int i = 0; i < numeroEmprestimos; i++) {
+			if (emprestimos[i].getCliente().equals(cliente) && emprestimos[i].getDataEmprestimo().after(dataInicio)
+					&& emprestimos[i].getDataEmprestimo().before(dataFim)) {
+				emprestimosValidos.add(emprestimos[i]);
+			}
+		}
+
+		int numeroEmprestimosValidos = emprestimosValidos.size();
+
+		for (int i = 0; i < numeroEmprestimosValidos; i++) {
+			System.out.println(emprestimosValidos.get(i));
+		}
 	}
 
 	public static float simularMulta(Calendar dataDevolucaoProposta, Calendar[] dataDevolucaoEfetiva,
