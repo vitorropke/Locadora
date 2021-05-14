@@ -12,46 +12,48 @@ import br.edu.ufersa.ropke.model.VO.LivroVO;
 
 public class EmprestimoBO {
 	EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
-	EmprestimoBO emprestimoBO = new EmprestimoBO();
 
-	public void cadastrar(EmprestimoVO emprestimo) {
-		// Verifica se a entrada de argumentos não é nula
+	public boolean isNull(EmprestimoVO emprestimo) {
+		// Verifica se a entrada de argumento não é nula
 		if (emprestimo != null) {
-			// Verifica se parâmetros importantes não são nulos
+			// Verifica se parâmetros importantes não são nulos nem inválidos
 			if ((emprestimo.getIdEmprestimo() != -1) && (emprestimo.getCliente() != null)
 					&& (emprestimo.getDataEmprestimo() != null)) {
-				// Verifica se o emprestimo não existe no sistema
-				if (emprestimoDAO.pesquisar(emprestimo) == null) {
-					emprestimoDAO.cadastrar(emprestimo);
-				}
+				return false;
+			} else {
+				return true;
+			}
+		} else {
+			return true;
+		}
+	}
+
+	public void cadastrar(EmprestimoVO emprestimo) {
+		// Verifica se a entrada de argumento não é nula
+		if (!isNull(emprestimo)) {
+			// Verifica se o emprestimo não existe no sistema
+			if (emprestimoDAO.pesquisar(emprestimo) == null) {
+				emprestimoDAO.cadastrar(emprestimo);
 			}
 		}
 	}
 
 	public void alterar(EmprestimoVO emprestimo) {
-		// Verifica se a entrada de argumentos não é nula
-		if (emprestimo != null) {
-			// Verifica se parâmetros importantes não são nulos
-			if ((emprestimo.getIdEmprestimo() != -1) && (emprestimo.getCliente() != null)
-					&& (emprestimo.getDataEmprestimo() != null)) {
-				// Verifica se o emprestimo existe no sistema
-				if (emprestimoDAO.pesquisar(emprestimo) != null) {
-					emprestimoDAO.alterar(emprestimo);
-				}
+		// Verifica se a entrada de argumento não é nula
+		if (!isNull(emprestimo)) {
+			// Verifica se o emprestimo existe no sistema
+			if (emprestimoDAO.pesquisar(emprestimo) != null) {
+				emprestimoDAO.alterar(emprestimo);
 			}
 		}
 	}
 
 	public void deletar(EmprestimoVO emprestimo) {
-		// Verifica se a entrada de argumentos não é nula
-		if (emprestimo != null) {
-			// Verifica se parâmetros importantes não são nulos
-			if ((emprestimo.getIdEmprestimo() != -1) && (emprestimo.getCliente() != null)
-					&& (emprestimo.getDataEmprestimo() != null)) {
-				// Verifica se o emprestimo existe no sistema
-				if (emprestimoDAO.pesquisar(emprestimo) != null) {
-					emprestimoDAO.deletar(emprestimo);
-				}
+		// Verifica se a entrada de argumento não é nula
+		if (!isNull(emprestimo)) {
+			// Verifica se o emprestimo existe no sistema
+			if (emprestimoDAO.pesquisar(emprestimo) != null) {
+				emprestimoDAO.deletar(emprestimo);
 			}
 		}
 	}
@@ -61,13 +63,9 @@ public class EmprestimoBO {
 	}
 
 	public EmprestimoVO pesquisar(EmprestimoVO emprestimo) {
-		if (emprestimo != null) {
-			if ((emprestimo.getIdEmprestimo() != -1) && (emprestimo.getCliente() != null)
-					&& (emprestimo.getDataEmprestimo() != null)) {
-				return emprestimoDAO.pesquisar(emprestimo);
-			} else {
-				return null;
-			}
+		// Verifica se a entrada de argumento não é nula
+		if (!isNull(emprestimo)) {
+			return emprestimoDAO.pesquisar(emprestimo);
 		} else {
 			return null;
 		}
@@ -230,10 +228,10 @@ public class EmprestimoBO {
 					emprestimo.setCliente(cliente);
 
 					// Adiciona no arquivo
-					if (emprestimoBO.pesquisar(emprestimo) == null) {
-						emprestimoBO.cadastrar(emprestimo);
+					if (pesquisar(emprestimo) == null) {
+						cadastrar(emprestimo);
 					} else {
-						emprestimoBO.alterar(emprestimo);
+						alterar(emprestimo);
 					}
 				} else {
 					System.out.println("Sem emprestaveis validos!");
@@ -508,8 +506,8 @@ public class EmprestimoBO {
 				}
 
 				// Altera o empréstimo no arquivo
-				if (emprestimoBO.pesquisar(emprestimo) != null) {
-					emprestimoBO.alterar(emprestimo);
+				if (pesquisar(emprestimo) != null) {
+					alterar(emprestimo);
 				}
 			} else {
 				System.out.println("Dados inconsistentes!");

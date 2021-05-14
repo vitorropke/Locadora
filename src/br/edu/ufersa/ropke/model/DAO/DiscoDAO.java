@@ -11,7 +11,7 @@ import br.edu.ufersa.ropke.model.VO.EmprestavelVO;
 public class DiscoDAO extends EmprestavelDAO<DiscoVO> {
 	private static final File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/discos.dat");
 
-	public File getArquivo() {
+	public static File getArquivo() {
 		return arquivo;
 	}
 

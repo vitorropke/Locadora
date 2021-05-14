@@ -5,73 +5,81 @@ import java.io.File;
 import br.edu.ufersa.ropke.model.DAO.EmprestavelDAO;
 import br.edu.ufersa.ropke.model.VO.EmprestavelVO;
 
-public abstract class EmprestavelBO extends OperacaoBO {
-	public static void cadastrar(EmprestavelVO emprestavel, File arquivo) {
+public abstract class EmprestavelBO<VO extends EmprestavelVO> extends OperacaoBO<VO> {
+	private static EmprestavelDAO<EmprestavelVO> emprestavelDAO = new EmprestavelDAO<EmprestavelVO>();
+
+	public boolean isNull(VO emprestavel, File arquivo) {
 		// Verifica se a entrada de argumentos não é nula
 		if ((emprestavel != null) && (arquivo != null)) {
 			// Verifica se parâmetros importantes não são nulos
-			if ((emprestavel.getTitulo() != null)) {
-				// Verifica se o emprestavel não existe no sistema
-				if (EmprestavelDAO.pesquisar(emprestavel, arquivo) == null) {
-					EmprestavelDAO.cadastrar(emprestavel, arquivo);
-				}
-			}
-		}
-	}
-
-	public static void alterar(EmprestavelVO emprestavel, File arquivo) {
-		// Verifica se a entrada de argumentos não é nula
-		if ((emprestavel != null) && (arquivo != null)) {
-			// Verifica se parâmetros importantes não são nulos
-			if ((emprestavel.getTitulo() != null)) {
-				// Verifica se o emprestavel existe no sistema
-				if (EmprestavelDAO.pesquisar(emprestavel, arquivo) != null) {
-					EmprestavelDAO.alterar(emprestavel, arquivo);
-				}
-			}
-		}
-	}
-
-	public static void deletar(EmprestavelVO emprestavel, File arquivo) {
-		// Verifica se a entrada de argumentos não é nula
-		if ((emprestavel != null) && (arquivo != null)) {
-			// Verifica se parâmetros importantes não são nulos
-			if ((emprestavel.getTitulo() != null)) {
-				// Verifica se o emprestavel existe no sistema
-				if (EmprestavelDAO.pesquisar(emprestavel, arquivo) != null) {
-					EmprestavelDAO.deletar(emprestavel, arquivo);
-				}
-			}
-		}
-	}
-
-	public static void pesquisar(File arquivo) {
-		if (arquivo != null) {
-			EmprestavelDAO.pesquisar(arquivo);
-		}
-	}
-
-	public static EmprestavelVO pesquisar(EmprestavelVO emprestavel, File arquivo) {
-		// Verifica se a entrada de argumentos não é nula
-		if ((emprestavel != null) && (arquivo != null)) {
-			// Verifica se parâmetros importantes não são nulos
-			if ((emprestavel.getTitulo() != null)) {
-				return EmprestavelDAO.pesquisar(emprestavel, arquivo);
+			if (emprestavel.getTitulo() != null) {
+				return false;
 			} else {
-				return null;
+				return true;
 			}
+		} else {
+			return true;
+		}
+	}
+
+	@Override
+	public void cadastrar(VO emprestavel, File arquivo) {
+		// Verifica se a entrada de argumentos não é nula
+		if (!isNull(emprestavel, arquivo)) {
+			// Verifica se o emprestavel não existe no sistema
+			if (emprestavelDAO.pesquisar(emprestavel, arquivo) == null) {
+				emprestavelDAO.cadastrar(emprestavel, arquivo);
+			}
+		}
+	}
+
+	@Override
+	public void alterar(VO emprestavel, File arquivo) {
+		// Verifica se a entrada de argumentos não é nula
+		if (!isNull(emprestavel, arquivo)) {
+			// Verifica se o emprestavel existe no sistema
+			if (emprestavelDAO.pesquisar(emprestavel, arquivo) != null) {
+				emprestavelDAO.alterar(emprestavel, arquivo);
+			}
+		}
+	}
+
+	@Override
+	public void deletar(VO emprestavel, File arquivo) {
+		// Verifica se a entrada de argumentos não é nula
+		if (!isNull(emprestavel, arquivo)) {
+			// Verifica se o emprestavel existe no sistema
+			if (emprestavelDAO.pesquisar(emprestavel, arquivo) != null) {
+				emprestavelDAO.deletar(emprestavel, arquivo);
+			}
+		}
+	}
+
+	@Override
+	public void pesquisar(File arquivo) {
+		if (arquivo != null) {
+			emprestavelDAO.pesquisar(arquivo);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public VO pesquisar(VO emprestavel, File arquivo) {
+		// Verifica se a entrada de argumentos não é nula
+		if (!isNull(emprestavel, arquivo)) {
+			return (VO) emprestavelDAO.pesquisar(emprestavel, arquivo);
 		} else {
 			return null;
 		}
 	}
 
-	public static EmprestavelVO[] pesquisarTitulo(String titulo, File arquivo) {
+	public EmprestavelVO[] pesquisarTitulo(String titulo, File arquivo) {
 		// Verifica se a entrada de argumentos não é nula
 		if ((titulo != null) && (arquivo != null)) {
 			// Verifica se parâmetros importantes não são nulos
 			if ((titulo != "")) {
 				// Verifica se o emprestavel existe no sistema
-				return EmprestavelDAO.pesquisarTitulo(titulo, arquivo);
+				return emprestavelDAO.pesquisarTitulo(titulo, arquivo);
 			} else {
 				EmprestavelVO[] semEmprestaveis = new EmprestavelVO[0];
 				return semEmprestaveis;
@@ -82,10 +90,10 @@ public abstract class EmprestavelBO extends OperacaoBO {
 		}
 	}
 
-	public static EmprestavelVO[] pesquisarAnoLancamento(int anoLancamento, File arquivo) {
+	public EmprestavelVO[] pesquisarAnoLancamento(int anoLancamento, File arquivo) {
 		// Verifica se a entrada de argumentos não é nula
 		if (arquivo != null) {
-			return EmprestavelDAO.pesquisarAnoLancamento(anoLancamento, arquivo);
+			return emprestavelDAO.pesquisarAnoLancamento(anoLancamento, arquivo);
 		} else {
 			EmprestavelVO[] semEmprestaveis = new EmprestavelVO[0];
 			return semEmprestaveis;

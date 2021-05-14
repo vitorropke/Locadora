@@ -7,30 +7,31 @@ import br.edu.ufersa.ropke.model.VO.ClienteVO;
 
 public class ClienteBO extends PessoaBO<ClienteVO> {
 	private static final File arquivo = ClienteDAO.getArquivo();
+	private static ClienteDAO clienteDAO = new ClienteDAO();
 
-	public static void cadastrar(ClienteVO cliente) {
-		PessoaBO.cadastrar(cliente, arquivo);
+	public void cadastrar(ClienteVO cliente) {
+		super.cadastrar(cliente, arquivo);
 	}
 
-	public static void alterar(ClienteVO cliente) {
-		PessoaBO.alterar(cliente, arquivo);
+	public void alterar(ClienteVO cliente) {
+		super.alterar(cliente, arquivo);
 	}
 
-	public static void deletar(ClienteVO cliente) {
-		PessoaBO.deletar(cliente, arquivo);
+	public void deletar(ClienteVO cliente) {
+		super.deletar(cliente, arquivo);
 	}
 
-	public static void pesquisar() {
-		PessoaBO.pesquisar(arquivo);
+	public void pesquisar() {
+		super.pesquisar(arquivo);
 	}
 
-	public static ClienteVO pesquisar(ClienteVO cliente) {
-		return (ClienteVO) PessoaBO.pesquisar(cliente, arquivo);
+	public ClienteVO pesquisar(ClienteVO cliente) {
+		return super.pesquisar(cliente, arquivo);
 	}
 
-	public static ClienteVO[] pesquisarNome(String nome) {
+	public ClienteVO[] pesquisarNome(String nome) {
 		if (nome != null && nome != "") {
-			return ClienteDAO.pesquisarNome(nome);
+			return clienteDAO.pesquisarNome(nome);
 		} else {
 			ClienteVO[] semClientes = new ClienteVO[0];
 			return semClientes;
@@ -39,7 +40,7 @@ public class ClienteBO extends PessoaBO<ClienteVO> {
 
 	public static ClienteVO pesquisarCpf(String cpf) {
 		if (cpf != null && cpf != "") {
-			return ClienteDAO.pesquisarCpf(cpf);
+			return clienteDAO.pesquisarCpf(cpf);
 		} else {
 			return null;
 		}

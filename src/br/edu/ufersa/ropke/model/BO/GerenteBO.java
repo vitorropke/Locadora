@@ -5,26 +5,26 @@ import java.io.File;
 import br.edu.ufersa.ropke.model.DAO.GerenteDAO;
 import br.edu.ufersa.ropke.model.VO.GerenteVO;
 
-public class GerenteBO extends UsuarioBO {
+public class GerenteBO extends UsuarioBO<GerenteVO> {
 	private static final File arquivo = GerenteDAO.getArquivo();
 
-	public static void cadastrar(GerenteVO gerente) {
-		UsuarioBO.cadastrar(gerente, arquivo);
+	public void cadastrar(GerenteVO gerente) {
+		super.cadastrar(gerente, arquivo);
 	}
 
-	public static void alterar(GerenteVO gerente) {
-		UsuarioBO.alterar(gerente, arquivo);
+	public void alterar(GerenteVO gerente) {
+		super.alterar(gerente, arquivo);
 	}
 
-	public static void deletar(GerenteVO gerente) {
-		UsuarioBO.deletar(gerente, arquivo);
+	public void deletar(GerenteVO gerente) {
+		super.deletar(gerente, arquivo);
 	}
 
-	public static void pesquisar() {
-		UsuarioBO.pesquisar(arquivo);
+	public void pesquisar() {
+		super.pesquisar(arquivo);
 	}
 
-	public static boolean autenticar(GerenteVO gerente, String login, String senha) {
-		return UsuarioBO.autenticar(gerente, arquivo, login, senha);
+	public boolean autenticar(GerenteVO gerente, String login, String senha) {
+		return super.autenticar(gerente, arquivo, login, senha);
 	}
 }

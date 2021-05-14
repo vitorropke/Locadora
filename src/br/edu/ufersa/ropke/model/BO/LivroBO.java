@@ -6,31 +6,32 @@ import br.edu.ufersa.ropke.model.DAO.LivroDAO;
 import br.edu.ufersa.ropke.model.VO.EmprestavelVO;
 import br.edu.ufersa.ropke.model.VO.LivroVO;
 
-public class LivroBO extends EmprestavelBO {
+public class LivroBO extends EmprestavelBO<LivroVO> {
 	private static final File arquivo = LivroDAO.getArquivo();
+	private static LivroDAO livroDAO = new LivroDAO();
 
-	public static void cadastrar(LivroVO livro) {
-		EmprestavelBO.cadastrar(livro, arquivo);
+	public void cadastrar(LivroVO livro) {
+		super.cadastrar(livro, arquivo);
 	}
 
-	public static void alterar(LivroVO livro) {
-		EmprestavelBO.alterar(livro, arquivo);
+	public void alterar(LivroVO livro) {
+		super.alterar(livro, arquivo);
 	}
 
-	public static void deletar(LivroVO livro) {
-		EmprestavelBO.deletar(livro, arquivo);
+	public void deletar(LivroVO livro) {
+		super.deletar(livro, arquivo);
 	}
 
-	public static void pesquisar() {
-		EmprestavelBO.pesquisar(arquivo);
+	public void pesquisar() {
+		super.pesquisar(arquivo);
 	}
 
-	public static LivroVO pesquisar(LivroVO livro) {
-		return (LivroVO) EmprestavelBO.pesquisar(livro, arquivo);
+	public LivroVO pesquisar(LivroVO livro) {
+		return super.pesquisar(livro, arquivo);
 	}
 
-	public static LivroVO[] pesquisarTitulo(String titulo) {
-		EmprestavelVO[] emprestaveis = EmprestavelBO.pesquisarTitulo(titulo, arquivo);
+	public LivroVO[] pesquisarTitulo(String titulo) {
+		EmprestavelVO[] emprestaveis = super.pesquisarTitulo(titulo, arquivo);
 		int tamanhoVetorEmprestaveis = emprestaveis.length;
 
 		LivroVO[] livros = new LivroVO[tamanhoVetorEmprestaveis];
@@ -43,8 +44,8 @@ public class LivroBO extends EmprestavelBO {
 		return livros;
 	}
 
-	public static LivroVO[] pesquisarAnoLancamento(int anoLancamento) {
-		EmprestavelVO[] emprestaveis = EmprestavelBO.pesquisarAnoLancamento(anoLancamento, arquivo);
+	public LivroVO[] pesquisarAnoLancamento(int anoLancamento) {
+		EmprestavelVO[] emprestaveis = super.pesquisarAnoLancamento(anoLancamento, arquivo);
 		int tamanhoVetorEmprestaveis = emprestaveis.length;
 
 		LivroVO[] livros = new LivroVO[tamanhoVetorEmprestaveis];
@@ -57,9 +58,9 @@ public class LivroBO extends EmprestavelBO {
 		return livros;
 	}
 
-	public static LivroVO[] pesquisarGenero(String titulo) {
+	public LivroVO[] pesquisarGenero(String titulo) {
 		if (titulo != null && titulo != "") {
-			return LivroDAO.pesquisarGenero(titulo);
+			return livroDAO.pesquisarGenero(titulo);
 		} else {
 			LivroVO[] semLivros = new LivroVO[0];
 			return semLivros;

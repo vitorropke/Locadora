@@ -10,6 +10,6 @@ public interface OperacaoInterDAO<VO> {
 	public void deletar(VO entidade, File arquivo);
 
 	public void pesquisar(File arquivo);
-	
+
 	public VO pesquisar(VO entidade, File arquivo);
 }

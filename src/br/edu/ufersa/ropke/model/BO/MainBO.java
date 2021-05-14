@@ -62,11 +62,19 @@ public class MainBO {
 		cal0.set(2021, 5, 1, 04, 15, 20);
 		Calendar[] datas = { cal, cal0 };
 
-		EmprestimoBO.alugar(emprestimo0, quantidades, datas, cliente1, livros);
+		// Cria objetos do tipo BO
+		LivroBO livroBO = new LivroBO();
+		DiscoBO discoBO = new DiscoBO();
+		ClienteBO clienteBO = new ClienteBO();
+		FuncionarioBO funcionarioBO = new FuncionarioBO();
+		GerenteBO gerenteBO = new GerenteBO();
+		EmprestimoBO emprestimoBO = new EmprestimoBO();
+
+		emprestimoBO.alugar(emprestimo0, quantidades, datas, cliente1, livros);
 
 		Calendar[] datas0 = { cal };
 		int[] quantidades0 = { 3 };
-		EmprestimoBO.alugar(emprestimo0, quantidades0, datas0, cliente1, discos);
+		emprestimoBO.alugar(emprestimo0, quantidades0, datas0, cliente1, discos);
 
 		System.out.println(emprestimo0);
 
@@ -74,8 +82,8 @@ public class MainBO {
 		LivroVO[] livros0 = { livro1, livro2 };
 		quantidades[0] = 3;
 		quantidades[1] = 1;
-		EmprestimoBO.devolver(emprestimo0, quantidades, datas, livros0);
-		EmprestimoBO.devolver(emprestimo0, quantidades0, datas0, discos);
+		emprestimoBO.devolver(emprestimo0, quantidades, datas, livros0);
+		emprestimoBO.devolver(emprestimo0, quantidades0, datas0, discos);
 
 		System.out.println(emprestimo0);
 		System.out.println(emprestimo1);
@@ -84,63 +92,63 @@ public class MainBO {
 		System.out.println(
 				"-------------------------------------------Livros--------------------------------------------");
 		System.out.println("\nLivro\n");
-		LivroBO.cadastrar(livro1);
-		LivroBO.cadastrar(livro2);
-		LivroBO.pesquisar();
+		livroBO.cadastrar(livro1);
+		livroBO.cadastrar(livro2);
+		livroBO.pesquisar();
 
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Altera livro 1----------------------------------------");
 		livro1.setNumeroPaginas(140);
-		LivroBO.alterar(livro1);
-		LivroBO.pesquisar();
+		livroBO.alterar(livro1);
+		livroBO.pesquisar();
 
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Altera livro 2----------------------------------------");
 		livro2.setAnoLancamento(1999);
-		LivroBO.alterar(livro2);
-		LivroBO.pesquisar();
+		livroBO.alterar(livro2);
+		livroBO.pesquisar();
 
 		/*
 		 * System.out.println(); System.out.
 		 * println("---------------------------------------Deleta livro 1----------------------------------------"
-		 * ); LivroBO.deletar(livro1); LivroBO.pesquisar();
+		 * ); livroBO.deletar(livro1); livroBO.pesquisar();
 		 */
 
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa titulo----------------------------------------");
-		LivroVO[] livro = LivroBO.pesquisarTitulo("em");
-		int numeroLivros = livro.length;
+		livros = livroBO.pesquisarTitulo("em");
+		int numeroLivros = livros.length;
 		for (int i = 0; i < numeroLivros; i++) {
-			System.out.println(livro[i].toString());
+			System.out.println(livros[i]);
 		}
 
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa genero----------------------------------------");
-		livros = LivroBO.pesquisarGenero("acao");
+		livros = livroBO.pesquisarGenero("acao");
 		numeroLivros = livros.length;
 		for (int i = 0; i < numeroLivros; i++) {
-			System.out.println(livros[i].toString());
+			System.out.println(livros[i]);
 		}
 
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa ano-------------------------------------------");
-		livros = LivroBO.pesquisarAnoLancamento(1999);
+		livros = livroBO.pesquisarAnoLancamento(1999);
 		numeroLivros = livros.length;
 		for (int i = 0; i < numeroLivros; i++) {
-			System.out.println(livros[i].toString());
+			System.out.println(livros[i]);
 		}
 
 		// Discos
 		System.out.println(
 				"-------------------------------------------Discos---------------------------------------------");
 		System.out.println("\nDisco\n");
-		DiscoBO.cadastrar(disco1);
-		DiscoBO.pesquisar();
+		discoBO.cadastrar(disco1);
+		discoBO.pesquisar();
 
 		System.out.println();
 
@@ -148,86 +156,86 @@ public class MainBO {
 		System.out.println(
 				"---------------------------------------Altera disco 1----------------------------------------");
 		disco1.setNumeroExemplares(80);
-		DiscoBO.alterar(disco1);
-		DiscoBO.pesquisar();
+		discoBO.alterar(disco1);
+		discoBO.pesquisar();
 
 		/*
 		 * System.out.println(); System.out.
 		 * println("---------------------------------------Deleta disco 1----------------------------------------"
-		 * ); DiscoBO.deletar(disco1); DiscoBO.pesquisar();
+		 * ); discoBO.deletar(disco1); discoBO.pesquisar();
 		 */
 
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa titulo----------------------------------------");
-		DiscoVO[] disco = DiscoBO.pesquisarTitulo("em");
-		int numeroDiscos = disco.length;
+		discos = discoBO.pesquisarTitulo("em");
+		int numeroDiscos = discos.length;
 		for (int i = 0; i < numeroDiscos; i++) {
-			System.out.println(disco[i].toString());
+			System.out.println(discos[i]);
 		}
 
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa banda-----------------------------------------");
-		discos = DiscoBO.pesquisarBanda("ssd");
+		discos = discoBO.pesquisarBanda("ssd");
 		numeroDiscos = discos.length;
 		for (int i = 0; i < numeroDiscos; i++) {
-			System.out.println(discos[i].toString());
+			System.out.println(discos[i]);
 		}
 
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa estilo----------------------------------------");
-		discos = DiscoBO.pesquisarEstilo("pagode");
+		discos = discoBO.pesquisarEstilo("pagode");
 		numeroDiscos = discos.length;
 		for (int i = 0; i < numeroDiscos; i++) {
-			System.out.println(discos[i].toString());
+			System.out.println(discos[i]);
 		}
 
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa ano-------------------------------------------");
-		discos = DiscoBO.pesquisarAnoLancamento(2018);
+		discos = discoBO.pesquisarAnoLancamento(2018);
 		numeroDiscos = discos.length;
 		for (int i = 0; i < numeroDiscos; i++) {
-			System.out.println(discos[i].toString());
+			System.out.println(discos[i]);
 		}
 
 		// Clientes
 		System.out.println(
 				"-------------------------------------------Clientes--------------------------------------------");
 		System.out.println("\nCliente\n");
-		ClienteBO.cadastrar(cliente1);
-		ClienteBO.pesquisar();
+		clienteBO.cadastrar(cliente1);
+		clienteBO.pesquisar();
 
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Altera cliente 1----------------------------------------");
 		enderecos[0] = "Rua longe do local";
 		cliente1.setEndereco(enderecos);
-		ClienteBO.alterar(cliente1);
-		ClienteBO.pesquisar();
+		clienteBO.alterar(cliente1);
+		clienteBO.pesquisar();
 
 		/*
 		 * System.out.println(); System.out.
 		 * println("---------------------------------------Deleta cliente 1----------------------------------------"
-		 * ); ClienteBO.deletar(cliente1); ClienteBO.pesquisar();
+		 * ); clienteBO.deletar(cliente1); clienteBO.pesquisar();
 		 */
 
 		// Funcionários
 		System.out.println(
 				"-----------------------------------------Funcionarios------------------------------------------");
 		System.out.println("\nFuncionario\n");
-		FuncionarioBO.cadastrar(funcionario1);
-		FuncionarioBO.pesquisar();
+		funcionarioBO.cadastrar(funcionario1);
+		funcionarioBO.pesquisar();
 
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Altera funcionario 1----------------------------------------");
 
 		funcionario1.setEndereco(enderecos);
-		FuncionarioBO.alterar(funcionario1);
-		FuncionarioBO.pesquisar();
+		funcionarioBO.alterar(funcionario1);
+		funcionarioBO.pesquisar();
 
 		/*
 		 * System.out.println(); System.out.
@@ -239,20 +247,20 @@ public class MainBO {
 		System.out.println(
 				"-------------------------------------------Gerentes--------------------------------------------");
 		System.out.println("\nGerente\n");
-		GerenteBO.cadastrar(gerente1);
-		GerenteBO.pesquisar();
+		gerenteBO.cadastrar(gerente1);
+		gerenteBO.pesquisar();
 
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Altera gerente 1----------------------------------------");
 		gerente1.setEndereco(enderecos);
-		GerenteBO.alterar(gerente1);
-		GerenteBO.pesquisar();
+		gerenteBO.alterar(gerente1);
+		gerenteBO.pesquisar();
 
 		/*
 		 * System.out.println(); System.out.
 		 * println("---------------------------------------Deleta gerente 1----------------------------------------"
-		 * ); GerenteBO.deletar(gerente1); GerenteBO.pesquisar();
+		 * ); gerenteBO.deletar(gerente1); gerenteBO.pesquisar();
 		 */
 
 		// Empréstimos
@@ -265,20 +273,20 @@ public class MainBO {
 		System.out.println(
 				"------------------------------------------Emprestimos------------------------------------------");
 		System.out.println("\nEmprestimo\n");
-		EmprestimoBO.cadastrar(emprestimo1);
-		EmprestimoBO.pesquisar();
+		emprestimoBO.cadastrar(emprestimo1);
+		emprestimoBO.pesquisar();
 
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Altera emprestimo 1----------------------------------------");
 		emprestimo1.setDataEmprestimo(cal);
-		EmprestimoBO.alterar(emprestimo1);
-		EmprestimoBO.pesquisar();
+		emprestimoBO.alterar(emprestimo1);
+		emprestimoBO.pesquisar();
 
 		/*
 		 * System.out.println(); System.out.
 		 * println("---------------------------------------Deleta emprestimo 1----------------------------------------"
-		 * ); EmprestimoBO.deletar(emprestimo1); EmprestimoBO.pesquisar();
+		 * ); emprestimoBO.deletar(emprestimo1); emprestimoBO.pesquisar();
 		 */
 	}
 }

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import br.edu.ufersa.ropke.model.VO.EmprestavelVO;
 
-public abstract class EmprestavelDAO<VO extends EmprestavelVO> extends OperacaoDAO<VO> {
+public class EmprestavelDAO<VO extends EmprestavelVO> extends OperacaoDAO<VO> {
 	@Override
 	public void cadastrar(VO emprestavel, File arquivo) {
 		try {
