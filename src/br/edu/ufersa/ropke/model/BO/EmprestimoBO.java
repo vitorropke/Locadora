@@ -3,6 +3,9 @@ package br.edu.ufersa.ropke.model.BO;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import br.edu.ufersa.ropke.exception.FoundException;
+import br.edu.ufersa.ropke.exception.InvalidParameterException;
+import br.edu.ufersa.ropke.exception.NotFoundException;
 import br.edu.ufersa.ropke.model.DAO.EmprestimoDAO;
 import br.edu.ufersa.ropke.model.VO.ClienteVO;
 import br.edu.ufersa.ropke.model.VO.DiscoVO;
@@ -19,6 +22,7 @@ public class EmprestimoBO {
 			// Verifica se parâmetros importantes não são nulos nem inválidos
 			if ((emprestimo.getIdEmprestimo() != -1) && (emprestimo.getCliente() != null)
 					&& (emprestimo.getDataEmprestimo() != null)) {
+				
 				return false;
 			} else {
 				return true;
@@ -34,7 +38,11 @@ public class EmprestimoBO {
 			// Verifica se o emprestimo não existe no sistema
 			if (emprestimoDAO.pesquisar(emprestimo) == null) {
 				emprestimoDAO.cadastrar(emprestimo);
+			} else {
+				throw new FoundException();
 			}
+		} else {
+			throw new InvalidParameterException();
 		}
 	}
 
@@ -44,7 +52,11 @@ public class EmprestimoBO {
 			// Verifica se o emprestimo existe no sistema
 			if (emprestimoDAO.pesquisar(emprestimo) != null) {
 				emprestimoDAO.alterar(emprestimo);
+			} else {
+				throw new NotFoundException();
 			}
+		} else {
+			throw new InvalidParameterException();
 		}
 	}
 
@@ -54,7 +66,11 @@ public class EmprestimoBO {
 			// Verifica se o emprestimo existe no sistema
 			if (emprestimoDAO.pesquisar(emprestimo) != null) {
 				emprestimoDAO.deletar(emprestimo);
+			} else {
+				throw new NotFoundException();
 			}
+		} else {
+			throw new InvalidParameterException();
 		}
 	}
 

@@ -2,6 +2,9 @@ package br.edu.ufersa.ropke.model.BO;
 
 import java.io.File;
 
+import br.edu.ufersa.ropke.exception.IncorrectPasswordException;
+import br.edu.ufersa.ropke.exception.InvalidParameterException;
+import br.edu.ufersa.ropke.exception.UserNotFoundException;
 import br.edu.ufersa.ropke.model.VO.UsuarioVO;
 
 public abstract class UsuarioBO<VO extends UsuarioVO> extends PessoaBO<VO> {
@@ -25,6 +28,8 @@ public abstract class UsuarioBO<VO extends UsuarioVO> extends PessoaBO<VO> {
 		// Verifica se a entrada de argumentos não é nula
 		if (!isNull(usuario, arquivo)) {
 			super.cadastrar(usuario, arquivo);
+		} else {
+			throw new InvalidParameterException();
 		}
 	}
 
@@ -33,6 +38,8 @@ public abstract class UsuarioBO<VO extends UsuarioVO> extends PessoaBO<VO> {
 		// Verifica se a entrada de argumentos não é nula
 		if (!isNull(usuario, arquivo)) {
 			super.alterar(usuario, arquivo);
+		} else {
+			throw new InvalidParameterException();
 		}
 	}
 
@@ -41,14 +48,17 @@ public abstract class UsuarioBO<VO extends UsuarioVO> extends PessoaBO<VO> {
 		// Verifica se a entrada de argumentos não é nula
 		if (!isNull(usuario, arquivo)) {
 			super.deletar(usuario, arquivo);
+		} else {
+			throw new InvalidParameterException();
 		}
-
 	}
 
 	@Override
 	public void pesquisar(File arquivo) {
 		if (arquivo != null) {
 			super.pesquisar(arquivo);
+		} else {
+			throw new InvalidParameterException();
 		}
 	}
 
@@ -68,22 +78,22 @@ public abstract class UsuarioBO<VO extends UsuarioVO> extends PessoaBO<VO> {
 				VO usuarioEncontrado = super.pesquisar(usuario, arquivo);
 
 				if (usuarioEncontrado == null) {
-					return false;
+					throw new UserNotFoundException();
 				}
 				if (usuarioEncontrado.getLogin().equals(login)) {
 					if (usuarioEncontrado.getSenha().equals(senha)) {
 						return true;
 					} else {
-						return false;
+						throw new IncorrectPasswordException();
 					}
 				} else {
-					return false;
+					throw new UserNotFoundException();
 				}
+			} else {
+				throw new InvalidParameterException();
 			}
-
-			return false;
+		} else {
+			throw new InvalidParameterException();
 		}
-
-		return false;
 	}
 }

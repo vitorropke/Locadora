@@ -2,6 +2,9 @@ package br.edu.ufersa.ropke.model.BO;
 
 import java.io.File;
 
+import br.edu.ufersa.ropke.exception.FoundException;
+import br.edu.ufersa.ropke.exception.InvalidParameterException;
+import br.edu.ufersa.ropke.exception.NotFoundException;
 import br.edu.ufersa.ropke.model.DAO.PessoaDAO;
 import br.edu.ufersa.ropke.model.VO.PessoaVO;
 
@@ -28,7 +31,11 @@ public abstract class PessoaBO<VO extends PessoaVO> extends OperacaoBO<VO> {
 		if (!isNull(pessoa, arquivo)) {
 			if (pessoaDAO.pesquisar(pessoa, arquivo) == null) {
 				pessoaDAO.cadastrar(pessoa, arquivo);
+			} else {
+				throw new FoundException();
 			}
+		} else {
+			throw new InvalidParameterException();
 		}
 	}
 
@@ -38,7 +45,11 @@ public abstract class PessoaBO<VO extends PessoaVO> extends OperacaoBO<VO> {
 		if (!isNull(pessoa, arquivo)) {
 			if (pessoaDAO.pesquisar(pessoa, arquivo) != null) {
 				pessoaDAO.alterar(pessoa, arquivo);
+			} else {
+				throw new NotFoundException();
 			}
+		} else {
+			throw new InvalidParameterException();
 		}
 	}
 
@@ -48,7 +59,11 @@ public abstract class PessoaBO<VO extends PessoaVO> extends OperacaoBO<VO> {
 		if (!isNull(pessoa, arquivo)) {
 			if (pessoaDAO.pesquisar(pessoa, arquivo) != null) {
 				pessoaDAO.deletar(pessoa, arquivo);
+			} else {
+				throw new NotFoundException();
 			}
+		} else {
+			throw new InvalidParameterException();
 		}
 	}
 
@@ -57,6 +72,8 @@ public abstract class PessoaBO<VO extends PessoaVO> extends OperacaoBO<VO> {
 		// Verifica se a entrada de argumento não é nula
 		if (arquivo != null) {
 			pessoaDAO.pesquisar(arquivo);
+		} else {
+			throw new InvalidParameterException();
 		}
 	}
 

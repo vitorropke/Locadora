@@ -2,6 +2,9 @@ package br.edu.ufersa.ropke.model.BO;
 
 import java.io.File;
 
+import br.edu.ufersa.ropke.exception.FoundException;
+import br.edu.ufersa.ropke.exception.InvalidParameterException;
+import br.edu.ufersa.ropke.exception.NotFoundException;
 import br.edu.ufersa.ropke.model.DAO.EmprestavelDAO;
 import br.edu.ufersa.ropke.model.VO.EmprestavelVO;
 
@@ -29,7 +32,11 @@ public abstract class EmprestavelBO<VO extends EmprestavelVO> extends OperacaoBO
 			// Verifica se o emprestavel não existe no sistema
 			if (emprestavelDAO.pesquisar(emprestavel, arquivo) == null) {
 				emprestavelDAO.cadastrar(emprestavel, arquivo);
+			} else {
+				throw new FoundException();
 			}
+		} else {
+			throw new InvalidParameterException();
 		}
 	}
 
@@ -40,7 +47,11 @@ public abstract class EmprestavelBO<VO extends EmprestavelVO> extends OperacaoBO
 			// Verifica se o emprestavel existe no sistema
 			if (emprestavelDAO.pesquisar(emprestavel, arquivo) != null) {
 				emprestavelDAO.alterar(emprestavel, arquivo);
+			} else {
+				throw new NotFoundException();
 			}
+		} else {
+			throw new InvalidParameterException();
 		}
 	}
 
@@ -51,7 +62,11 @@ public abstract class EmprestavelBO<VO extends EmprestavelVO> extends OperacaoBO
 			// Verifica se o emprestavel existe no sistema
 			if (emprestavelDAO.pesquisar(emprestavel, arquivo) != null) {
 				emprestavelDAO.deletar(emprestavel, arquivo);
+			} else {
+				throw new NotFoundException();
 			}
+		} else {
+			throw new InvalidParameterException();
 		}
 	}
 
@@ -59,6 +74,8 @@ public abstract class EmprestavelBO<VO extends EmprestavelVO> extends OperacaoBO
 	public void pesquisar(File arquivo) {
 		if (arquivo != null) {
 			emprestavelDAO.pesquisar(arquivo);
+		} else {
+			throw new InvalidParameterException();
 		}
 	}
 
