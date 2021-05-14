@@ -4,30 +4,30 @@ import java.io.File;
 
 import br.edu.ufersa.ropke.model.VO.FuncionarioVO;
 
-public class FuncionarioDAO extends UsuarioDAO {
+public class FuncionarioDAO extends UsuarioDAO<FuncionarioVO> {
 	private static final File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/funcionarios.dat");
 
 	public static File getArquivo() {
 		return arquivo;
 	}
 
-	public static void cadastrar(FuncionarioVO funcionario) {
-		UsuarioDAO.cadastrar(funcionario, arquivo);
+	public void cadastrar(FuncionarioVO funcionario) {
+		super.cadastrar(funcionario, arquivo);
 	}
 
-	public static void alterar(FuncionarioVO funcionario) {
-		UsuarioDAO.alterar(funcionario, arquivo);
+	public void alterar(FuncionarioVO funcionario) {
+		super.alterar(funcionario, arquivo);
 	}
 
-	public static void deletar(FuncionarioVO funcionario) {
-		UsuarioDAO.deletar(funcionario, arquivo);
+	public void deletar(FuncionarioVO funcionario) {
+		super.deletar(funcionario, arquivo);
 	}
 
-	public static void pesquisar() {
-		UsuarioDAO.pesquisar(arquivo);
+	public void pesquisar() {
+		super.pesquisar(arquivo);
 	}
 
-	public static FuncionarioVO pesquisar(FuncionarioVO funcionario) {
-		return (FuncionarioVO) UsuarioDAO.pesquisar(funcionario, arquivo);
+	public FuncionarioVO pesquisar(FuncionarioVO funcionario) {
+		return super.pesquisar(funcionario, arquivo);
 	}
 }

@@ -107,7 +107,8 @@ public class EmprestimoVO implements Serializable {
 			emprestimo += "\t\t\t\tSem discos\n";
 		}
 
-		emprestimo += "\n\nCliente:\n";
+		emprestimo += "\n----------------------------------------------";
+		emprestimo += "\nCliente:\n";
 
 		if (cliente != null) {
 			emprestimo += cliente.toString();

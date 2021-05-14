@@ -9,14 +9,14 @@ import java.util.ArrayList;
 
 import br.edu.ufersa.ropke.model.VO.EmprestimoVO;
 
-public class EmprestimoDAO extends OperacaoDAO {
+public class EmprestimoDAO {
 	private static final File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/emprestimos.dat");
 
 	public static File getArquivo() {
 		return arquivo;
 	}
 
-	public static void cadastrar(EmprestimoVO emprestimo) {
+	public void cadastrar(EmprestimoVO emprestimo) {
 		try {
 			FileOutputStream arquivoGravador = new FileOutputStream(arquivo, true);
 			// Classe responsável por inserir os objetos
@@ -27,12 +27,14 @@ public class EmprestimoDAO extends OperacaoDAO {
 			objetoGravador.flush();
 			arquivoGravador.close();
 			objetoGravador.close();
+
+			System.out.println("Objeto gravado com sucesso!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void alterar(EmprestimoVO emprestimo) {
+	public void alterar(EmprestimoVO emprestimo) {
 		try {
 			ArrayList<EmprestimoVO> emprestimos = new ArrayList<EmprestimoVO>();
 
@@ -77,12 +79,13 @@ public class EmprestimoDAO extends OperacaoDAO {
 
 			arquivoGravador.close();
 
+			System.out.println("Objeto alterado com sucesso!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void deletar(EmprestimoVO emprestimo) {
+	public void deletar(EmprestimoVO emprestimo) {
 		try {
 			ArrayList<EmprestimoVO> emprestimos = new ArrayList<EmprestimoVO>();
 
@@ -123,12 +126,14 @@ public class EmprestimoDAO extends OperacaoDAO {
 			}
 
 			arquivoGravador.close();
+
+			System.out.println("Objeto apagado com sucesso!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void pesquisar() {
+	public void pesquisar() {
 		try {
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
@@ -156,7 +161,7 @@ public class EmprestimoDAO extends OperacaoDAO {
 		}
 	}
 
-	public static EmprestimoVO pesquisar(EmprestimoVO emprestimo) {
+	public EmprestimoVO pesquisar(EmprestimoVO emprestimo) {
 		try {
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
@@ -183,10 +188,11 @@ public class EmprestimoDAO extends OperacaoDAO {
 			e.printStackTrace();
 		}
 
+		System.out.println("Emprestimo nao encontrado!");
 		return null;
 	}
 
-	public static EmprestimoVO[] listar() {
+	public EmprestimoVO[] listar() {
 		try {
 			ArrayList<EmprestimoVO> emprestimos = new ArrayList<EmprestimoVO>();
 

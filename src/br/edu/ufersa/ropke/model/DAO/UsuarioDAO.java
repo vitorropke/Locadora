@@ -4,24 +4,29 @@ import java.io.File;
 
 import br.edu.ufersa.ropke.model.VO.UsuarioVO;
 
-public abstract class UsuarioDAO extends PessoaDAO {
-	public static void cadastrar(UsuarioVO usuario, File arquivo) {
-		PessoaDAO.cadastrar(usuario, arquivo);
+public abstract class UsuarioDAO<VO extends UsuarioVO> extends PessoaDAO<VO> {
+	@Override
+	public void cadastrar(VO usuario, File arquivo) {
+		super.cadastrar(usuario, arquivo);
 	}
 
-	public static void alterar(UsuarioVO usuario, File arquivo) {
-		PessoaDAO.alterar(usuario, arquivo);
+	@Override
+	public void alterar(VO usuario, File arquivo) {
+		super.alterar(usuario, arquivo);
 	}
 
-	public static void deletar(UsuarioVO usuario, File arquivo) {
-		PessoaDAO.deletar(usuario, arquivo);
+	@Override
+	public void deletar(VO usuario, File arquivo) {
+		super.deletar(usuario, arquivo);
 	}
 
-	public static void pesquisar(File arquivo) {
-		PessoaDAO.pesquisar(arquivo);
+	@Override
+	public void pesquisar(File arquivo) {
+		super.pesquisar(arquivo);
 	}
 
-	public static UsuarioVO pesquisar(UsuarioVO usuario, File arquivo) {
-		return (UsuarioVO) PessoaDAO.pesquisar(usuario, arquivo);
+	@Override
+	public VO pesquisar(VO usuario, File arquivo) {
+		return super.pesquisar(usuario, arquivo);
 	}
 }

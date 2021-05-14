@@ -5,7 +5,7 @@ import java.io.File;
 import br.edu.ufersa.ropke.model.DAO.ClienteDAO;
 import br.edu.ufersa.ropke.model.VO.ClienteVO;
 
-public class ClienteBO extends PessoaBO {
+public class ClienteBO extends PessoaBO<ClienteVO> {
 	private static final File arquivo = ClienteDAO.getArquivo();
 
 	public static void cadastrar(ClienteVO cliente) {

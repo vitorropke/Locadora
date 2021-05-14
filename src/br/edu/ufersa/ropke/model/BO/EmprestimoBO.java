@@ -10,58 +10,61 @@ import br.edu.ufersa.ropke.model.VO.EmprestavelVO;
 import br.edu.ufersa.ropke.model.VO.EmprestimoVO;
 import br.edu.ufersa.ropke.model.VO.LivroVO;
 
-public class EmprestimoBO extends OperacaoBO {
-	public static void cadastrar(EmprestimoVO emprestimo) {
+public class EmprestimoBO {
+	EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
+	EmprestimoBO emprestimoBO = new EmprestimoBO();
+
+	public void cadastrar(EmprestimoVO emprestimo) {
 		// Verifica se a entrada de argumentos não é nula
 		if (emprestimo != null) {
 			// Verifica se parâmetros importantes não são nulos
 			if ((emprestimo.getIdEmprestimo() != -1) && (emprestimo.getCliente() != null)
 					&& (emprestimo.getDataEmprestimo() != null)) {
 				// Verifica se o emprestimo não existe no sistema
-				if (EmprestimoDAO.pesquisar(emprestimo) == null) {
-					EmprestimoDAO.cadastrar(emprestimo);
+				if (emprestimoDAO.pesquisar(emprestimo) == null) {
+					emprestimoDAO.cadastrar(emprestimo);
 				}
 			}
 		}
 	}
 
-	public static void alterar(EmprestimoVO emprestimo) {
+	public void alterar(EmprestimoVO emprestimo) {
 		// Verifica se a entrada de argumentos não é nula
 		if (emprestimo != null) {
 			// Verifica se parâmetros importantes não são nulos
 			if ((emprestimo.getIdEmprestimo() != -1) && (emprestimo.getCliente() != null)
 					&& (emprestimo.getDataEmprestimo() != null)) {
 				// Verifica se o emprestimo existe no sistema
-				if (EmprestimoDAO.pesquisar(emprestimo) != null) {
-					EmprestimoDAO.alterar(emprestimo);
+				if (emprestimoDAO.pesquisar(emprestimo) != null) {
+					emprestimoDAO.alterar(emprestimo);
 				}
 			}
 		}
 	}
 
-	public static void deletar(EmprestimoVO emprestimo) {
+	public void deletar(EmprestimoVO emprestimo) {
 		// Verifica se a entrada de argumentos não é nula
 		if (emprestimo != null) {
 			// Verifica se parâmetros importantes não são nulos
 			if ((emprestimo.getIdEmprestimo() != -1) && (emprestimo.getCliente() != null)
 					&& (emprestimo.getDataEmprestimo() != null)) {
 				// Verifica se o emprestimo existe no sistema
-				if (EmprestimoDAO.pesquisar(emprestimo) != null) {
-					EmprestimoDAO.deletar(emprestimo);
+				if (emprestimoDAO.pesquisar(emprestimo) != null) {
+					emprestimoDAO.deletar(emprestimo);
 				}
 			}
 		}
 	}
 
-	public static void pesquisar() {
-		EmprestimoDAO.pesquisar();
+	public void pesquisar() {
+		emprestimoDAO.pesquisar();
 	}
 
-	public static EmprestimoVO pesquisar(EmprestimoVO emprestimo) {
+	public EmprestimoVO pesquisar(EmprestimoVO emprestimo) {
 		if (emprestimo != null) {
 			if ((emprestimo.getIdEmprestimo() != -1) && (emprestimo.getCliente() != null)
 					&& (emprestimo.getDataEmprestimo() != null)) {
-				return EmprestimoDAO.pesquisar(emprestimo);
+				return emprestimoDAO.pesquisar(emprestimo);
 			} else {
 				return null;
 			}
@@ -70,12 +73,12 @@ public class EmprestimoBO extends OperacaoBO {
 		}
 	}
 
-	public static EmprestimoVO[] listar() {
-		return EmprestimoDAO.listar();
+	public EmprestimoVO[] listar() {
+		return emprestimoDAO.listar();
 	}
 
-	public static void alugar(EmprestimoVO emprestimo, int[] quantidade, Calendar[] dataDevolucaoProposta,
-			ClienteVO cliente, EmprestavelVO[] emprestavel) {
+	public void alugar(EmprestimoVO emprestimo, int[] quantidade, Calendar[] dataDevolucaoProposta, ClienteVO cliente,
+			EmprestavelVO[] emprestavel) {
 		// Verifica se os dados estão consistentes
 		// Se os vetores não são nulos
 		if ((emprestimo != null) && (emprestavel != null) && (quantidade != null) && (dataDevolucaoProposta != null)
@@ -227,10 +230,10 @@ public class EmprestimoBO extends OperacaoBO {
 					emprestimo.setCliente(cliente);
 
 					// Adiciona no arquivo
-					if (EmprestimoBO.pesquisar(emprestimo) == null) {
-						EmprestimoBO.cadastrar(emprestimo);
+					if (emprestimoBO.pesquisar(emprestimo) == null) {
+						emprestimoBO.cadastrar(emprestimo);
 					} else {
-						EmprestimoBO.alterar(emprestimo);
+						emprestimoBO.alterar(emprestimo);
 					}
 				} else {
 					System.out.println("Sem emprestaveis validos!");
@@ -241,7 +244,7 @@ public class EmprestimoBO extends OperacaoBO {
 		}
 	}
 
-	public static void devolver(EmprestimoVO emprestimo, int[] quantidade, Calendar[] dataDevolucaoEfetiva,
+	public void devolver(EmprestimoVO emprestimo, int[] quantidade, Calendar[] dataDevolucaoEfetiva,
 			EmprestavelVO[] emprestavel) {
 
 		// Verifica se os dados estão consistentes
@@ -505,8 +508,8 @@ public class EmprestimoBO extends OperacaoBO {
 				}
 
 				// Altera o empréstimo no arquivo
-				if (EmprestimoBO.pesquisar(emprestimo) != null) {
-					EmprestimoBO.alterar(emprestimo);
+				if (emprestimoBO.pesquisar(emprestimo) != null) {
+					emprestimoBO.alterar(emprestimo);
 				}
 			} else {
 				System.out.println("Dados inconsistentes!");
@@ -514,8 +517,8 @@ public class EmprestimoBO extends OperacaoBO {
 		}
 	}
 
-	public static void gerarRelatorio(Calendar dataInicio, Calendar dataFim) {
-		EmprestimoVO[] emprestimos = EmprestimoDAO.listar();
+	public void gerarRelatorio(Calendar dataInicio, Calendar dataFim) {
+		EmprestimoVO[] emprestimos = emprestimoDAO.listar();
 		ArrayList<EmprestimoVO> emprestimosValidos = new ArrayList<EmprestimoVO>();
 		int numeroEmprestimos = emprestimos.length;
 
@@ -534,8 +537,8 @@ public class EmprestimoBO extends OperacaoBO {
 		}
 	}
 
-	public static void gerarRelatorioCliente(ClienteVO cliente, Calendar dataInicio, Calendar dataFim) {
-		EmprestimoVO[] emprestimos = EmprestimoDAO.listar();
+	public void gerarRelatorioCliente(ClienteVO cliente, Calendar dataInicio, Calendar dataFim) {
+		EmprestimoVO[] emprestimos = emprestimoDAO.listar();
 		ArrayList<EmprestimoVO> emprestimosValidos = new ArrayList<EmprestimoVO>();
 		int numeroEmprestimos = emprestimos.length;
 
@@ -554,7 +557,7 @@ public class EmprestimoBO extends OperacaoBO {
 		}
 	}
 
-	public static float simularMulta(Calendar dataDevolucaoProposta, Calendar[] dataDevolucaoEfetiva,
+	public float simularMulta(Calendar dataDevolucaoProposta, Calendar[] dataDevolucaoEfetiva,
 			EmprestavelVO[] emprestavel) {
 		float somaMultas = 0;
 
@@ -601,7 +604,7 @@ public class EmprestimoBO extends OperacaoBO {
 		return somaMultas;
 	}
 
-	public static float simularEmprestimo(int[] quantidade, Calendar dataEmprestimo, Calendar[] dataDevolucaoProposta,
+	public float simularEmprestimo(int[] quantidade, Calendar dataEmprestimo, Calendar[] dataDevolucaoProposta,
 			EmprestavelVO[] emprestavel) {
 		float valorTotal = 0;
 

@@ -8,35 +8,35 @@ import java.util.ArrayList;
 import br.edu.ufersa.ropke.model.VO.DiscoVO;
 import br.edu.ufersa.ropke.model.VO.EmprestavelVO;
 
-public class DiscoDAO extends EmprestavelDAO {
+public class DiscoDAO extends EmprestavelDAO<DiscoVO> {
 	private static final File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/discos.dat");
 
-	public static File getArquivo() {
+	public File getArquivo() {
 		return arquivo;
 	}
 
-	public static void cadastrar(DiscoVO disco) {
-		EmprestavelDAO.cadastrar(disco, arquivo);
+	public void cadastrar(DiscoVO disco) {
+		super.cadastrar(disco, arquivo);
 	}
 
-	public static void alterar(DiscoVO disco) {
-		EmprestavelDAO.alterar(disco, arquivo);
+	public void alterar(DiscoVO disco) {
+		super.alterar(disco, arquivo);
 	}
 
-	public static void deletar(DiscoVO disco) {
-		EmprestavelDAO.deletar(disco, arquivo);
+	public void deletar(DiscoVO disco) {
+		super.deletar(disco, arquivo);
 	}
 
-	public static void pesquisar() {
-		EmprestavelDAO.pesquisar(arquivo);
+	public void pesquisar() {
+		super.pesquisar(arquivo);
 	}
 
-	public static DiscoVO pesquisar(DiscoVO disco) {
-		return (DiscoVO) EmprestavelDAO.pesquisar(disco, arquivo);
+	public DiscoVO pesquisar(DiscoVO disco) {
+		return super.pesquisar(disco, arquivo);
 	}
 
-	public static DiscoVO[] pesquisarTitulo(String titulo) {
-		EmprestavelVO[] emprestaveis = EmprestavelDAO.pesquisarTitulo(titulo, arquivo);
+	public DiscoVO[] pesquisarTitulo(String titulo) {
+		EmprestavelVO[] emprestaveis = super.pesquisarTitulo(titulo, arquivo);
 		int tamanhoVetorEmprestaveis = emprestaveis.length;
 
 		DiscoVO[] discos = new DiscoVO[tamanhoVetorEmprestaveis];
@@ -49,8 +49,8 @@ public class DiscoDAO extends EmprestavelDAO {
 		return discos;
 	}
 
-	public static DiscoVO[] pesquisarAnoLancamento(int anoLancamento) {
-		EmprestavelVO[] emprestaveis = EmprestavelDAO.pesquisarAnoLancamento(anoLancamento, arquivo);
+	public DiscoVO[] pesquisarAnoLancamento(int anoLancamento) {
+		EmprestavelVO[] emprestaveis = super.pesquisarAnoLancamento(anoLancamento, arquivo);
 		int tamanhoVetorEmprestaveis = emprestaveis.length;
 
 		DiscoVO[] discos = new DiscoVO[tamanhoVetorEmprestaveis];
@@ -63,7 +63,7 @@ public class DiscoDAO extends EmprestavelDAO {
 		return discos;
 	}
 
-	public static DiscoVO[] pesquisarBanda(String banda) {
+	public DiscoVO[] pesquisarBanda(String banda) {
 		try {
 			ArrayList<DiscoVO> discos = new ArrayList<DiscoVO>();
 
@@ -106,7 +106,7 @@ public class DiscoDAO extends EmprestavelDAO {
 		return semDiscos;
 	}
 
-	public static DiscoVO[] pesquisarEstilo(String estilo) {
+	public DiscoVO[] pesquisarEstilo(String estilo) {
 		try {
 			ArrayList<DiscoVO> discos = new ArrayList<DiscoVO>();
 

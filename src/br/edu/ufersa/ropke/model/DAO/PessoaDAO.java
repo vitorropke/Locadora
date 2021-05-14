@@ -9,8 +9,9 @@ import java.util.ArrayList;
 
 import br.edu.ufersa.ropke.model.VO.PessoaVO;
 
-public abstract class PessoaDAO extends OperacaoDAO {
-	public static void cadastrar(PessoaVO pessoa, File arquivo) {
+public class PessoaDAO<VO extends PessoaVO> extends OperacaoDAO<VO> {
+	@Override
+	public void cadastrar(VO pessoa, File arquivo) {
 		try {
 			FileOutputStream arquivoGravador = new FileOutputStream(arquivo, true);
 			// Classe responsável por inserir os objetos
@@ -21,12 +22,16 @@ public abstract class PessoaDAO extends OperacaoDAO {
 			objetoGravador.flush();
 			arquivoGravador.close();
 			objetoGravador.close();
+
+			System.out.println("Objeto gravado com sucesso!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void alterar(PessoaVO pessoa, File arquivo) {
+	@SuppressWarnings("unchecked")
+	@Override
+	public void alterar(VO pessoa, File arquivo) {
 		try {
 			ArrayList<PessoaVO> pessoas = new ArrayList<PessoaVO>();
 
@@ -35,13 +40,13 @@ public abstract class PessoaDAO extends OperacaoDAO {
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
 				ObjectInputStream objetoLeitura;
-				PessoaVO pessoaLeitura;
+				VO pessoaLeitura;
 
 				while (arquivoLeitura.available() > 0) {
 					// Classe responsável por recuperar os objetos do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					pessoaLeitura = (PessoaVO) objetoLeitura.readObject();
+					pessoaLeitura = (VO) objetoLeitura.readObject();
 
 					// Compara as pessoas pelo CPF delas
 					if (pessoaLeitura.getCpf().equals(pessoa.getCpf())) {
@@ -72,12 +77,16 @@ public abstract class PessoaDAO extends OperacaoDAO {
 			}
 
 			arquivoGravador.close();
+
+			System.out.println("Objeto alterado com sucesso!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void deletar(PessoaVO pessoa, File arquivo) {
+	@SuppressWarnings("unchecked")
+	@Override
+	public void deletar(VO pessoa, File arquivo) {
 		try {
 			ArrayList<PessoaVO> pessoas = new ArrayList<PessoaVO>();
 
@@ -85,13 +94,13 @@ public abstract class PessoaDAO extends OperacaoDAO {
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
 				ObjectInputStream objetoLeitura;
-				PessoaVO pessoaLeitura;
+				VO pessoaLeitura;
 
 				while (arquivoLeitura.available() > 0) {
 					// Classe responsável por recuperar os objetos do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					pessoaLeitura = (PessoaVO) objetoLeitura.readObject();
+					pessoaLeitura = (VO) objetoLeitura.readObject();
 
 					// Compara as pessoas pelo CPF delas
 					if (!pessoaLeitura.getCpf().equals(pessoa.getCpf())) {
@@ -119,24 +128,28 @@ public abstract class PessoaDAO extends OperacaoDAO {
 			}
 
 			arquivoGravador.close();
+
+			System.out.println("Objeto apagado com sucesso!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void pesquisar(File arquivo) {
+	@SuppressWarnings("unchecked")
+	@Override
+	public void pesquisar(File arquivo) {
 		try {
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
 				ObjectInputStream objetoLeitura;
-				PessoaVO pessoa;
+				VO pessoa;
 				int indicePessoa = 1;
 
 				while (arquivoLeitura.available() > 0) {
 					// Classe responsável por recuperar os objetos do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					pessoa = (PessoaVO) objetoLeitura.readObject();
+					pessoa = (VO) objetoLeitura.readObject();
 					System.out.println("\nPessoa " + indicePessoa + '\n');
 					System.out.println(pessoa.toString());
 					System.out.println("-----------------------------------------");
@@ -152,7 +165,9 @@ public abstract class PessoaDAO extends OperacaoDAO {
 		}
 	}
 
-	public static PessoaVO pesquisar(PessoaVO pessoa, File arquivo) {
+	@SuppressWarnings("unchecked")
+	@Override
+	public VO pesquisar(VO pessoa, File arquivo) {
 		try {
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
@@ -162,13 +177,13 @@ public abstract class PessoaDAO extends OperacaoDAO {
 				cpf = pessoa.getCpf().replaceAll("\\D+", "");
 
 				ObjectInputStream objetoLeitura;
-				PessoaVO pessoaLeitura;
+				VO pessoaLeitura;
 
 				while (arquivoLeitura.available() > 0) {
 					// Classe responsável por recuperar os objetos do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					pessoaLeitura = (PessoaVO) objetoLeitura.readObject();
+					pessoaLeitura = (VO) objetoLeitura.readObject();
 
 					// Retorna a pessoa quando obter o mesmo cpf
 					if (pessoaLeitura.getCpf().equals(cpf)) {

@@ -7,34 +7,34 @@ import java.util.ArrayList;
 
 import br.edu.ufersa.ropke.model.VO.ClienteVO;
 
-public class ClienteDAO extends PessoaDAO {
+public class ClienteDAO extends PessoaDAO<ClienteVO> {
 	private static final File arquivo = new File("src/br/edu/ufersa/ropke/model/DAO/arquivos/clientes.dat");
 
 	public static File getArquivo() {
 		return arquivo;
 	}
 
-	public static void cadastrar(ClienteVO cliente) {
-		PessoaDAO.cadastrar(cliente, arquivo);
+	public void cadastrar(ClienteVO cliente) {
+		super.cadastrar(cliente, arquivo);
 	}
 
-	public static void alterar(ClienteVO cliente) {
-		PessoaDAO.alterar(cliente, arquivo);
+	public void alterar(ClienteVO cliente) {
+		super.alterar(cliente, arquivo);
 	}
 
-	public static void deletar(ClienteVO cliente) {
-		PessoaDAO.deletar(cliente, arquivo);
+	public void deletar(ClienteVO cliente) {
+		super.deletar(cliente, arquivo);
 	}
 
-	public static void pesquisar() {
-		PessoaDAO.pesquisar(arquivo);
+	public void pesquisar() {
+		super.pesquisar(arquivo);
 	}
 
-	public static ClienteVO pesquisar(ClienteVO cliente) {
-		return (ClienteVO) PessoaDAO.pesquisar(cliente, arquivo);
+	public ClienteVO pesquisar(ClienteVO cliente) {
+		return super.pesquisar(cliente, arquivo);
 	}
 
-	public static ClienteVO[] pesquisarNome(String nome) {
+	public ClienteVO[] pesquisarNome(String nome) {
 		try {
 			ArrayList<ClienteVO> clientes = new ArrayList<ClienteVO>();
 
@@ -76,7 +76,7 @@ public class ClienteDAO extends PessoaDAO {
 		return semClientes;
 	}
 
-	public static ClienteVO pesquisarCpf(String cpf) {
+	public ClienteVO pesquisarCpf(String cpf) {
 		try {
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
