@@ -1,12 +1,12 @@
 package br.edu.ufersa.ropke.locadoramaven.view;
 
 public enum View {
-	LOGIN("login.fxml"), PRINCIPAL("principal.fxml");
+	LOGIN("login.fxml"), ALTERA_SENHA("altera_senha.fxml"), PRINCIPAL_GERENTE("principal_gerente.fxml"),
+	PRINCIPAL_FUNCIONARIO("principal_funcionario.fxml"), LIVRO("livro.fxml"), DISCO("disco.fxml");
 
 	private String nomeArquivo;
 
 	View(String tela) {
-		// TODO Auto-generated constructor stub
 		setNomeArquivo(tela);
 	}
 

@@ -14,7 +14,7 @@ import br.edu.ufersa.ropke.locadoramaven.model.VO.EmprestimoVO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.LivroVO;
 
 public class EmprestimoBO {
-	EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
+	private EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
 
 	public boolean isNull(EmprestimoVO emprestimo) {
 		// Verifica se a entrada de argumento não é nula
@@ -86,7 +86,7 @@ public class EmprestimoBO {
 		}
 	}
 
-	public EmprestimoVO[] listar() {
+	public ArrayList<EmprestimoVO> listar() {
 		return emprestimoDAO.listar();
 	}
 
@@ -531,15 +531,15 @@ public class EmprestimoBO {
 	}
 
 	public void gerarRelatorio(Calendar dataInicio, Calendar dataFim) {
-		EmprestimoVO[] emprestimos = emprestimoDAO.listar();
+		ArrayList<EmprestimoVO> emprestimos = emprestimoDAO.listar();
 		ArrayList<EmprestimoVO> emprestimosValidos = new ArrayList<EmprestimoVO>();
-		int numeroEmprestimos = emprestimos.length;
+		int numeroEmprestimos = emprestimos.size();
 
 		// Obtém os empréstimos válidos
 		for (int i = 0; i < numeroEmprestimos; i++) {
-			if (emprestimos[i].getDataEmprestimo().after(dataInicio)
-					&& emprestimos[i].getDataEmprestimo().before(dataFim)) {
-				emprestimosValidos.add(emprestimos[i]);
+			if (emprestimos.get(i).getDataEmprestimo().after(dataInicio)
+					&& emprestimos.get(i).getDataEmprestimo().before(dataFim)) {
+				emprestimosValidos.add(emprestimos.get(i));
 			}
 		}
 
@@ -551,15 +551,16 @@ public class EmprestimoBO {
 	}
 
 	public void gerarRelatorioCliente(ClienteVO cliente, Calendar dataInicio, Calendar dataFim) {
-		EmprestimoVO[] emprestimos = emprestimoDAO.listar();
+		ArrayList<EmprestimoVO> emprestimos = emprestimoDAO.listar();
 		ArrayList<EmprestimoVO> emprestimosValidos = new ArrayList<EmprestimoVO>();
-		int numeroEmprestimos = emprestimos.length;
+		int numeroEmprestimos = emprestimos.size();
 
 		// Obtém os empréstimos válidos
 		for (int i = 0; i < numeroEmprestimos; i++) {
-			if (emprestimos[i].getCliente().equals(cliente) && emprestimos[i].getDataEmprestimo().after(dataInicio)
-					&& emprestimos[i].getDataEmprestimo().before(dataFim)) {
-				emprestimosValidos.add(emprestimos[i]);
+			if (emprestimos.get(i).getCliente().equals(cliente)
+					&& emprestimos.get(i).getDataEmprestimo().after(dataInicio)
+					&& emprestimos.get(i).getDataEmprestimo().before(dataFim)) {
+				emprestimosValidos.add(emprestimos.get(i));
 			}
 		}
 

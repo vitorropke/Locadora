@@ -1,10 +1,11 @@
 package br.edu.ufersa.ropke.locadoramaven.model.VO;
 
+import java.util.ArrayList;
+
 public abstract class UsuarioVO extends PessoaVO {
 	private static final long serialVersionUID = 1L;
-	
+
 	// Variáveis
-	private static boolean tipoUsuario; // false = funcionário, true = gerente
 	private String login;
 	private String senha;
 
@@ -12,30 +13,24 @@ public abstract class UsuarioVO extends PessoaVO {
 	public UsuarioVO() {
 	}
 
-	public UsuarioVO(String login, String senha, boolean tipoUsuario, String nome, String cpf, String[] endereco) {
+	public UsuarioVO(String login, String senha, String nome, String cpf, ArrayList<String> endereco) {
 		super(nome, cpf, endereco);
-		// TODO Auto-generated constructor stub
 		setLogin(login);
 		setSenha(senha);
-		setTipoUsuario(tipoUsuario);
 	}
 
-	public UsuarioVO(String login, String senha, boolean tipoUsuario, String nome, String cpf, String[] endereco,
-			String[] email) {
+	public UsuarioVO(String login, String senha, String nome, String cpf, ArrayList<String> endereco,
+			ArrayList<String> email) {
 		super(nome, cpf, endereco, email);
-		// TODO Auto-generated constructor stub
 		setLogin(login);
 		setSenha(senha);
-		setTipoUsuario(tipoUsuario);
 	}
 
-	public UsuarioVO(String login, String senha, boolean tipoUsuario, String nome, String cpf, String[] endereco,
-			String[] email, String[] telefone) {
+	public UsuarioVO(String login, String senha, String nome, String cpf, ArrayList<String> endereco,
+			ArrayList<String> email, ArrayList<String> telefone) {
 		super(nome, cpf, endereco, email, telefone);
-		// TODO Auto-generated constructor stub
 		setLogin(login);
 		setSenha(senha);
-		setTipoUsuario(tipoUsuario);
 	}
 
 	// toString
@@ -45,7 +40,7 @@ public abstract class UsuarioVO extends PessoaVO {
 
 		usuario = "\nLogin:\t\t" + login;
 		usuario += "\nSenha:\t\t" + senha;
-		usuario += "\nTipo:\t\t" + tipoUsuario;
+
 		usuario += super.toString() + "\n";
 
 		return usuario;
@@ -57,7 +52,7 @@ public abstract class UsuarioVO extends PessoaVO {
 	}
 
 	public void setLogin(String login) {
-		if ((login != null) && (login != "")) {
+		if ((login != null) && (!login.isBlank())) {
 			this.login = login;
 		} else {
 			System.out.println("Login nao pode ser vazio!");
@@ -69,18 +64,10 @@ public abstract class UsuarioVO extends PessoaVO {
 	}
 
 	public void setSenha(String senha) {
-		if ((senha != null) && (senha != "")) {
+		if ((senha != null) && (!senha.isBlank())) {
 			this.senha = senha;
 		} else {
 			System.out.println("Senha nao pode ser vazia!");
 		}
-	}
-
-	public static boolean isTipoUsuario() {
-		return tipoUsuario;
-	}
-
-	public static void setTipoUsuario(boolean tipoUsuario) {
-		UsuarioVO.tipoUsuario = tipoUsuario;
 	}
 }

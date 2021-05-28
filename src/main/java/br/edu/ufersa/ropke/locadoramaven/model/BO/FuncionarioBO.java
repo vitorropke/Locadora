@@ -1,12 +1,13 @@
 package br.edu.ufersa.ropke.locadoramaven.model.BO;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import br.edu.ufersa.ropke.locadoramaven.model.DAO.FuncionarioDAO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.FuncionarioVO;
 
 public class FuncionarioBO extends UsuarioBO<FuncionarioVO> {
-	private static final File arquivo = FuncionarioDAO.getArquivo();
+	private final File arquivo = FuncionarioDAO.getArquivo();
 
 	public void cadastrar(FuncionarioVO funcionario) {
 		super.cadastrar(funcionario, arquivo);
@@ -24,7 +25,19 @@ public class FuncionarioBO extends UsuarioBO<FuncionarioVO> {
 		super.pesquisar(arquivo);
 	}
 
-	public boolean autenticar(FuncionarioVO funcionario, File arquivo, String login, String senha) {
-		return super.autenticar(funcionario, arquivo, login, senha);
+	public FuncionarioVO pesquisar(FuncionarioVO funcionario) {
+		return super.pesquisar(funcionario, arquivo);
+	}
+
+	public ArrayList<FuncionarioVO> listar() {
+		return super.listar(arquivo);
+	}
+
+	public FuncionarioVO pesquisarLogin(FuncionarioVO funcionario) {
+		return super.pesquisarLogin(funcionario, arquivo);
+	}
+
+	public boolean autenticar(FuncionarioVO funcionario) {
+		return super.autenticar(funcionario, arquivo);
 	}
 }

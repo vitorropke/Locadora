@@ -5,7 +5,7 @@ import java.util.Calendar;
 
 public abstract class EmprestavelVO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	// Variáveis
 	private String titulo;
 	private int numeroExemplares;
@@ -68,7 +68,7 @@ public abstract class EmprestavelVO implements Serializable {
 	}
 
 	public void setTitulo(String titulo) {
-		if ((titulo != null) && (titulo != "")) {
+		if ((titulo != null) && (!titulo.isBlank())) {
 			this.titulo = titulo;
 		} else {
 			System.out.println("Titulo nao pode ser vazio!");

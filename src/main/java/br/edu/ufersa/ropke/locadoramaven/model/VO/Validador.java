@@ -74,4 +74,24 @@ public class Validador {
 				Pattern.CASE_INSENSITIVE);
 		return EMAIL_REGEX.matcher(email).matches();
 	}
+
+	public static String telefoneValido(String telefone) {
+		if ((telefone.length() >= 10) && (telefone.length() <= 16)) {
+			// Reduz o telefone, removendo tudo que não é dígito
+			telefone = telefone.replaceAll("\\D+", "");
+
+			// Se o telefone possui o primeiro digito sendo 0
+			if (telefone.indexOf('0') == 0) {
+				// Remove-se esse 0 no início
+				telefone = telefone.substring(1);
+			}
+
+			// Se o telefone possui 10 ou 11 dígitos
+			if ((telefone.length() == 10) || (telefone.length() == 11)) {
+				return telefone;
+			}
+		}
+
+		return "";
+	}
 }

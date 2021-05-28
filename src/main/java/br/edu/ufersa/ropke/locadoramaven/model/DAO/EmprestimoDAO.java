@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.EmprestimoVO;
 
 public class EmprestimoDAO {
-	private static final File arquivo = new File("src/main/java/br/edu/ufersa/ropke/locadoramaven/model/DAO/arquivos/emprestimos.dat");
+	private static final File arquivo = new File(
+			"src/main/java/br/edu/ufersa/ropke/locadoramaven/model/DAO/arquivos/emprestimos.dat");
 
 	public static File getArquivo() {
 		return arquivo;
@@ -19,16 +20,16 @@ public class EmprestimoDAO {
 	public void cadastrar(EmprestimoVO emprestimo) {
 		try {
 			FileOutputStream arquivoGravador = new FileOutputStream(arquivo, true);
-			// Classe responsável por inserir os objetos
+			// Classe responsável por inserir o empréstimo
 			ObjectOutputStream objetoGravador = new ObjectOutputStream(arquivoGravador);
 
-			// Grava o objeto emprestimo no arquivo
+			// Grava o objeto empréstimo no arquivo
 			objetoGravador.writeObject(emprestimo);
 			objetoGravador.flush();
 			arquivoGravador.close();
 			objetoGravador.close();
 
-			System.out.println("Objeto gravado com sucesso!");
+			System.out.println("Emprestimo gravado com sucesso!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -38,25 +39,25 @@ public class EmprestimoDAO {
 		try {
 			ArrayList<EmprestimoVO> emprestimos = new ArrayList<EmprestimoVO>();
 
-			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
+			// Procura pelo empréstimo enquanto salva os outros em um vetor de empréstimos
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
 				ObjectInputStream objetoLeitura;
 				EmprestimoVO emprestimoLeitura;
 
 				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os objetos do arquivo
+					// Classe responsável por recuperar os empréstimos do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
 					emprestimoLeitura = (EmprestimoVO) objetoLeitura.readObject();
 
-					// Compara os emprestimos pelo id deles
+					// Compara os empréstimos pelo id deles
 					if (emprestimoLeitura.getIdEmprestimo() == (emprestimo.getIdEmprestimo())) {
-						// Quando for o objeto a ser alterado, insere no vetor, o objeto que vem do
-						// parâmetro do método 'alterar'
+						// Quando for o empréstimo a ser alterado, insere no vetor, o empréstimo que vem
+						// do parâmetro do método 'alterar'
 						emprestimos.add(emprestimo);
 					} else {
-						// Quando não for o emprestimo a ser alterado, insere do arquivo
+						// Quando não for o empréstimo a ser alterado, insere do arquivo
 						emprestimos.add(emprestimoLeitura);
 					}
 				}
@@ -69,17 +70,17 @@ public class EmprestimoDAO {
 			int tamanhoVetorEmprestimos = emprestimos.size();
 
 			for (int i = 0; i < tamanhoVetorEmprestimos; i++) {
-				// Classe responsável por inserir os objetos
+				// Classe responsável por inserir os empréstimos
 				objetoGravador = new ObjectOutputStream(arquivoGravador);
 
-				// Grava o objeto emprestimo no arquivo
+				// Grava o objeto empréstimo no arquivo
 				objetoGravador.writeObject(emprestimos.get(i));
 				objetoGravador.flush();
 			}
 
 			arquivoGravador.close();
 
-			System.out.println("Objeto alterado com sucesso!");
+			System.out.println("Emprestimo alterado com sucesso!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -89,22 +90,22 @@ public class EmprestimoDAO {
 		try {
 			ArrayList<EmprestimoVO> emprestimos = new ArrayList<EmprestimoVO>();
 
-			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
+			// Procura pelo empréstimo enquanto salva os outros em um vetor de empréstimos
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
 				ObjectInputStream objetoLeitura;
 				EmprestimoVO emprestimoLeitura;
 
 				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os objetos do arquivo
+					// Classe responsável por recuperar os empréstimos do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
 					emprestimoLeitura = (EmprestimoVO) objetoLeitura.readObject();
 
-					// Compara os emprestimos pelo id deles
+					// Compara os empréstimos pelo id deles
 					if (emprestimoLeitura.getIdEmprestimo() != (emprestimo.getIdEmprestimo())) {
 						// Quando não encontrar o empréstimo, insere no vetor
-						// Quando encontrar a empréstimo, não insere no vetor
+						// Quando encontrar o empréstimo, não insere no vetor
 						emprestimos.add(emprestimoLeitura);
 					}
 				}
@@ -117,17 +118,17 @@ public class EmprestimoDAO {
 			int tamanhoVetorEmprestimos = emprestimos.size();
 
 			for (int i = 0; i < tamanhoVetorEmprestimos; i++) {
-				// Classe responsável por inserir os objetos
+				// Classe responsável por inserir o empréstimo
 				objetoGravador = new ObjectOutputStream(arquivoGravador);
 
-				// Grava o objeto emprestimo no arquivo
+				// Grava o empréstimo no arquivo
 				objetoGravador.writeObject(emprestimos.get(i));
 				objetoGravador.flush();
 			}
 
 			arquivoGravador.close();
 
-			System.out.println("Objeto apagado com sucesso!");
+			System.out.println("Emprestimo apagado com sucesso!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -142,7 +143,7 @@ public class EmprestimoDAO {
 
 				int indiceEmprestimo = 1;
 				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os objetos do arquivo
+					// Classe responsável por recuperar os empréstimos do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
 					emprestimo = (EmprestimoVO) objetoLeitura.readObject();
@@ -153,8 +154,6 @@ public class EmprestimoDAO {
 				}
 
 				arquivoLeitura.close();
-			} else {
-				System.out.println("Sem emprestimos");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -169,12 +168,12 @@ public class EmprestimoDAO {
 				EmprestimoVO emprestimoLeitura;
 
 				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os objetos do arquivo
+					// Classe responsável por recuperar os empréstimos do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
 					emprestimoLeitura = (EmprestimoVO) objetoLeitura.readObject();
 
-					// Compara os emprestimos pelo id deles
+					// Compara os empréstimos pelo id deles
 					if (emprestimoLeitura.getIdEmprestimo() == (emprestimo.getIdEmprestimo())) {
 						arquivoLeitura.close();
 						objetoLeitura.close();
@@ -192,18 +191,17 @@ public class EmprestimoDAO {
 		return null;
 	}
 
-	public EmprestimoVO[] listar() {
-		try {
-			ArrayList<EmprestimoVO> emprestimos = new ArrayList<EmprestimoVO>();
+	public ArrayList<EmprestimoVO> listar() {
+		ArrayList<EmprestimoVO> emprestimos = new ArrayList<EmprestimoVO>();
 
-			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
+		try {
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
 				ObjectInputStream objetoLeitura;
 				EmprestimoVO emprestimoLeitura;
 
 				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os objetos do arquivo
+					// Classe responsável por recuperar os empréstimos do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
 					emprestimoLeitura = (EmprestimoVO) objetoLeitura.readObject();
@@ -213,21 +211,10 @@ public class EmprestimoDAO {
 
 				arquivoLeitura.close();
 			}
-
-			int numeroEmprestimos = emprestimos.size();
-			// Verifica se o vetor de empréstimos não é vazio
-			if (numeroEmprestimos != 0) {
-				// ArrayList empréstimos para vetor 'vetorEmprestimos'
-				EmprestimoVO[] vetorEmprestimos = new EmprestimoVO[numeroEmprestimos];
-				vetorEmprestimos = emprestimos.toArray(vetorEmprestimos);
-				return vetorEmprestimos;
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		System.out.println("Sem emprestimos");
-		EmprestimoVO[] semEmprestimos = new EmprestimoVO[0];
-		return semEmprestimos;
+		return emprestimos;
 	}
 }

@@ -1,7 +1,6 @@
 package br.edu.ufersa.ropke.locadoramaven.model.BO;
 
 import java.io.File;
-
 import br.edu.ufersa.ropke.locadoramaven.exception.InvalidParameterException;
 import br.edu.ufersa.ropke.locadoramaven.exception.NotFoundException;
 import br.edu.ufersa.ropke.locadoramaven.exception.FoundException;
@@ -9,7 +8,7 @@ import br.edu.ufersa.ropke.locadoramaven.model.DAO.PessoaDAO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.PessoaVO;
 
 public abstract class PessoaBO<VO extends PessoaVO> extends OperacaoBO<VO> {
-	private static PessoaDAO<PessoaVO> pessoaDAO = new PessoaDAO<PessoaVO>();
+	private PessoaDAO<VO> pessoaDAO = new PessoaDAO<VO>();
 
 	public boolean isNull(VO pessoa, File arquivo) {
 		// Verifica se a entrada de argumentos não é nula
@@ -68,21 +67,10 @@ public abstract class PessoaBO<VO extends PessoaVO> extends OperacaoBO<VO> {
 	}
 
 	@Override
-	public void pesquisar(File arquivo) {
-		// Verifica se a entrada de argumento não é nula
-		if (arquivo != null) {
-			pessoaDAO.pesquisar(arquivo);
-		} else {
-			throw new InvalidParameterException();
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
 	public VO pesquisar(VO pessoa, File arquivo) {
 		// Verifica se a entrada de argumentos não é nula
 		if (!isNull(pessoa, arquivo)) {
-			return (VO) pessoaDAO.pesquisar(pessoa, arquivo);
+			return pessoaDAO.pesquisar(pessoa, arquivo);
 		} else {
 			return null;
 		}

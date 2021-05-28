@@ -1,14 +1,14 @@
 package br.edu.ufersa.ropke.locadoramaven.model.BO;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import br.edu.ufersa.ropke.locadoramaven.model.DAO.DiscoDAO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.DiscoVO;
-import br.edu.ufersa.ropke.locadoramaven.model.VO.EmprestavelVO;
 
 public class DiscoBO extends EmprestavelBO<DiscoVO> {
-	private static final File arquivo = DiscoDAO.getArquivo();
-	private static DiscoDAO discoDAO = new DiscoDAO();
+	private final File arquivo = DiscoDAO.getArquivo();
+	private DiscoDAO discoDAO = new DiscoDAO();
 
 	public void cadastrar(DiscoVO disco) {
 		super.cadastrar(disco, arquivo);
@@ -30,49 +30,31 @@ public class DiscoBO extends EmprestavelBO<DiscoVO> {
 		return super.pesquisar(disco, arquivo);
 	}
 
-	public DiscoVO[] pesquisarTitulo(String titulo) {
-		EmprestavelVO[] emprestaveis = super.pesquisarTitulo(titulo, arquivo);
-		int tamanhoVetorEmprestaveis = emprestaveis.length;
-
-		DiscoVO[] discos = new DiscoVO[tamanhoVetorEmprestaveis];
-
-		// cast de cada posição do vetor emprestável para disco
-		for (int i = 0; i < tamanhoVetorEmprestaveis; i++) {
-			discos[i] = (DiscoVO) emprestaveis[i];
-		}
-
-		return discos;
+	public ArrayList<DiscoVO> listar() {
+		return super.listar(arquivo);
 	}
 
-	public DiscoVO[] pesquisarAnoLancamento(int anoLancamento) {
-		EmprestavelVO[] emprestaveis = super.pesquisarAnoLancamento(anoLancamento, arquivo);
-		int tamanhoVetorEmprestaveis = emprestaveis.length;
-
-		DiscoVO[] discos = new DiscoVO[tamanhoVetorEmprestaveis];
-
-		// cast de cada posição do vetor emprestável para disco
-		for (int i = 0; i < tamanhoVetorEmprestaveis; i++) {
-			discos[i] = (DiscoVO) emprestaveis[i];
-		}
-
-		return discos;
+	public ArrayList<DiscoVO> pesquisarTitulo(String titulo) {
+		return super.pesquisarTitulo(titulo, arquivo);
 	}
 
-	public DiscoVO[] pesquisarBanda(String banda) {
-		if (banda != null && banda != "") {
+	public ArrayList<DiscoVO> pesquisarAnoLancamento(int anoLancamento) {
+		return super.pesquisarAnoLancamento(anoLancamento, arquivo);
+	}
+
+	public ArrayList<DiscoVO> pesquisarBanda(String banda) {
+		if ((banda != null) && (!banda.isBlank())) {
 			return discoDAO.pesquisarBanda(banda);
 		} else {
-			DiscoVO[] semDiscos = new DiscoVO[0];
-			return semDiscos;
+			return new ArrayList<DiscoVO>();
 		}
 	}
 
-	public DiscoVO[] pesquisarEstilo(String estilo) {
-		if (estilo != null && estilo != "") {
+	public ArrayList<DiscoVO> pesquisarEstilo(String estilo) {
+		if ((estilo != null) && (!estilo.isBlank())) {
 			return discoDAO.pesquisarEstilo(estilo);
 		} else {
-			DiscoVO[] semDiscos = new DiscoVO[0];
-			return semDiscos;
+			return new ArrayList<DiscoVO>();
 		}
 	}
 }

@@ -5,31 +5,33 @@ import java.util.ArrayList;
 
 public abstract class PessoaVO implements Serializable {
 	private static final long serialVersionUID = 1L;
+
 	// Variáveis
 	private String nome;
 	private String cpf;
-	private String[] endereco;
-	private String[] email;
-	private String[] telefone;
+	private ArrayList<String> endereco = new ArrayList<String>();
+	private ArrayList<String> email = new ArrayList<String>();
+	private ArrayList<String> telefone = new ArrayList<String>();
 
 	// Construtores
 	public PessoaVO() {
 	}
 
-	public PessoaVO(String nome, String cpf, String[] endereco) {
+	public PessoaVO(String nome, String cpf, ArrayList<String> endereco) {
 		setNome(nome);
 		setCpf(cpf);
 		setEndereco(endereco);
 	}
 
-	public PessoaVO(String nome, String cpf, String[] endereco, String[] email) {
+	public PessoaVO(String nome, String cpf, ArrayList<String> endereco, ArrayList<String> email) {
 		setNome(nome);
 		setCpf(cpf);
 		setEndereco(endereco);
 		setEmail(email);
 	}
 
-	public PessoaVO(String nome, String cpf, String[] endereco, String[] email, String[] telefone) {
+	public PessoaVO(String nome, String cpf, ArrayList<String> endereco, ArrayList<String> email,
+			ArrayList<String> telefone) {
 		setNome(nome);
 		setCpf(cpf);
 		setEndereco(endereco);
@@ -45,60 +47,54 @@ public abstract class PessoaVO implements Serializable {
 		pessoa = "\nNome:\t\t" + nome;
 		pessoa += "\nCPF:\t\t" + cpf;
 		pessoa += "\n----------------------------------------------";
-		pessoa += "\nEnderecos:";
+		pessoa += "\nEnderecos:\n";
 
-		if (endereco != null) {
-			if (endereco.length == 0) {
-				pessoa += "\tSem enderecos\n";
-			} else {
-				for (int x = 0; x < endereco.length; x++) {
-					pessoa += "\t" + endereco[x] + "\n";
-				}
+		if (!endereco.isEmpty()) {
+			int numeroEnderecos = endereco.size();
+
+			for (int x = 0; x < numeroEnderecos; x++) {
+				pessoa += "\t\t" + endereco.get(x) + "\n";
 			}
 		} else {
-			pessoa += "\tSem enderecos\n";
+			pessoa += "\t\tSem enderecos\n";
 		}
 
 		pessoa += "\n----------------------------------------------";
-		pessoa += "\nEmails:";
+		pessoa += "\nEmails:\n";
 
-		if (email != null) {
-			if (email.length == 0) {
-				pessoa += "\t\tSem emails\n";
-			} else {
-				for (int x = 0; x < email.length; x++) {
-					pessoa += "\t\t" + email[x] + "\n";
-				}
+		if (!email.isEmpty()) {
+			int numeroEmails = email.size();
+
+			for (int x = 0; x < numeroEmails; x++) {
+				pessoa += "\t\t" + email.get(x) + "\n";
 			}
 		} else {
 			pessoa += "\t\tSem emails\n";
 		}
 
 		pessoa += "\n----------------------------------------------";
-		pessoa += "\nTelefones:";
+		pessoa += "\nTelefones:\n";
 
-		if (telefone != null) {
-			if (telefone.length == 0) {
-				pessoa += "\tSem telefones\n";
-			} else {
-				for (int x = 0; x < telefone.length; x++) {
-					pessoa += "\t(";
+		if (!telefone.isEmpty()) {
+			int numeroTelefones = telefone.size();
 
-					pessoa += telefone[x].substring(0, 2) + ") ";
+			for (int x = 0; x < numeroTelefones; x++) {
+				pessoa += "\t\t(";
 
-					if (telefone[x].length() == 11) {
-						pessoa += telefone[x].substring(2, 7);
-						pessoa += '-' + telefone[x].substring(7, 11);
-					} else {
-						pessoa += telefone[x].substring(2, 6);
-						pessoa += '-' + telefone[x].substring(6, 10);
-					}
+				pessoa += telefone.get(x).substring(0, 2) + ") ";
 
-					pessoa += "\n";
+				if (telefone.get(x).length() == 11) {
+					pessoa += telefone.get(x).substring(2, 7);
+					pessoa += '-' + telefone.get(x).substring(7, 11);
+				} else {
+					pessoa += telefone.get(x).substring(2, 6);
+					pessoa += '-' + telefone.get(x).substring(6, 10);
 				}
+
+				pessoa += "\n";
 			}
 		} else {
-			pessoa += "\tSem telefones\n";
+			pessoa += "\t\tSem telefones\n";
 		}
 
 		return pessoa;
@@ -110,7 +106,7 @@ public abstract class PessoaVO implements Serializable {
 	}
 
 	public void setNome(String nome) {
-		if ((nome != null) && (nome != "")) {
+		if ((nome != null) && (!nome.isBlank())) {
 			this.nome = nome;
 		} else {
 			System.out.println("Nome nao pode ser vazio!");
@@ -122,7 +118,7 @@ public abstract class PessoaVO implements Serializable {
 	}
 
 	public void setCpf(String cpf) {
-		if ((cpf != null) && (cpf != "")) {
+		if ((cpf != null) && (!cpf.isBlank())) {
 			if ((cpf.length() >= 11) && (cpf.length() <= 14)) {
 				// CPF deve ter tamanho entre 11 e 14
 				if (cpf.length() > 11) {
@@ -153,103 +149,81 @@ public abstract class PessoaVO implements Serializable {
 		}
 	}
 
-	public String[] getEndereco() {
+	public ArrayList<String> getEndereco() {
 		return endereco;
 	}
 
-	public void setEndereco(String[] endereco) {
-		if (endereco != null) {
+	public void setEndereco(ArrayList<String> endereco) {
+		if (!endereco.isEmpty()) {
 			ArrayList<String> enderecosValidos = new ArrayList<String>();
+			int numeroEnderecos = endereco.size();
 
 			// Insere somente endereços válidos
-			for (int x = 0; x < endereco.length; x++) {
-				if ((endereco[x] != null) && (endereco[x] != "")) {
-					enderecosValidos.add(endereco[x]);
+			for (int x = 0; x < numeroEnderecos; x++) {
+				if ((endereco.get(x) != null) && (!endereco.get(x).isBlank())) {
+					enderecosValidos.add(endereco.get(x));
 				} else {
 					System.out.println("Endereco nao pode ser vazio!");
 				}
 			}
 
-			// Verifica se existem endereços válidos
-			if (enderecosValidos.size() != 0) {
-				// ArrayList para vetor
-				String[] enderecos = new String[enderecosValidos.size()];
-				enderecos = enderecosValidos.toArray(enderecos);
-				this.endereco = enderecos;
+			// Se existirem endereços válidos, adicione-os
+			if (!enderecosValidos.isEmpty()) {
+				this.endereco = enderecosValidos;
 			} else {
 				System.out.println("Sem enderecos validos!");
-				String[] semEnderecos = new String[0];
-				this.endereco = semEnderecos;
 			}
 		} else {
 			System.out.println("Enderecos nao podem ser vazios!");
 		}
 	}
 
-	public String[] getEmail() {
+	public ArrayList<String> getEmail() {
 		return email;
 	}
 
-	public void setEmail(String[] email) {
-		if (email != null) {
+	public void setEmail(ArrayList<String> email) {
+		if (!email.isEmpty()) {
 			ArrayList<String> emailsValidos = new ArrayList<String>();
+			int numeroEmails = email.size();
 
 			// Insere somente emails válidos
-			for (int x = 0; x < email.length; x++) {
-				if ((email[x] != null) && (email[x] != "")) {
-					if (Validador.isEmail(email[x])) {
-						emailsValidos.add(email[x]);
-					} else {
-						System.out.println("Email invalido!");
-					}
+			for (int x = 0; x < numeroEmails; x++) {
+				if ((email.get(x) != null) && (!email.get(x).isBlank()) && Validador.isEmail(email.get(x))) {
+					emailsValidos.add(email.get(x));
 				} else {
 					System.out.println("Email nao pode ser vazio!");
 				}
 			}
 
-			// Verifica se existem emails válidos
-			if (emailsValidos.size() != 0) {
-				// ArrayList para vetor
-				String[] emails = new String[emailsValidos.size()];
-				emails = emailsValidos.toArray(emails);
-				this.email = emails;
+			// Se existirem emails válidos, adicione-os
+			if (!emailsValidos.isEmpty()) {
+				this.email = emailsValidos;
 			} else {
 				System.out.println("Sem emails validos!");
-				String[] semEmails = new String[0];
-				this.email = semEmails;
 			}
 		} else {
 			System.out.println("Emails nao podem ser vazios!");
 		}
 	}
 
-	public String[] getTelefone() {
+	public ArrayList<String> getTelefone() {
 		return telefone;
 	}
 
-	public void setTelefone(String[] telefone) {
-		if (telefone != null) {
+	public void setTelefone(ArrayList<String> telefone) {
+		if (!telefone.isEmpty()) {
 			ArrayList<String> telefonesValidos = new ArrayList<String>();
+			String telefoneAtual;
+			int numeroTelefones = telefone.size();
 
 			// Insere somente telefones válidos
-			for (int x = 0; x < telefone.length; x++) {
-				if ((telefone[x] != null) && (telefone[x] != "")) {
-					if ((telefone[x].length() >= 10) && (telefone[x].length() <= 16)) {
-						telefone[x] = telefone[x].replaceAll("\\D+", "");
-						// Reduz o telefone, removendo tudo que não é dígito
+			for (int x = 0; x < numeroTelefones; x++) {
+				if ((telefone.get(x) != null) && (!telefone.get(x).isBlank())) {
+					telefoneAtual = Validador.telefoneValido(telefone.get(x));
 
-						if (telefone[x].indexOf('0') == 0) {
-							// Se o telefone possui o primeiro digito sendo 0
-							telefone[x] = telefone[x].substring(1);
-							// Remove-se esse 0 no início
-						}
-
-						if ((telefone[x].length() == 10) || (telefone[x].length() == 11)) {
-							// Se o telefone possui 10 ou 11 dígitos
-							telefonesValidos.add(telefone[x]);
-						} else {
-							System.out.println("Telefone invalido!");
-						}
+					if (!telefoneAtual.isBlank()) {
+						telefonesValidos.add(telefoneAtual);
 					} else {
 						System.out.println("Telefone invalido!");
 					}
@@ -258,16 +232,11 @@ public abstract class PessoaVO implements Serializable {
 				}
 			}
 
-			// Verifica se existem telefones válidos
-			if (telefonesValidos.size() != 0) {
-				// ArrayList para vetor
-				String[] telefones = new String[telefonesValidos.size()];
-				telefones = telefonesValidos.toArray(telefones);
-				this.telefone = telefones;
+			// Se existirem telefones válidos, adicione-os
+			if (!telefonesValidos.isEmpty()) {
+				this.telefone = telefonesValidos;
 			} else {
 				System.out.println("Sem telefones validos!");
-				String[] semtelefones = new String[0];
-				this.telefone = semtelefones;
 			}
 		} else {
 			System.out.println("Telefones nao podem ser vazios!");

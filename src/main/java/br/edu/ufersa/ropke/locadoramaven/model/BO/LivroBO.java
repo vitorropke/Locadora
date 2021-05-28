@@ -1,14 +1,14 @@
 package br.edu.ufersa.ropke.locadoramaven.model.BO;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import br.edu.ufersa.ropke.locadoramaven.model.DAO.LivroDAO;
-import br.edu.ufersa.ropke.locadoramaven.model.VO.EmprestavelVO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.LivroVO;
 
 public class LivroBO extends EmprestavelBO<LivroVO> {
-	private static final File arquivo = LivroDAO.getArquivo();
-	private static LivroDAO livroDAO = new LivroDAO();
+	private final File arquivo = LivroDAO.getArquivo();
+	private LivroDAO livroDAO = new LivroDAO();
 
 	public void cadastrar(LivroVO livro) {
 		super.cadastrar(livro, arquivo);
@@ -30,40 +30,23 @@ public class LivroBO extends EmprestavelBO<LivroVO> {
 		return super.pesquisar(livro, arquivo);
 	}
 
-	public LivroVO[] pesquisarTitulo(String titulo) {
-		EmprestavelVO[] emprestaveis = super.pesquisarTitulo(titulo, arquivo);
-		int tamanhoVetorEmprestaveis = emprestaveis.length;
-
-		LivroVO[] livros = new LivroVO[tamanhoVetorEmprestaveis];
-
-		// cast de cada posição do vetor emprestável para livro
-		for (int i = 0; i < tamanhoVetorEmprestaveis; i++) {
-			livros[i] = (LivroVO) emprestaveis[i];
-		}
-
-		return livros;
+	public ArrayList<LivroVO> listar() {
+		return super.listar(arquivo);
 	}
 
-	public LivroVO[] pesquisarAnoLancamento(int anoLancamento) {
-		EmprestavelVO[] emprestaveis = super.pesquisarAnoLancamento(anoLancamento, arquivo);
-		int tamanhoVetorEmprestaveis = emprestaveis.length;
-
-		LivroVO[] livros = new LivroVO[tamanhoVetorEmprestaveis];
-
-		// cast de cada posição do vetor emprestável para livro
-		for (int i = 0; i < tamanhoVetorEmprestaveis; i++) {
-			livros[i] = (LivroVO) emprestaveis[i];
-		}
-
-		return livros;
+	public ArrayList<LivroVO> pesquisarTitulo(String titulo) {
+		return super.pesquisarTitulo(titulo, arquivo);
 	}
 
-	public LivroVO[] pesquisarGenero(String titulo) {
-		if (titulo != null && titulo != "") {
+	public ArrayList<LivroVO> pesquisarAnoLancamento(int anoLancamento) {
+		return super.pesquisarAnoLancamento(anoLancamento, arquivo);
+	}
+
+	public ArrayList<LivroVO> pesquisarGenero(String titulo) {
+		if ((titulo != null) && (!titulo.isBlank())) {
 			return livroDAO.pesquisarGenero(titulo);
 		} else {
-			LivroVO[] semLivros = new LivroVO[0];
-			return semLivros;
+			return new ArrayList<LivroVO>();
 		}
 	}
 }

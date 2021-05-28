@@ -1,18 +1,18 @@
 package br.edu.ufersa.ropke.locadoramaven.model.BO;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import br.edu.ufersa.ropke.locadoramaven.model.VO.ClienteVO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.DiscoVO;
+import br.edu.ufersa.ropke.locadoramaven.model.VO.EmprestavelVO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.EmprestimoVO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.FuncionarioVO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.GerenteVO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.LivroVO;
 
 public class MainBO {
-
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		EmprestimoVO emprestimo0 = new EmprestimoVO();
 		EmprestimoVO emprestimo1 = new EmprestimoVO();
 
@@ -48,9 +48,18 @@ public class MainBO {
 		telefones[0] = "(84) 99999-9999";
 		GerenteVO gerente1 = new GerenteVO("gen", "asds", "aaaa", "327.886.720-39", enderecos, emails, telefones);
 
-		DiscoVO[] discos = { disco1 };
-		LivroVO[] livros = { livro1, livro2 };
+		ArrayList<DiscoVO> discos = new ArrayList<DiscoVO>();
+		ArrayList<LivroVO> livros = new ArrayList<LivroVO>();
+		ArrayList<EmprestavelVO> emprestaveis = new ArrayList<EmprestavelVO>();
 		int[] quantidades = { 3, 1 };
+
+		discos.add(disco1);
+
+		livros.add(livro1);
+		livros.add(livro2);
+
+		emprestaveis.add(livro2);
+		emprestaveis.add(disco1);
 
 		// https://www.tutorialspoint.com/java/util/calendar_setfield4
 		// create a calendar
@@ -70,11 +79,11 @@ public class MainBO {
 		GerenteBO gerenteBO = new GerenteBO();
 		EmprestimoBO emprestimoBO = new EmprestimoBO();
 
-		emprestimoBO.alugar(emprestimo0, quantidades, datas, cliente1, livros);
+		// emprestimoBO.alugar(emprestimo0, quantidades, datas, cliente1, livros);
 
 		Calendar[] datas0 = { cal };
 		int[] quantidades0 = { 3 };
-		emprestimoBO.alugar(emprestimo0, quantidades0, datas0, cliente1, discos);
+		// emprestimoBO.alugar(emprestimo0, quantidades0, datas0, cliente1, discos);
 
 		System.out.println(emprestimo0);
 
@@ -82,8 +91,8 @@ public class MainBO {
 		LivroVO[] livros0 = { livro1, livro2 };
 		quantidades[0] = 3;
 		quantidades[1] = 1;
-		emprestimoBO.devolver(emprestimo0, quantidades, datas, livros0);
-		emprestimoBO.devolver(emprestimo0, quantidades0, datas0, discos);
+		// emprestimoBO.devolver(emprestimo0, quantidades, datas, livros0);
+		// emprestimoBO.devolver(emprestimo0, quantidades0, datas0, discos);
 
 		System.out.println(emprestimo0);
 		System.out.println(emprestimo1);
@@ -120,27 +129,27 @@ public class MainBO {
 		System.out.println(
 				"---------------------------------------Pesquisa titulo----------------------------------------");
 		livros = livroBO.pesquisarTitulo("em");
-		int numeroLivros = livros.length;
+		int numeroLivros = livros.size();
 		for (int i = 0; i < numeroLivros; i++) {
-			System.out.println(livros[i]);
+			System.out.println(livros.get(i));
 		}
 
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa genero----------------------------------------");
 		livros = livroBO.pesquisarGenero("acao");
-		numeroLivros = livros.length;
+		numeroLivros = livros.size();
 		for (int i = 0; i < numeroLivros; i++) {
-			System.out.println(livros[i]);
+			System.out.println(livros.get(i));
 		}
 
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa ano-------------------------------------------");
 		livros = livroBO.pesquisarAnoLancamento(1999);
-		numeroLivros = livros.length;
+		numeroLivros = livros.size();
 		for (int i = 0; i < numeroLivros; i++) {
-			System.out.println(livros[i]);
+			System.out.println(livros.get(i));
 		}
 
 		// Discos
@@ -169,36 +178,36 @@ public class MainBO {
 		System.out.println(
 				"---------------------------------------Pesquisa titulo----------------------------------------");
 		discos = discoBO.pesquisarTitulo("em");
-		int numeroDiscos = discos.length;
+		int numeroDiscos = discos.size();
 		for (int i = 0; i < numeroDiscos; i++) {
-			System.out.println(discos[i]);
+			System.out.println(discos.get(i));
 		}
 
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa banda-----------------------------------------");
 		discos = discoBO.pesquisarBanda("ssd");
-		numeroDiscos = discos.length;
+		numeroDiscos = discos.size();
 		for (int i = 0; i < numeroDiscos; i++) {
-			System.out.println(discos[i]);
+			System.out.println(discos.get(i));
 		}
 
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa estilo----------------------------------------");
 		discos = discoBO.pesquisarEstilo("pagode");
-		numeroDiscos = discos.length;
+		numeroDiscos = discos.size();
 		for (int i = 0; i < numeroDiscos; i++) {
-			System.out.println(discos[i]);
+			System.out.println(discos.get(i));
 		}
 
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa ano-------------------------------------------");
 		discos = discoBO.pesquisarAnoLancamento(2018);
-		numeroDiscos = discos.length;
+		numeroDiscos = discos.size();
 		for (int i = 0; i < numeroDiscos; i++) {
-			System.out.println(discos[i]);
+			System.out.println(discos.get(i));
 		}
 
 		// Clientes
@@ -273,14 +282,14 @@ public class MainBO {
 		System.out.println(
 				"------------------------------------------Emprestimos------------------------------------------");
 		System.out.println("\nEmprestimo\n");
-		//emprestimoBO.cadastrar(emprestimo1);
+		// emprestimoBO.cadastrar(emprestimo1);
 		emprestimoBO.pesquisar();
 
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Altera emprestimo 1----------------------------------------");
 		emprestimo1.setDataEmprestimo(cal);
-		//emprestimoBO.alterar(emprestimo1);
+		// emprestimoBO.alterar(emprestimo1);
 		emprestimoBO.pesquisar();
 
 		/*

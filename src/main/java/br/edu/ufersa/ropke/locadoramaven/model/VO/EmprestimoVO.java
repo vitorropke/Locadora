@@ -12,24 +12,39 @@ public class EmprestimoVO implements Serializable {
 	private static float faturamento = 0;
 	private long idEmprestimo;
 	private Calendar dataEmprestimo;
-	private Calendar[] dataDevolucaoLivro;
-	private Calendar[] dataDevolucaoDisco;
-	private LivroVO[] livro;
-	private DiscoVO[] disco;
-	private ArrayList<Calendar> dataDevolucao;
-	private ArrayList<EmprestavelVO> emprestavel;
-	private ArrayList<Integer> quantidadeEmprestavel;
-	private int[] quantidadeLivro;
-	private int[] quantidadeDisco;
+	private ArrayList<Calendar> dataDevolucao = new ArrayList<Calendar>();
+	private ArrayList<EmprestavelVO> emprestavel = new ArrayList<EmprestavelVO>();
+	private ArrayList<Integer> quantidadeEmprestavel = new ArrayList<Integer>();
 	private ClienteVO cliente;
 
 	// Construtores
 	public EmprestimoVO() {
-		// TODO Auto-generated constructor stub
 		Calendar dataAtual = Calendar.getInstance();
 
 		setIdEmprestimo(contadorId++);
 		setDataEmprestimo(dataAtual);
+	}
+
+	public EmprestimoVO(ArrayList<Calendar> dataDevolucao, ArrayList<EmprestavelVO> emprestavel,
+			ArrayList<Integer> quantidadeEmprestavel, ClienteVO cliente) {
+		Calendar dataAtual = Calendar.getInstance();
+
+		setIdEmprestimo(contadorId++);
+		setDataEmprestimo(dataAtual);
+		setDataDevolucao(dataDevolucao);
+		setEmprestavel(emprestavel);
+		setQuantidadeEmprestavel(quantidadeEmprestavel);
+		setCliente(cliente);
+	}
+
+	public EmprestimoVO(Calendar dataEmprestimo, ArrayList<Calendar> dataDevolucao,
+			ArrayList<EmprestavelVO> emprestavel, ArrayList<Integer> quantidadeEmprestavel, ClienteVO cliente) {
+		setIdEmprestimo(contadorId++);
+		setDataEmprestimo(dataEmprestimo);
+		setDataDevolucao(dataDevolucao);
+		setEmprestavel(emprestavel);
+		setQuantidadeEmprestavel(quantidadeEmprestavel);
+		setCliente(cliente);
 	}
 
 	// toString
@@ -48,69 +63,34 @@ public class EmprestimoVO implements Serializable {
 			emprestimo += "Nao definida";
 		}
 
-		emprestimo += "\n----------------------------------------------";
-		emprestimo += "\nData de devolucao de livros:\n";
+		emprestimo += "\n-----------------------------------------------------------------";
+		emprestimo += "\nData de devolucao de emprestaveis:\n";
 
-		if (dataDevolucaoLivro != null) {
-			if (dataDevolucaoLivro.length == 0) {
-				emprestimo += "\t\t\t\tSem livros\n";
-			} else {
-				for (int x = 0; x < dataDevolucaoLivro.length; x++) {
-					emprestimo += "\t\t\t\t" + dataDevolucaoLivro[x].getTime() + "\n";
-				}
+		if (!dataDevolucao.isEmpty()) {
+			int numeroDatasDevolucao = dataDevolucao.size();
+
+			for (int x = 0; x < numeroDatasDevolucao; x++) {
+				emprestimo += "\t\t\t\t" + dataDevolucao.get(x).getTime() + "\n";
 			}
 		} else {
-			emprestimo += "\t\t\t\tSem livros\n";
+			emprestimo += "\t\t\t\tSem emprestaveis\n";
 		}
 
-		emprestimo += "\n----------------------------------------------";
-		emprestimo += "\nData de devolucao de discos:\n";
+		emprestimo += "\n-----------------------------------------------------------------";
+		emprestimo += "\nEmprestaveis:\n";
 
-		if (dataDevolucaoDisco != null) {
-			if (dataDevolucaoDisco.length == 0) {
-				emprestimo += "\t\t\t\tSem discos\n";
-			} else {
-				for (int x = 0; x < dataDevolucaoDisco.length; x++) {
-					emprestimo += "\t\t\t\t" + dataDevolucaoDisco[x].getTime() + "\n";
-				}
+		if (!emprestavel.isEmpty()) {
+			int numeroEmprestaveis = emprestavel.size();
+
+			for (int x = 0; x < numeroEmprestaveis; x++) {
+				emprestimo += emprestavel.get(x).toString();
+				emprestimo += "\n-------------------------------";
 			}
 		} else {
-			emprestimo += "\t\t\t\tSem discos\n";
+			emprestimo += "\t\t\t\tSem emprestaveis\n";
 		}
 
-		emprestimo += "\n----------------------------------------------";
-		emprestimo += "\nLivros:\n";
-
-		if (livro != null) {
-			if (livro.length == 0) {
-				emprestimo += "\t\t\t\tSem livros\n";
-			} else {
-				for (int x = 0; x < livro.length; x++) {
-					emprestimo += livro[x].toString();
-					emprestimo += "\n-------------------------------";
-				}
-			}
-		} else {
-			emprestimo += "\t\t\t\tSem livros\n";
-		}
-
-		emprestimo += "\n----------------------------------------------";
-		emprestimo += "\nDiscos:\n";
-
-		if (disco != null) {
-			if (disco.length == 0) {
-				emprestimo += "\t\t\t\tSem discos\n";
-			} else {
-				for (int x = 0; x < disco.length; x++) {
-					emprestimo += disco[x];
-					emprestimo += "\n-------------------------------";
-				}
-			}
-		} else {
-			emprestimo += "\t\t\t\tSem discos\n";
-		}
-
-		emprestimo += "\n----------------------------------------------";
+		emprestimo += "\n-----------------------------------------------------------------";
 		emprestimo += "\nCliente:\n";
 
 		if (cliente != null) {
@@ -166,60 +146,22 @@ public class EmprestimoVO implements Serializable {
 		}
 	}
 
-	public Calendar[] getDataDevolucaoLivro() {
-		return dataDevolucaoLivro;
+	public ArrayList<Calendar> getDataDevolucao() {
+		return dataDevolucao;
 	}
 
-	public void setDataDevolucaoLivro(Calendar[] dataDevolucaoLivro) {
-		if (dataDevolucaoLivro != null) {
-			ArrayList<Calendar> datasValidas = new ArrayList<Calendar>();
+	public void setDataDevolucao(ArrayList<Calendar> dataDevolucao) {
+		if (!dataDevolucao.isEmpty()) {
+			// Obtêm a data atual
 			Calendar dataAtual = Calendar.getInstance();
-			// Obtem a data atual
-
-			// Insere somente endereços válidos
-			for (int x = 0; x < dataDevolucaoLivro.length; x++) {
-				if ((dataDevolucaoLivro[x] != null)) {
-					if (dataDevolucaoLivro[x].after(dataAtual)) {
-						datasValidas.add(dataDevolucaoLivro[x]);
-					} else {
-						System.out.println("Data de devolucao so pode ser no futuro!");
-					}
-				} else {
-					System.out.println("Data de devolucao nao pode ser vazia!");
-				}
-			}
-
-			// Verifica se existem endereços válidos
-			if (datasValidas.size() != 0) {
-				// ArrayList para vetor
-				Calendar[] dataDevolucaoLivros = new Calendar[datasValidas.size()];
-				dataDevolucaoLivros = datasValidas.toArray(dataDevolucaoLivros);
-				this.dataDevolucaoLivro = dataDevolucaoLivros;
-			} else {
-				System.out.println("Sem datas validas!");
-				Calendar[] semDatas = new Calendar[0];
-				this.dataDevolucaoLivro = semDatas;
-			}
-		} else {
-			System.out.println("Datas de devolucao nao podem ser vazias!");
-		}
-	}
-
-	public Calendar[] getDataDevolucaoDisco() {
-		return dataDevolucaoDisco;
-	}
-
-	public void setDataDevolucaoDisco(Calendar[] dataDevolucaoDisco) {
-		if (dataDevolucaoDisco != null) {
 			ArrayList<Calendar> datasValidas = new ArrayList<Calendar>();
-			Calendar dataAtual = Calendar.getInstance();
-			// Obtem a data atual
+			int numeroDatasDevolucao = dataDevolucao.size();
 
-			// Insere somente endereços válidos
-			for (int x = 0; x < dataDevolucaoDisco.length; x++) {
-				if ((dataDevolucaoDisco[x] != null)) {
-					if (dataDevolucaoDisco[x].after(dataAtual)) {
-						datasValidas.add(dataDevolucaoDisco[x]);
+			// Insere somente datas válidas
+			for (int x = 0; x < numeroDatasDevolucao; x++) {
+				if ((dataDevolucao.get(x) != null)) {
+					if (dataDevolucao.get(x).after(dataAtual)) {
+						datasValidas.add(dataDevolucao.get(x));
 					} else {
 						System.out.println("Data de devolucao so pode ser no futuro!");
 					}
@@ -228,151 +170,70 @@ public class EmprestimoVO implements Serializable {
 				}
 			}
 
-			// Verifica se existem endereços válidos
-			if (datasValidas.size() != 0) {
-				// ArrayList para vetor
-				Calendar[] dataDevolucaoDiscos = new Calendar[datasValidas.size()];
-				dataDevolucaoDiscos = datasValidas.toArray(dataDevolucaoDiscos);
-				this.dataDevolucaoDisco = dataDevolucaoDiscos;
+			// Se existirem datas válidas, adicione-as
+			if (!datasValidas.isEmpty()) {
+				this.dataDevolucao = datasValidas;
 			} else {
 				System.out.println("Sem datas validas!");
-				Calendar[] semDatas = new Calendar[0];
-				this.dataDevolucaoDisco = semDatas;
 			}
 		} else {
 			System.out.println("Datas de devolucao nao podem ser vazias!");
 		}
 	}
 
-	public LivroVO[] getLivro() {
-		return livro;
+	public ArrayList<EmprestavelVO> getEmprestavel() {
+		return emprestavel;
 	}
 
-	public void setLivro(LivroVO[] livro) {
-		if (livro != null) {
-			ArrayList<LivroVO> livrosValidos = new ArrayList<LivroVO>();
+	public void setEmprestavel(ArrayList<EmprestavelVO> emprestavel) {
+		if (!emprestavel.isEmpty()) {
+			ArrayList<EmprestavelVO> emprestaveisValidos = new ArrayList<EmprestavelVO>();
+			int numeroEmpestaveisValidos = emprestavel.size();
 
-			// Insere somente livros válidos
-			for (int x = 0; x < livro.length; x++) {
-				if (livro[x] != null) {
-					livrosValidos.add(livro[x]);
+			// Insere somente emprestáveis válidos
+			for (int x = 0; x < numeroEmpestaveisValidos; x++) {
+				if (emprestavel.get(x) != null) {
+					emprestaveisValidos.add(emprestavel.get(x));
 				} else {
-					System.out.println("Livro nao pode ser vazio!");
+					System.out.println("Emprestavel nao pode ser vazio!");
 				}
 			}
 
-			// Verifica se existem livros válidos
-			if (livrosValidos.size() != 0) {
-				// ArrayList para vetor
-				LivroVO[] livros = new LivroVO[livrosValidos.size()];
-				livros = livrosValidos.toArray(livros);
-				this.livro = livros;
+			// Se existirem emprestáveis válidos, adicione-os
+			if (!emprestaveisValidos.isEmpty()) {
+				this.emprestavel = emprestaveisValidos;
 			} else {
-				System.out.println("Sem livros validos!");
-				LivroVO[] semLivros = new LivroVO[0];
-				this.livro = semLivros;
+				System.out.println("Sem empestaveis validos!");
 			}
 		} else {
-			System.out.println("Livros nao podem ser vazios!");
+			System.out.println("Empestaveis nao podem ser vazios!");
 		}
 	}
 
-	public DiscoVO[] getDisco() {
-		return disco;
+	public ArrayList<Integer> getQuantidadeEmprestavel() {
+		return quantidadeEmprestavel;
 	}
 
-	public void setDisco(DiscoVO[] disco) {
-		if (disco != null) {
-			ArrayList<DiscoVO> discosValidos = new ArrayList<DiscoVO>();
+	public void setQuantidadeEmprestavel(ArrayList<Integer> quantidadeEmprestavel) {
+		if (!quantidadeEmprestavel.isEmpty()) {
+			ArrayList<Integer> quantidadesValidas = new ArrayList<Integer>();
+			int numeroQuantidadesEmprestavel = quantidadeEmprestavel.size();
 
-			// Insere somente discos válidos
-			for (int x = 0; x < disco.length; x++) {
-				if (disco[x] != null) {
-					discosValidos.add(disco[x]);
-				} else {
-					System.out.println("Disco nao pode ser vazio!");
-				}
-			}
-
-			// Verifica se existem discos válidos
-			if (discosValidos.size() != 0) {
-				// ArrayList para vetor
-				DiscoVO[] discos = new DiscoVO[discosValidos.size()];
-				discos = discosValidos.toArray(discos);
-				this.disco = discos;
-			} else {
-				System.out.println("Sem discos validos!");
-				DiscoVO[] semDiscos = new DiscoVO[0];
-				this.disco = semDiscos;
-			}
-		} else {
-			System.out.println("Discos nao podem ser vazios!");
-		}
-	}
-
-	public int[] getQuantidadeLivro() {
-		return quantidadeLivro;
-	}
-
-	public void setQuantidadeLivro(int[] quantidadeLivro) {
-		if (quantidadeLivro != null) {
-			// Procura valores maior que 0
-			int numeroValoresValidos = 0;
-			int indiceValoresValidos = 0;
-			for (int x = 0; x < quantidadeLivro.length; x++) {
-				if (quantidadeLivro[x] > 0) {
-					numeroValoresValidos++;
+			// Insere somente quantidades válidas
+			for (int x = 0; x < numeroQuantidadesEmprestavel; x++) {
+				if (quantidadeEmprestavel.get(x) > 0) {
+					quantidadesValidas.add(quantidadeEmprestavel.get(x));
 				} else {
 					System.out.println("Quantidade so pode ser maior que 0!");
 				}
 			}
 
-			// Criar vetor com número de valores maior que 0
-			int[] valoresValidos = new int[numeroValoresValidos];
-
-			// Insere valores maior que 0 no vetor 'valoresValidos'
-			for (int x = 0; x < quantidadeLivro.length; x++) {
-				if (quantidadeLivro[x] > 0) {
-					valoresValidos[indiceValoresValidos] = quantidadeLivro[x];
-					indiceValoresValidos++;
-				}
+			// Se existirem quantidades válidas, adicione-as
+			if (!quantidadesValidas.isEmpty()) {
+				this.quantidadeEmprestavel = quantidadesValidas;
+			} else {
+				System.out.println("Sem quantidades validas!");
 			}
-
-			this.quantidadeLivro = valoresValidos;
-		} else {
-			System.out.println("Quantidades nao podem ser vazias!");
-		}
-	}
-
-	public int[] getQuantidadeDisco() {
-		return quantidadeDisco;
-	}
-
-	public void setQuantidadeDisco(int[] quantidadeDisco) {
-		if (quantidadeDisco != null) {
-			// Procura valores maior que 0
-			int numeroValoresValidos = 0;
-			int indiceValoresValidos = 0;
-			for (int x = 0; x < quantidadeDisco.length; x++) {
-				if (quantidadeDisco[x] > 0) {
-					numeroValoresValidos++;
-				} else {
-					System.out.println("Quantidade so pode ser maior que 0!");
-				}
-			}
-
-			// Criar vetor com número de valores maior que 0
-			int[] valoresValidos = new int[numeroValoresValidos];
-
-			// Insere valores maior que 0 no vetor 'valoresValidos'
-			for (int x = 0; x < quantidadeDisco.length; x++) {
-				if (quantidadeDisco[x] > 0) {
-					valoresValidos[indiceValoresValidos] = quantidadeDisco[x];
-					indiceValoresValidos++;
-				}
-			}
-
-			this.quantidadeDisco = valoresValidos;
 		} else {
 			System.out.println("Quantidades nao podem ser vazias!");
 		}

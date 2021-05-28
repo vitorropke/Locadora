@@ -1,24 +1,24 @@
 package br.edu.ufersa.ropke.locadoramaven.model.VO;
 
+import java.util.ArrayList;
+
 public class ClienteVO extends PessoaVO {
 	private static final long serialVersionUID = 1L;
 
+	// Construtores
 	public ClienteVO() {
-		// TODO Auto-generated constructor stub
 	}
 
-	public ClienteVO(String nome, String cpf, String[] endereco) {
+	public ClienteVO(String nome, String cpf, ArrayList<String> endereco) {
 		super(nome, cpf, endereco);
-		// TODO Auto-generated constructor stub
 	}
 
-	public ClienteVO(String nome, String cpf, String[] endereco, String[] email) {
+	public ClienteVO(String nome, String cpf, ArrayList<String> endereco, ArrayList<String> email) {
 		super(nome, cpf, endereco, email);
-		// TODO Auto-generated constructor stub
 	}
 
-	public ClienteVO(String nome, String cpf, String[] endereco, String[] email, String[] telefone) {
+	public ClienteVO(String nome, String cpf, ArrayList<String> endereco, ArrayList<String> email,
+			ArrayList<String> telefone) {
 		super(nome, cpf, endereco, email, telefone);
-		// TODO Auto-generated constructor stub
 	}
 }

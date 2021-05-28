@@ -6,10 +6,10 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 import br.edu.ufersa.ropke.locadoramaven.model.VO.DiscoVO;
-import br.edu.ufersa.ropke.locadoramaven.model.VO.EmprestavelVO;
 
 public class DiscoDAO extends EmprestavelDAO<DiscoVO> {
-	private static final File arquivo = new File("src/main/java/br/edu/ufersa/ropke/locadoramaven/model/DAO/arquivos/discos.dat");
+	private static final File arquivo = new File(
+			"src/main/java/br/edu/ufersa/ropke/locadoramaven/model/DAO/arquivos/discos.dat");
 
 	public static File getArquivo() {
 		return arquivo;
@@ -35,46 +35,29 @@ public class DiscoDAO extends EmprestavelDAO<DiscoVO> {
 		return super.pesquisar(disco, arquivo);
 	}
 
-	public DiscoVO[] pesquisarTitulo(String titulo) {
-		EmprestavelVO[] emprestaveis = super.pesquisarTitulo(titulo, arquivo);
-		int tamanhoVetorEmprestaveis = emprestaveis.length;
-
-		DiscoVO[] discos = new DiscoVO[tamanhoVetorEmprestaveis];
-
-		// cast de cada posição do vetor emprestável para disco
-		for (int i = 0; i < tamanhoVetorEmprestaveis; i++) {
-			discos[i] = (DiscoVO) emprestaveis[i];
-		}
-
-		return discos;
+	public ArrayList<DiscoVO> listar() {
+		return super.listar(arquivo);
 	}
 
-	public DiscoVO[] pesquisarAnoLancamento(int anoLancamento) {
-		EmprestavelVO[] emprestaveis = super.pesquisarAnoLancamento(anoLancamento, arquivo);
-		int tamanhoVetorEmprestaveis = emprestaveis.length;
-
-		DiscoVO[] discos = new DiscoVO[tamanhoVetorEmprestaveis];
-
-		// cast de cada posição do vetor emprestável para disco
-		for (int i = 0; i < tamanhoVetorEmprestaveis; i++) {
-			discos[i] = (DiscoVO) emprestaveis[i];
-		}
-
-		return discos;
+	public ArrayList<DiscoVO> pesquisarTitulo(String titulo) {
+		return super.pesquisarTitulo(titulo, arquivo);
 	}
 
-	public DiscoVO[] pesquisarBanda(String banda) {
+	public ArrayList<DiscoVO> pesquisarAnoLancamento(int anoLancamento) {
+		return super.pesquisarAnoLancamento(anoLancamento, arquivo);
+	}
+
+	public ArrayList<DiscoVO> pesquisarBanda(String banda) {
+		ArrayList<DiscoVO> discos = new ArrayList<DiscoVO>();
+
 		try {
-			ArrayList<DiscoVO> discos = new ArrayList<DiscoVO>();
-
-			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
 				ObjectInputStream objetoLeitura;
 				DiscoVO discoLeitura;
 
 				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os objetos do arquivo
+					// Classe responsável por recuperar os discos do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
 					discoLeitura = (DiscoVO) objetoLeitura.readObject();
@@ -88,36 +71,24 @@ public class DiscoDAO extends EmprestavelDAO<DiscoVO> {
 
 				arquivoLeitura.close();
 			}
-
-			int numeroDiscos = discos.size();
-			// Verifica se o vetor de discos não é vazio
-			if (numeroDiscos != 0) {
-				// ArrayList discos para vetor 'vetorDiscos'
-				DiscoVO[] vetorDiscos = new DiscoVO[numeroDiscos];
-				vetorDiscos = discos.toArray(vetorDiscos);
-				return vetorDiscos;
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		System.out.println("Nao existem discos dessa banda");
-		DiscoVO[] semDiscos = new DiscoVO[0];
-		return semDiscos;
+		return discos;
 	}
 
-	public DiscoVO[] pesquisarEstilo(String estilo) {
-		try {
-			ArrayList<DiscoVO> discos = new ArrayList<DiscoVO>();
+	public ArrayList<DiscoVO> pesquisarEstilo(String estilo) {
+		ArrayList<DiscoVO> discos = new ArrayList<DiscoVO>();
 
-			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
+		try {
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
 				ObjectInputStream objetoLeitura;
 				DiscoVO discoLeitura;
 
 				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os objetos do arquivo
+					// Classe responsável por recuperar os discos do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
 					discoLeitura = (DiscoVO) objetoLeitura.readObject();
@@ -131,21 +102,10 @@ public class DiscoDAO extends EmprestavelDAO<DiscoVO> {
 
 				arquivoLeitura.close();
 			}
-
-			int numeroDiscos = discos.size();
-			// Verifica se o vetor de discos não é vazio
-			if (numeroDiscos != 0) {
-				// ArrayList discos para vetor 'vetorDiscos'
-				DiscoVO[] vetorDiscos = new DiscoVO[numeroDiscos];
-				vetorDiscos = discos.toArray(vetorDiscos);
-				return vetorDiscos;
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		System.out.println("Nao existem discos nesse estilo");
-		DiscoVO[] semDiscos = new DiscoVO[0];
-		return semDiscos;
+		return discos;
 	}
 }

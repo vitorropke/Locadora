@@ -1,13 +1,14 @@
 package br.edu.ufersa.ropke.locadoramaven.model.BO;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import br.edu.ufersa.ropke.locadoramaven.model.DAO.ClienteDAO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.ClienteVO;
 
 public class ClienteBO extends PessoaBO<ClienteVO> {
-	private static final File arquivo = ClienteDAO.getArquivo();
-	private static ClienteDAO clienteDAO = new ClienteDAO();
+	private final File arquivo = ClienteDAO.getArquivo();
+	private ClienteDAO clienteDAO = new ClienteDAO();
 
 	public void cadastrar(ClienteVO cliente) {
 		super.cadastrar(cliente, arquivo);
@@ -28,18 +29,21 @@ public class ClienteBO extends PessoaBO<ClienteVO> {
 	public ClienteVO pesquisar(ClienteVO cliente) {
 		return super.pesquisar(cliente, arquivo);
 	}
+	
+	public ArrayList<ClienteVO> listar() {
+		return super.listar(arquivo);
+	}
 
-	public ClienteVO[] pesquisarNome(String nome) {
-		if (nome != null && nome != "") {
+	public ArrayList<ClienteVO> pesquisarNome(String nome) {
+		if ((nome != null) && (!nome.isBlank())) {
 			return clienteDAO.pesquisarNome(nome);
 		} else {
-			ClienteVO[] semClientes = new ClienteVO[0];
-			return semClientes;
+			return new ArrayList<ClienteVO>();
 		}
 	}
 
-	public static ClienteVO pesquisarCpf(String cpf) {
-		if (cpf != null && cpf != "") {
+	public ClienteVO pesquisarCpf(String cpf) {
+		if ((cpf != null) && (!cpf.isBlank())) {
 			return clienteDAO.pesquisarCpf(cpf);
 		} else {
 			return null;

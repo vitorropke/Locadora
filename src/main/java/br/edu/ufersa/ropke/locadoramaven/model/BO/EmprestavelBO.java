@@ -1,6 +1,8 @@
 package br.edu.ufersa.ropke.locadoramaven.model.BO;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import br.edu.ufersa.ropke.locadoramaven.exception.InvalidParameterException;
 import br.edu.ufersa.ropke.locadoramaven.exception.NotFoundException;
@@ -9,7 +11,7 @@ import br.edu.ufersa.ropke.locadoramaven.model.DAO.EmprestavelDAO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.EmprestavelVO;
 
 public abstract class EmprestavelBO<VO extends EmprestavelVO> extends OperacaoBO<VO> {
-	private static EmprestavelDAO<EmprestavelVO> emprestavelDAO = new EmprestavelDAO<EmprestavelVO>();
+	private EmprestavelDAO<VO> emprestavelDAO = new EmprestavelDAO<VO>();
 
 	public boolean isNull(VO emprestavel, File arquivo) {
 		// Verifica se a entrada de argumentos não é nula
@@ -71,49 +73,32 @@ public abstract class EmprestavelBO<VO extends EmprestavelVO> extends OperacaoBO
 	}
 
 	@Override
-	public void pesquisar(File arquivo) {
-		if (arquivo != null) {
-			emprestavelDAO.pesquisar(arquivo);
-		} else {
-			throw new InvalidParameterException();
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
 	public VO pesquisar(VO emprestavel, File arquivo) {
 		// Verifica se a entrada de argumentos não é nula
 		if (!isNull(emprestavel, arquivo)) {
-			return (VO) emprestavelDAO.pesquisar(emprestavel, arquivo);
+			return emprestavelDAO.pesquisar(emprestavel, arquivo);
 		} else {
 			return null;
 		}
 	}
 
-	public EmprestavelVO[] pesquisarTitulo(String titulo, File arquivo) {
+	public ArrayList<VO> pesquisarTitulo(String titulo, File arquivo) {
 		// Verifica se a entrada de argumentos não é nula
-		if ((titulo != null) && (arquivo != null)) {
-			// Verifica se parâmetros importantes não são nulos
-			if ((titulo != "")) {
-				// Verifica se o emprestavel existe no sistema
-				return emprestavelDAO.pesquisarTitulo(titulo, arquivo);
-			} else {
-				EmprestavelVO[] semEmprestaveis = new EmprestavelVO[0];
-				return semEmprestaveis;
-			}
+		if ((titulo != null) && (!titulo.isBlank()) && (arquivo != null)) {
+			return emprestavelDAO.pesquisarTitulo(titulo, arquivo);
 		} else {
-			EmprestavelVO[] semEmprestaveis = new EmprestavelVO[0];
-			return semEmprestaveis;
+			return new ArrayList<VO>();
 		}
 	}
 
-	public EmprestavelVO[] pesquisarAnoLancamento(int anoLancamento, File arquivo) {
-		// Verifica se a entrada de argumentos não é nula
-		if (arquivo != null) {
+	public ArrayList<VO> pesquisarAnoLancamento(int anoLancamento, File arquivo) {
+		int anoAtual = Calendar.getInstance().get(Calendar.YEAR);
+
+		// Verifica se a entrada de argumentos é vaĺida
+		if ((anoLancamento <= anoAtual) && (arquivo != null)) {
 			return emprestavelDAO.pesquisarAnoLancamento(anoLancamento, arquivo);
 		} else {
-			EmprestavelVO[] semEmprestaveis = new EmprestavelVO[0];
-			return semEmprestaveis;
+			return new ArrayList<VO>();
 		}
 	}
 }

@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.ClienteVO;
 
 public class ClienteDAO extends PessoaDAO<ClienteVO> {
-	private static final File arquivo = new File("src/main/java/br/edu/ufersa/ropke/locadoramaven/model/DAO/arquivos/clientes.dat");
+	private static final File arquivo = new File(
+			"src/main/java/br/edu/ufersa/ropke/locadoramaven/model/DAO/arquivos/clientes.dat");
 
 	public static File getArquivo() {
 		return arquivo;
@@ -34,17 +35,21 @@ public class ClienteDAO extends PessoaDAO<ClienteVO> {
 		return super.pesquisar(cliente, arquivo);
 	}
 
-	public ClienteVO[] pesquisarNome(String nome) {
-		try {
-			ArrayList<ClienteVO> clientes = new ArrayList<ClienteVO>();
+	public ArrayList<ClienteVO> listar() {
+		return super.listar(arquivo);
+	}
 
+	public ArrayList<ClienteVO> pesquisarNome(String nome) {
+		ArrayList<ClienteVO> clientes = new ArrayList<ClienteVO>();
+
+		try {
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
 				ObjectInputStream objetoLeitura;
 				ClienteVO clienteLeitura;
 
 				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os objetos do arquivo
+					// Classe responsável por recuperar os clientes do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
 					clienteLeitura = (ClienteVO) objetoLeitura.readObject();
@@ -58,22 +63,11 @@ public class ClienteDAO extends PessoaDAO<ClienteVO> {
 
 				arquivoLeitura.close();
 			}
-
-			int numeroClientes = clientes.size();
-			// Verifica se o vetor de clientes não é vazio
-			if (numeroClientes != 0) {
-				// ArrayList clientes para vetor 'vetorClientes'
-				ClienteVO[] vetorClientes = new ClienteVO[numeroClientes];
-				vetorClientes = clientes.toArray(vetorClientes);
-				return vetorClientes;
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		System.out.println("Sem clientes com esse nome!");
-		ClienteVO[] semClientes = new ClienteVO[0];
-		return semClientes;
+		return clientes;
 	}
 
 	public ClienteVO pesquisarCpf(String cpf) {
@@ -87,7 +81,7 @@ public class ClienteDAO extends PessoaDAO<ClienteVO> {
 				cpf = cpf.replaceAll("\\D+", "");
 
 				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os objetos do arquivo
+					// Classe responsável por recuperar os clientes do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
 					clienteLeitura = (ClienteVO) objetoLeitura.readObject();

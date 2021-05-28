@@ -13,25 +13,22 @@ public class LivroVO extends EmprestavelVO {
 
 	public LivroVO(String titulo, String genero, int numeroPaginas, int anoLancamento, float valorAluguel) {
 		super(titulo, anoLancamento, valorAluguel);
-		// TODO Auto-generated constructor stub
-		this.genero = genero;
-		this.numeroPaginas = numeroPaginas;
+		setGenero(genero);
+		setNumeroPaginas(numeroPaginas);
 	}
 
 	public LivroVO(String titulo, String genero, int numeroPaginas, int numeroExemplares, int anoLancamento,
 			float valorAluguel) {
 		super(titulo, numeroExemplares, anoLancamento, valorAluguel);
-		// TODO Auto-generated constructor stub
-		this.genero = genero;
-		this.numeroPaginas = numeroPaginas;
+		setGenero(genero);
+		setNumeroPaginas(numeroPaginas);
 	}
 
 	public LivroVO(String titulo, String genero, int numeroPaginas, int numeroExemplares, int numeroEmprestimos,
 			int numeroDiasAlugado, int anoLancamento, float valorAluguel) {
 		super(titulo, numeroExemplares, numeroEmprestimos, numeroDiasAlugado, anoLancamento, valorAluguel);
-		// TODO Auto-generated constructor stub
-		this.genero = genero;
-		this.numeroPaginas = numeroPaginas;
+		setGenero(genero);
+		setNumeroPaginas(numeroPaginas);
 	}
 
 	// toString
@@ -52,7 +49,7 @@ public class LivroVO extends EmprestavelVO {
 	}
 
 	public void setGenero(String genero) {
-		if ((genero != null) && (genero != "")) {
+		if ((genero != null) && (!genero.isBlank())) {
 			this.genero = genero;
 		} else {
 			System.out.println("Genero nao pode ser vazio!");

@@ -1,16 +1,18 @@
 package br.edu.ufersa.ropke.locadoramaven.model.VO;
 
-public class MainVO {
+import java.util.ArrayList;
+import java.util.Calendar;
 
+public class MainVO {
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		String[] enderecos = { "rua 1" };
-		String[] emails = { "123abc@gmail.com" };
-		String[] telefones = { "(84) 3000-0000" };
-		// enderecos[0] = "";
-		// emails[0] = "";
-		// emails[1] = "";
-		// telefones[0] = "";
+		ArrayList<String> enderecos = new ArrayList<String>();
+		ArrayList<String> emails = new ArrayList<String>();
+		ArrayList<String> telefones = new ArrayList<String>();
+
+		enderecos.add("rua 1");
+		enderecos.add(null);
+		emails.add("123abc@gmail.com");
+		telefones.add("(84) 3000-0000");
 
 		// titulo, genero, numeroPaginas, 'numeroExemplares', 'numeroEmprestimos',
 		// 'numeroDiasAlugado', anoLancamento, valorAluguel
@@ -24,19 +26,44 @@ public class MainVO {
 		// nome, cpf, endereco, 'email', 'telefone'
 		ClienteVO cliente1 = new ClienteVO("joao", "19315322061", enderecos, emails, telefones);
 
+		enderecos.set(0, "rua 3");
+		enderecos.set(1, "avenida 20");
+		emails.set(0, "a@hotmail.com");
+		telefones.set(0, "(84) 0000-0000");
 		// login, senha, nome, cpf, endereco, 'email', 'telefone'
-		enderecos[0] = "rua 3";
-		emails[0] = "a@hotmail.com";
-		telefones[0] = "(84) 0000-0000";
 		FuncionarioVO funcionario1 = new FuncionarioVO("a", "vcdf", "Menino", "072.325.480-01", enderecos, emails,
 				telefones);
 
-		enderecos[0] = "rua 4";
-		emails[0] = "gen@gmail.com";
-		telefones[0] = "(84) 99999-9999";
+		enderecos.set(0, "rua 4");
+		emails.set(0, "a@hotmail.com");
+		telefones.set(0, "(84) 99999-9999");
+		// login, senha, nome, cpf, endereco, 'email', 'telefone'
 		GerenteVO gerente1 = new GerenteVO("gen", "asds", "aaaa", "327.886.720-39", enderecos, emails, telefones);
 
-		EmprestimoVO emprestimo1 = new EmprestimoVO();
+		Calendar dataAtual = Calendar.getInstance();
+		ArrayList<Calendar> datasDevolucao = new ArrayList<Calendar>();
+		ArrayList<EmprestavelVO> emprestaveis = new ArrayList<EmprestavelVO>();
+		ArrayList<Integer> quantidadesEmprestavel = new ArrayList<Integer>();
+
+		// https://www.tutorialspoint.com/java/util/calendar_setfield4
+		// create a calendar
+		Calendar cal = Calendar.getInstance();
+		Calendar cal0 = Calendar.getInstance();
+		// set the year, month, day, hour, minute, second
+		// the month starts with 0 and goes to 11
+		cal.set(2021, 5, 29, 04, 15, 20);
+		cal0.set(2021, 5, 1, 04, 15, 20);
+		datasDevolucao.add(cal);
+		datasDevolucao.add(cal0);
+
+		emprestaveis.add(livro1);
+		emprestaveis.add(disco1);
+
+		quantidadesEmprestavel.add(2);
+		quantidadesEmprestavel.add(1);
+		// dataEmprestimo, dataDevolucao, emprestavel, quantidadeEmprestavel, cliente
+		EmprestimoVO emprestimo1 = new EmprestimoVO(dataAtual, datasDevolucao, emprestaveis, quantidadesEmprestavel,
+				cliente1);
 
 		// Livros
 		System.out.println(

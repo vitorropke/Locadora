@@ -1,6 +1,7 @@
 package br.edu.ufersa.ropke.locadoramaven.model.DAO;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public interface OperacaoInterDAO<VO> {
 	public void cadastrar(VO entidade, File arquivo);
@@ -12,4 +13,6 @@ public interface OperacaoInterDAO<VO> {
 	public void pesquisar(File arquivo);
 
 	public VO pesquisar(VO entidade, File arquivo);
+
+	public ArrayList<VO> listar(File arquivo);
 }

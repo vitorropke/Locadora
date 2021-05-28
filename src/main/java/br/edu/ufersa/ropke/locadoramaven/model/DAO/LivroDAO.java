@@ -5,11 +5,11 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
-import br.edu.ufersa.ropke.locadoramaven.model.VO.EmprestavelVO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.LivroVO;
 
 public class LivroDAO extends EmprestavelDAO<LivroVO> {
-	private static final File arquivo = new File("src/main/java/br/edu/ufersa/ropke/locadoramaven/model/DAO/arquivos/livros.dat");
+	private static final File arquivo = new File(
+			"src/main/java/br/edu/ufersa/ropke/locadoramaven/model/DAO/arquivos/livros.dat");
 
 	public static File getArquivo() {
 		return arquivo;
@@ -35,46 +35,29 @@ public class LivroDAO extends EmprestavelDAO<LivroVO> {
 		return super.pesquisar(livro, arquivo);
 	}
 
-	public LivroVO[] pesquisarTitulo(String titulo) {
-		EmprestavelVO[] emprestaveis = super.pesquisarTitulo(titulo, arquivo);
-		int tamanhoVetorEmprestaveis = emprestaveis.length;
-
-		LivroVO[] livros = new LivroVO[tamanhoVetorEmprestaveis];
-
-		// cast de cada posição do vetor emprestável para livro
-		for (int i = 0; i < tamanhoVetorEmprestaveis; i++) {
-			livros[i] = (LivroVO) emprestaveis[i];
-		}
-
-		return livros;
+	public ArrayList<LivroVO> listar() {
+		return super.listar(arquivo);
 	}
 
-	public LivroVO[] pesquisarAnoLancamento(int anoLancamento) {
-		EmprestavelVO[] emprestaveis = super.pesquisarAnoLancamento(anoLancamento, arquivo);
-		int tamanhoVetorEmprestaveis = emprestaveis.length;
-
-		LivroVO[] livros = new LivroVO[tamanhoVetorEmprestaveis];
-
-		// cast de cada posição do vetor emprestável para livro
-		for (int i = 0; i < tamanhoVetorEmprestaveis; i++) {
-			livros[i] = (LivroVO) emprestaveis[i];
-		}
-
-		return livros;
+	public ArrayList<LivroVO> pesquisarTitulo(String titulo) {
+		return super.pesquisarTitulo(titulo, arquivo);
 	}
 
-	public LivroVO[] pesquisarGenero(String genero) {
+	public ArrayList<LivroVO> pesquisarAnoLancamento(int anoLancamento) {
+		return super.pesquisarAnoLancamento(anoLancamento, arquivo);
+	}
+
+	public ArrayList<LivroVO> pesquisarGenero(String genero) {
+		ArrayList<LivroVO> livros = new ArrayList<LivroVO>();
+
 		try {
-			ArrayList<LivroVO> livros = new ArrayList<LivroVO>();
-
-			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
 				ObjectInputStream objetoLeitura;
 				LivroVO livroLeitura;
 
 				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os objetos do arquivo
+					// Classe responsável por recuperar os livros do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
 					livroLeitura = (LivroVO) objetoLeitura.readObject();
@@ -88,21 +71,10 @@ public class LivroDAO extends EmprestavelDAO<LivroVO> {
 
 				arquivoLeitura.close();
 			}
-
-			int numeroLivros = livros.size();
-			// Verifica se o vetor de livros não é vazio
-			if (numeroLivros != 0) {
-				// ArrayList livros para vetor 'vetorLivros'
-				LivroVO[] vetorLivros = new LivroVO[numeroLivros];
-				vetorLivros = livros.toArray(vetorLivros);
-				return vetorLivros;
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		System.out.println("Sem livros nesse genero");
-		LivroVO[] semLivros = new LivroVO[0];
-		return semLivros;
+		return livros;
 	}
 }

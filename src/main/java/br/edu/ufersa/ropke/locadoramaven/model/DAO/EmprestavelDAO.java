@@ -10,50 +10,31 @@ import java.util.ArrayList;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.EmprestavelVO;
 
 public class EmprestavelDAO<VO extends EmprestavelVO> extends OperacaoDAO<VO> {
-	@Override
-	public void cadastrar(VO emprestavel, File arquivo) {
-		try {
-			FileOutputStream arquivoGravador = new FileOutputStream(arquivo, true);
-			// Classe responsável por inserir os objetos
-			ObjectOutputStream objetoGravador = new ObjectOutputStream(arquivoGravador);
-
-			// Grava o objeto emprestavel no arquivo
-			objetoGravador.writeObject(emprestavel);
-			objetoGravador.flush();
-			arquivoGravador.close();
-			objetoGravador.close();
-
-			System.out.println("Objeto gravado com sucesso!");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public void alterar(VO emprestavel, File arquivo) {
 		try {
-			ArrayList<EmprestavelVO> emprestaveis = new ArrayList<EmprestavelVO>();
+			ArrayList<VO> emprestaveis = new ArrayList<VO>();
 
-			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
+			// Procura pelo emprestável enquanto salva os outros em um vetor de emprestáveis
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
 				ObjectInputStream objetoLeitura;
 				VO emprestavelLeitura;
 
 				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os objetos do arquivo
+					// Classe responsável por recuperar os emprestáveis do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
 					emprestavelLeitura = (VO) objetoLeitura.readObject();
 
-					// Compara os emprestaveis pelo título deles
+					// Compara os emprestáveis pelo título deles
 					if (emprestavelLeitura.getTitulo().equals(emprestavel.getTitulo())) {
-						// Quando for o emprestavel a ser alterado, insere no vetor, o objeto que vem do
-						// parâmetro do método 'alterar'
+						// Quando for o emprestável a ser alterado, insere no vetor, o emprestável que
+						// vem do parâmetro do método 'alterar'
 						emprestaveis.add(emprestavel);
 					} else {
-						// Quando não for o emprestavel a ser alterado, insere do arquivo
+						// Quando não for o emprestável a ser alterado, insere do arquivo
 						emprestaveis.add(emprestavelLeitura);
 					}
 				}
@@ -61,23 +42,23 @@ public class EmprestavelDAO<VO extends EmprestavelVO> extends OperacaoDAO<VO> {
 				arquivoLeitura.close();
 			}
 
-			// Escrita com o objeto modificado
+			// Escrita com o emprestável modificado
 			FileOutputStream arquivoGravador = new FileOutputStream(arquivo);
 			ObjectOutputStream objetoGravador;
 			int tamanhoVetorEmprestaveis = emprestaveis.size();
 
 			for (int i = 0; i < tamanhoVetorEmprestaveis; i++) {
-				// Classe responsável por inserir os objetos
+				// Classe responsável por inserir os emprestáveis
 				objetoGravador = new ObjectOutputStream(arquivoGravador);
 
-				// Grava o objeto emprestavel no arquivo
+				// Grava o emprestável no arquivo
 				objetoGravador.writeObject(emprestaveis.get(i));
 				objetoGravador.flush();
 			}
 
 			arquivoGravador.close();
 
-			System.out.println("Objeto alterado com sucesso!");
+			System.out.println("Emprestavel alterado com sucesso!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -89,19 +70,19 @@ public class EmprestavelDAO<VO extends EmprestavelVO> extends OperacaoDAO<VO> {
 		try {
 			ArrayList<VO> emprestaveis = new ArrayList<VO>();
 
-			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
+			// Procura pelo emprestável enquanto salva os outros em um vetor de emprestáveis
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
 				ObjectInputStream objetoLeitura;
 				VO emprestavelLeitura;
 
 				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os objetos do arquivo
+					// Classe responsável por recuperar os emprestáveis do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
 					emprestavelLeitura = (VO) objetoLeitura.readObject();
 
-					// Compara os emprestaveis pelo título deles
+					// Compara os emprestáveis pelo título deles
 					if (!emprestavelLeitura.getTitulo().equals(emprestavel.getTitulo())) {
 						// Quando não encontrar o emprestável, insere no vetor
 						// Quando encontrar o emprestável, não insere no vetor
@@ -112,53 +93,23 @@ public class EmprestavelDAO<VO extends EmprestavelVO> extends OperacaoDAO<VO> {
 				arquivoLeitura.close();
 			}
 
-			// Escrita com o objeto removido
+			// Escrita com o emprestável removido
 			FileOutputStream arquivoGravador = new FileOutputStream(arquivo);
 			ObjectOutputStream objetoGravador;
 			int tamanhoVetorEmprestaveis = emprestaveis.size();
 
 			for (int i = 0; i < tamanhoVetorEmprestaveis; i++) {
-				// Classe responsável por inserir os objetos
+				// Classe responsável por inserir os emprestáveis
 				objetoGravador = new ObjectOutputStream(arquivoGravador);
 
-				// Grava o objeto emprestavel no arquivo
+				// Grava o emprestável no arquivo
 				objetoGravador.writeObject(emprestaveis.get(i));
 				objetoGravador.flush();
 			}
 
 			arquivoGravador.close();
 
-			System.out.println("Objeto apagado com sucesso!");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public void pesquisar(File arquivo) {
-		try {
-			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
-				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
-				ObjectInputStream objetoLeitura;
-				VO emprestavel;
-
-				int indiceEmprestavel = 1;
-				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os objetos do arquivo
-					objetoLeitura = new ObjectInputStream(arquivoLeitura);
-
-					emprestavel = (VO) objetoLeitura.readObject();
-					System.out.println("\nEmprestavel " + indiceEmprestavel + '\n');
-					System.out.println(emprestavel.toString());
-					System.out.println("-----------------------------------------");
-					indiceEmprestavel++;
-				}
-
-				arquivoLeitura.close();
-			} else {
-				System.out.println("Sem emprestaveis!");
-			}
+			System.out.println("Emprestavel apagado com sucesso!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -174,12 +125,12 @@ public class EmprestavelDAO<VO extends EmprestavelVO> extends OperacaoDAO<VO> {
 				VO emprestavelLeitura;
 
 				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os objetos do arquivo
+					// Classe responsável por recuperar os emprestáveis do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
 					emprestavelLeitura = (VO) objetoLeitura.readObject();
 
-					// Retorna o emprestavel quando obter o mesmo título
+					// Retorna o emprestável quando obter o mesmo título
 					if (emprestavelLeitura.getTitulo().equals(emprestavel.getTitulo())) {
 						arquivoLeitura.close();
 						objetoLeitura.close();
@@ -197,21 +148,21 @@ public class EmprestavelDAO<VO extends EmprestavelVO> extends OperacaoDAO<VO> {
 		return null;
 	}
 
-	public EmprestavelVO[] pesquisarTitulo(String titulo, File arquivo) {
-		try {
-			ArrayList<EmprestavelVO> emprestaveis = new ArrayList<EmprestavelVO>();
+	@SuppressWarnings("unchecked")
+	public ArrayList<VO> pesquisarTitulo(String titulo, File arquivo) {
+		ArrayList<VO> emprestaveis = new ArrayList<VO>();
 
-			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
+		try {
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
 				ObjectInputStream objetoLeitura;
-				EmprestavelVO emprestavelLeitura;
+				VO emprestavelLeitura;
 
 				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os objetos do arquivo
+					// Classe responsável por recuperar os emprestáveis do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					emprestavelLeitura = (EmprestavelVO) objetoLeitura.readObject();
+					emprestavelLeitura = (VO) objetoLeitura.readObject();
 
 					// Salva o emprestável no vetor quando parte do nome do título coincidir com o
 					// parâmetro
@@ -222,41 +173,30 @@ public class EmprestavelDAO<VO extends EmprestavelVO> extends OperacaoDAO<VO> {
 
 				arquivoLeitura.close();
 			}
-
-			int numeroEmprestaveis = emprestaveis.size();
-			// Verifica se o vetor de emprestáveis não é vazio
-			if (numeroEmprestaveis != 0) {
-				// ArrayList emprestaveis para vetor 'vetorEmprestaveis'
-				EmprestavelVO[] vetorEmprestaveis = new EmprestavelVO[numeroEmprestaveis];
-				vetorEmprestaveis = emprestaveis.toArray(vetorEmprestaveis);
-				return vetorEmprestaveis;
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		System.out.println("Sem emprestaveis com esse titulo");
-		EmprestavelVO[] semEmprestaveis = new EmprestavelVO[0];
-		return semEmprestaveis;
+		return emprestaveis;
 	}
 
-	public EmprestavelVO[] pesquisarAnoLancamento(int anoLancamento, File arquivo) {
-		try {
-			ArrayList<EmprestavelVO> emprestaveis = new ArrayList<EmprestavelVO>();
+	@SuppressWarnings("unchecked")
+	public ArrayList<VO> pesquisarAnoLancamento(int anoLancamento, File arquivo) {
+		ArrayList<VO> emprestaveis = new ArrayList<VO>();
 
-			// Procura pelo objeto enquanto salva os outros em um vetor de objetos
+		try {
 			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
 				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
 				ObjectInputStream objetoLeitura;
-				EmprestavelVO emprestavelLeitura;
+				VO emprestavelLeitura;
 
 				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os objetos do arquivo
+					// Classe responsável por recuperar os emprestáveis do arquivo
 					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-					emprestavelLeitura = (EmprestavelVO) objetoLeitura.readObject();
+					emprestavelLeitura = (VO) objetoLeitura.readObject();
 
-					// Salva o emprestável no vetor quando o ano for igual ao parametro
+					// Salva o emprestável no vetor quando o ano for igual ao parâmetro
 					if (emprestavelLeitura.getAnoLancamento() == anoLancamento) {
 						emprestaveis.add(emprestavelLeitura);
 					}
@@ -264,21 +204,10 @@ public class EmprestavelDAO<VO extends EmprestavelVO> extends OperacaoDAO<VO> {
 
 				arquivoLeitura.close();
 			}
-
-			int numeroEmprestaveis = emprestaveis.size();
-			// Verifica se o vetor de emprestáveis não é vazio
-			if (numeroEmprestaveis != 0) {
-				// ArrayList emprestaveis para vetor 'vetorEmprestaveis'
-				EmprestavelVO[] vetorEmprestaveis = new EmprestavelVO[numeroEmprestaveis];
-				vetorEmprestaveis = emprestaveis.toArray(vetorEmprestaveis);
-				return vetorEmprestaveis;
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		System.out.println("Sem emprestaveis nesse ano");
-		EmprestavelVO[] semEmprestaveis = new EmprestavelVO[0];
-		return semEmprestaveis;
+		return emprestaveis;
 	}
 }

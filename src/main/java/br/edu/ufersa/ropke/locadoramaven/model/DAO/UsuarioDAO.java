@@ -1,32 +1,40 @@
 package br.edu.ufersa.ropke.locadoramaven.model.DAO;
 
 import java.io.File;
-
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.UsuarioVO;
 
-public abstract class UsuarioDAO<VO extends UsuarioVO> extends PessoaDAO<VO> {
-	@Override
-	public void cadastrar(VO usuario, File arquivo) {
-		super.cadastrar(usuario, arquivo);
-	}
+public class UsuarioDAO<VO extends UsuarioVO> extends PessoaDAO<VO> {
+	@SuppressWarnings("unchecked")
+	public VO pesquisarLogin(VO usuario, File arquivo) {
+		try {
+			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
+				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
+				ObjectInputStream objetoLeitura;
+				VO usuarioLeitura;
 
-	@Override
-	public void alterar(VO usuario, File arquivo) {
-		super.alterar(usuario, arquivo);
-	}
+				while (arquivoLeitura.available() > 0) {
+					// Classe responsável por recuperar os usuários do arquivo
+					objetoLeitura = new ObjectInputStream(arquivoLeitura);
 
-	@Override
-	public void deletar(VO usuario, File arquivo) {
-		super.deletar(usuario, arquivo);
-	}
+					usuarioLeitura = (VO) objetoLeitura.readObject();
 
-	@Override
-	public void pesquisar(File arquivo) {
-		super.pesquisar(arquivo);
-	}
+					// Retorna o usuário quando obter o mesmo login
+					if (usuarioLeitura.getLogin().equals(usuario.getLogin())) {
+						arquivoLeitura.close();
+						objetoLeitura.close();
+						return usuarioLeitura;
+					}
+				}
 
-	@Override
-	public VO pesquisar(VO usuario, File arquivo) {
-		return super.pesquisar(usuario, arquivo);
+				arquivoLeitura.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("Usuario nao encontrado");
+		return null;
 	}
 }
