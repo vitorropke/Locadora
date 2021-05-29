@@ -5,6 +5,8 @@ import java.util.ResourceBundle;
 
 import br.edu.ufersa.ropke.locadoramaven.model.BO.LivroBO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.LivroVO;
+import br.edu.ufersa.ropke.locadoramaven.view.View;
+import br.edu.ufersa.ropke.locadoramaven.view.ViewSwitcher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -30,21 +32,20 @@ public class LivroController extends ComumController implements Initializable {
 	@FXML
 	private TableColumn<LivroVO, Float> colunaValorAluguel;
 
-	ObservableList<LivroVO> listaDeLivros = FXCollections.observableArrayList();
+	ObservableList<LivroVO> listaLivros = FXCollections.observableArrayList();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		loadEmprestimo();
+		loadLivros();
 
 		LivroBO livroBO = new LivroBO();
 
-		listaDeLivros.addAll(livroBO.listar());
-		tabelaLivros.setItems(listaDeLivros);
+		listaLivros.addAll(livroBO.listar());
+		tabelaLivros.setItems(listaLivros);
 		tabelaLivros.getItems().stream().forEach(doc -> System.out.println(doc.toString()));
 	}
 
-	private void loadEmprestimo() {
+	private void loadLivros() {
 		colunaTitulo.setCellValueFactory(new PropertyValueFactory<>("titulo"));
 		colunaGenero.setCellValueFactory(new PropertyValueFactory<>("genero"));
 		colunaNumeroPaginas.setCellValueFactory(new PropertyValueFactory<>("numeroPaginas"));
@@ -53,7 +54,22 @@ public class LivroController extends ComumController implements Initializable {
 	}
 
 	@FXML
-	public void cadastrarLivro() {
+	public void irParaTelaPrincipal() {
+		ViewSwitcher.switchTo(View.PRINCIPAL_GERENTE);
+	}
 
+	@FXML
+	public void cadastrarLivro() {
+		ViewSwitcher.switchTo(View.CADASTRO_LIVRO);
+	}
+
+	@FXML
+	public void acessarDiscos() {
+		ViewSwitcher.switchTo(View.DISCO);
+	}
+
+	@FXML
+	public void acessarClientes() {
+		ViewSwitcher.switchTo(View.CLIENTE_GERENTE);
 	}
 }

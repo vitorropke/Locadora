@@ -82,4 +82,9 @@ public class AlteraSenhaController {
 			senhasNaoConferem.setVisible(false);
 		}
 	}
+
+	@FXML
+	public void cancelar() {
+		ViewSwitcher.switchTo(View.LOGIN);
+	}
 }

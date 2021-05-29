@@ -6,26 +6,6 @@ import javafx.fxml.FXML;
 
 public abstract class ComumController {
 	@FXML
-	public void irParaTelaPrincipal() {
-		ViewSwitcher.switchTo(View.PRINCIPAL_GERENTE);
-	}
-
-	@FXML
-	public void acessarLivros() {
-		ViewSwitcher.switchTo(View.LIVRO);
-	}
-
-	@FXML
-	public void acessarDiscos() {
-		ViewSwitcher.switchTo(View.DISCO);
-	}
-
-	@FXML
-	public void acessarClientes() {
-		ViewSwitcher.switchTo(View.CLIENTE_GERENTE);
-	}
-
-	@FXML
 	public void sair() {
 		ViewSwitcher.switchTo(View.LOGIN);
 	}

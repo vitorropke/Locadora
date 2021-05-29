@@ -26,62 +26,50 @@ public class PrincipalController extends ComumController implements Initializabl
 	@FXML
 	private TableColumn<EmprestimoVO, String> colunaCliente;
 	@FXML
-	private TableColumn<EmprestimoVO, String> colunaObjeto;
-	@FXML
 	private TableColumn<EmprestimoVO, String> colunaTitulo;
 	@FXML
 	private TableColumn<EmprestimoVO, Integer> colunaQuantidade;
 	@FXML
+	private TableColumn<EmprestimoVO, Calendar> colunaDataEmprestimo;
+	@FXML
 	private TableColumn<EmprestimoVO, Calendar> colunaDataDevolucao;
 
-	ObservableList<EmprestimoVO> listaDeEmprestimos = FXCollections.observableArrayList();
+	ObservableList<EmprestimoVO> listaEmprestimos = FXCollections.observableArrayList();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		loadEmprestimo();
+		loadEmprestimos();
 
 		EmprestimoBO emprestimoBO = new EmprestimoBO();
 
-		listaDeEmprestimos.addAll(emprestimoBO.listar());
-		tabelaEmprestimos.setItems(listaDeEmprestimos);
+		listaEmprestimos.addAll(emprestimoBO.listar());
+		tabelaEmprestimos.setItems(listaEmprestimos);
 		tabelaEmprestimos.getItems().stream().forEach(doc -> System.out.println(doc.toString()));
 	}
 
-	private void loadEmprestimo() {
+	private void loadEmprestimos() {
 		colunaCliente.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getCliente().getNome()));
-		/*
-		 * colunaCliente.setCellValueFactory(new
-		 * Callback<TableColumn.CellDataFeatures<EmprestimoVO,String>,
-		 * ObservableValue<String>>() {
-		 * 
-		 * @Override public ObservableValue<String> call(CellDataFeatures<EmprestimoVO,
-		 * String> param) { return new
-		 * SimpleStringProperty(param.getValue().getCliente().getNome()); } });
-		 */
-		// colunaCliente.setCellValueFactory(new PropertyValueFactory<EmprestimoVO,
-		// ClienteVO>("nome"));
-		colunaObjeto.setCellValueFactory(new PropertyValueFactory<>("objeto"));
-		colunaTitulo.setCellValueFactory(new PropertyValueFactory<>("titulo"));
-		// colunaTitulo.setCellValueFactory(param -> new
-		// SimpleStringProperty(param.getValue().getDisco()));
-		colunaQuantidade.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
-
-		colunaDataDevolucao.setCellValueFactory(new PropertyValueFactory<>("dataEmprestimo"));
+		colunaTitulo.setCellValueFactory(
+				param -> new SimpleStringProperty(param.getValue().getEmprestavel().get(0).getTitulo()));
+		colunaTitulo.setCellValueFactory(new PropertyValueFactory<>("emprestavel"));
+		colunaQuantidade.setCellValueFactory(new PropertyValueFactory<>("quantidadeEmprestavel"));
+		colunaDataEmprestimo.setCellValueFactory(new PropertyValueFactory<>("dataEmprestimo"));
+		// https://stackoverflow.com/questions/26224822/javafx-show-calendar-value-in-tableview
 		// Formata o horário para o formato "'dia' de 'mes' de 'ano'". Ex: 21 de mai. de
 		// 2020
-		DateFormat dateFormat = DateFormat.getDateInstance();
-		colunaDataDevolucao.setCellFactory(col -> new TableCell<EmprestimoVO, Calendar>() {
+		final DateFormat dateFormat = DateFormat.getDateInstance();
+		colunaDataEmprestimo.setCellFactory(col -> new TableCell<EmprestimoVO, Calendar>() {
 			@Override
 			protected void updateItem(Calendar date, boolean empty) {
 				super.updateItem(date, empty);
-				if (empty) {
+				if (date == null) {
 					setText(null);
 				} else {
 					setText(dateFormat.format(date.getTime()));
 				}
 			}
 		});
+		colunaDataDevolucao.setCellValueFactory(new PropertyValueFactory<>("dataDevolucao"));
 	}
 
 	@FXML

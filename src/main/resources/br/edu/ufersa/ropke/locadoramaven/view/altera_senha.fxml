@@ -45,11 +45,27 @@
                </font>
             </Label>
             <PasswordField fx:id="confirmaNovaSenha" style="-fx-background-color: darkgray;" GridPane.rowIndex="5" />
-            <Button onAction="#alterarSenha" style="-fx-background-color: lightgray;" text="Alterar senha" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="TOP">
-               <font>
-                  <Font name="Pagul" size="18.0" />
-               </font>
-            </Button>
+            <GridPane GridPane.rowIndex="6">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button onAction="#alterarSenha" style="-fx-background-color: lightgray;" text="Alterar senha" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                     <font>
+                        <Font name="Pagul" size="18.0" />
+                     </font>
+                  </Button>
+                  <Button onAction="#cancelar" style="-fx-background-color: lightgray;" text="Cancelar" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                     <font>
+                        <Font name="Pagul" size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+            </GridPane>
             <Label fx:id="usuarioNaoEncontrado" text="Usuário não encontrado" textFill="RED" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="7">
                <font>
                   <Font name="Pagul" size="18.0" />

@@ -32,47 +32,44 @@ public class DiscoController extends ComumController implements Initializable {
 	@FXML
 	private TableColumn<DiscoVO, Float> colunaValorAluguel;
 
-	ObservableList<DiscoVO> listaDeDiscos = FXCollections.observableArrayList();
+	ObservableList<DiscoVO> listaDiscos = FXCollections.observableArrayList();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		loadEmprestimo();
+		loadDiscos();
 
 		DiscoBO discoBO = new DiscoBO();
 
-		listaDeDiscos.addAll(discoBO.listar());
-		tabelaDiscos.setItems(listaDeDiscos);
+		listaDiscos.addAll(discoBO.listar());
+		tabelaDiscos.setItems(listaDiscos);
 		tabelaDiscos.getItems().stream().forEach(doc -> System.out.println(doc.toString()));
 	}
 
-	private void loadEmprestimo() {
+	private void loadDiscos() {
 		colunaTitulo.setCellValueFactory(new PropertyValueFactory<>("titulo"));
 		colunaBanda.setCellValueFactory(new PropertyValueFactory<>("banda"));
 		colunaEstilo.setCellValueFactory(new PropertyValueFactory<>("estilo"));
 		colunaQuantidade.setCellValueFactory(new PropertyValueFactory<>("numeroExemplares"));
 		colunaValorAluguel.setCellValueFactory(new PropertyValueFactory<>("valorAluguel"));
 	}
-	
+
 	@FXML
 	public void irParaTelaPrincipal() {
 		ViewSwitcher.switchTo(View.PRINCIPAL_GERENTE);
 	}
-	
+
 	@FXML
 	public void cadastrarDisco() {
-		
+		ViewSwitcher.switchTo(View.CADASTRO_DISCO);
 	}
-	
-	
-	
+
+	@FXML
+	public void acessarLivros() {
+		ViewSwitcher.switchTo(View.LIVRO);
+	}
+
 	@FXML
 	public void acessarClientes() {
-
-	}
-	
-	@FXML
-	public void sair() {
-		ViewSwitcher.switchTo(View.LOGIN);
+		ViewSwitcher.switchTo(View.CLIENTE_GERENTE);
 	}
 }

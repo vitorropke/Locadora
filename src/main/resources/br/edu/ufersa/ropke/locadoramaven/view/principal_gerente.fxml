@@ -73,10 +73,10 @@
             <TableView fx:id="tabelaEmprestimos" prefHeight="200.0" prefWidth="589.0" style="-fx-background-color: darkgray;" GridPane.rowIndex="2">
               <columns>
                 <TableColumn fx:id="colunaCliente" prefWidth="75.0" text="Cliente" />
-                <TableColumn fx:id="colunaObjeto" prefWidth="75.0" text="Objeto" />
-                  <TableColumn fx:id="colunaTitulo" prefWidth="75.0" text="Titulo" />
+                  <TableColumn fx:id="colunaTitulo" prefWidth="75.0" text="Título" />
                   <TableColumn fx:id="colunaQuantidade" prefWidth="87.0" text="Quantidade" />
-                  <TableColumn fx:id="colunaDataDevolucao" prefWidth="146.0" text="Data de devoluçao" />
+                  <TableColumn fx:id="colunaDataEmprestimo" prefWidth="146.0" text="Data de empréstimo" />
+                <TableColumn fx:id="colunaDataDevolucao" prefWidth="75.0" text="Data de devolução" />
               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

@@ -19,7 +19,7 @@ public class MainVO {
 		LivroVO livro1 = new LivroVO("oi", "romance", 150, 4, 2010, 12);
 		LivroVO livro2 = new LivroVO("em", "acao", 220, 1, 2018, 26);
 
-		// titulo, nomeBanda, estilo, 'numeroExemplares', 'numeroEmprestimos',
+		// titulo, banda, estilo, 'numeroExemplares', 'numeroEmprestimos',
 		// 'numeroDiasAlugado', anoLancamento, valorAluguel
 		DiscoVO disco1 = new DiscoVO("ola", "ssd", "pagode", 15, 2, 28, 2018, 8.80f);
 

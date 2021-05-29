@@ -28,7 +28,7 @@ public class MainDAO {
 		LivroVO livro2 = new LivroVO("em", "acao", 220, 1, 2018, 26);
 		ArrayList<LivroVO> livros = new ArrayList<LivroVO>();
 
-		// titulo, nomeBanda, estilo, 'numeroExemplares', 'numeroEmprestimos',
+		// titulo, banda, estilo, 'numeroExemplares', 'numeroEmprestimos',
 		// 'numeroDiasAlugado', anoLancamento, valorAluguel
 		DiscoVO disco1 = new DiscoVO("ola", "ssd", "pagode", 15, 2, 28, 2018, 8.80f);
 		ArrayList<DiscoVO> discos = new ArrayList<DiscoVO>();
