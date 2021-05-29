@@ -3,6 +3,7 @@ package br.edu.ufersa.ropke.locadoramaven.model.BO;
 import java.io.File;
 import java.util.ArrayList;
 
+import br.edu.ufersa.ropke.locadoramaven.exception.InvalidParameterException;
 import br.edu.ufersa.ropke.locadoramaven.model.DAO.DiscoDAO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.DiscoVO;
 
@@ -10,16 +11,45 @@ public class DiscoBO extends EmprestavelBO<DiscoVO> {
 	private final File arquivo = DiscoDAO.getArquivo();
 	private DiscoDAO discoDAO = new DiscoDAO();
 
+	public boolean isNull(DiscoVO disco) {
+		// Verifica se a entrada de argumentos não é nula
+		if ((disco != null) && (arquivo != null)) {
+			// Verifica se parâmetros importantes não são nulos
+			if ((disco.getBanda() != null) && (disco.getEstilo() != null)) {
+				return false;
+			} else {
+				return true;
+			}
+		} else {
+			return true;
+		}
+	}
+
 	public void cadastrar(DiscoVO disco) {
-		super.cadastrar(disco, arquivo);
+		// Verifica se a entrada de argumentos não é nula
+		if (!isNull(disco)) {
+			super.cadastrar(disco, arquivo);
+		} else {
+			throw new InvalidParameterException();
+		}
 	}
 
 	public void alterar(DiscoVO disco) {
-		super.alterar(disco, arquivo);
+		// Verifica se a entrada de argumentos não é nula
+		if (!isNull(disco)) {
+			super.alterar(disco, arquivo);
+		} else {
+			throw new InvalidParameterException();
+		}
 	}
 
 	public void deletar(DiscoVO disco) {
-		super.deletar(disco, arquivo);
+		// Verifica se a entrada de argumentos não é nula
+		if (!isNull(disco)) {
+			super.deletar(disco, arquivo);
+		} else {
+			throw new InvalidParameterException();
+		}
 	}
 
 	public void pesquisar() {
@@ -27,7 +57,12 @@ public class DiscoBO extends EmprestavelBO<DiscoVO> {
 	}
 
 	public DiscoVO pesquisar(DiscoVO disco) {
-		return super.pesquisar(disco, arquivo);
+		// Verifica se a entrada de argumentos não é nula
+		if (!isNull(disco)) {
+			return super.pesquisar(disco, arquivo);
+		} else {
+			throw new InvalidParameterException();
+		}
 	}
 
 	public ArrayList<DiscoVO> listar() {

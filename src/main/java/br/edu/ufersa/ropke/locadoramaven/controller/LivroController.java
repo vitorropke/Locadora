@@ -1,7 +1,6 @@
 package br.edu.ufersa.ropke.locadoramaven.controller;
 
 import java.net.URL;
-import java.util.Calendar;
 import java.util.ResourceBundle;
 
 import br.edu.ufersa.ropke.locadoramaven.model.BO.LivroBO;
@@ -29,7 +28,7 @@ public class LivroController extends ComumController implements Initializable {
 	@FXML
 	private TableColumn<LivroVO, Integer> colunaQuantidade;
 	@FXML
-	private TableColumn<LivroVO, Calendar> colunaValorAluguel;
+	private TableColumn<LivroVO, Float> colunaValorAluguel;
 
 	ObservableList<LivroVO> listaDeLivros = FXCollections.observableArrayList();
 

@@ -44,7 +44,7 @@ public class OperacaoDAO<VO> implements OperacaoInterDAO<VO> {
 					entidade = (VO) objetoLeitura.readObject();
 					System.out.println("\nObjeto " + indice + '\n');
 					System.out.println(entidade.toString());
-					System.out.println("-----------------------------------------");
+					System.out.println("==============================================");
 					indice++;
 				}
 

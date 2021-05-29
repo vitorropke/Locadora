@@ -149,7 +149,7 @@ public class EmprestimoDAO {
 					emprestimo = (EmprestimoVO) objetoLeitura.readObject();
 					System.out.println("\nEmprestimo " + indiceEmprestimo + '\n');
 					System.out.println(emprestimo.toString());
-					System.out.println("-----------------------------------------");
+					System.out.println("==============================================");
 					indiceEmprestimo++;
 				}
 

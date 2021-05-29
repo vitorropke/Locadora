@@ -22,7 +22,7 @@ public abstract class ComumController {
 
 	@FXML
 	public void acessarClientes() {
-
+		ViewSwitcher.switchTo(View.CLIENTE_GERENTE);
 	}
 
 	@FXML

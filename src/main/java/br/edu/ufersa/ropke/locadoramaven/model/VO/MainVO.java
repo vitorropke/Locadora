@@ -40,7 +40,6 @@ public class MainVO {
 		// login, senha, nome, cpf, endereco, 'email', 'telefone'
 		GerenteVO gerente1 = new GerenteVO("gen", "asds", "aaaa", "327.886.720-39", enderecos, emails, telefones);
 
-		Calendar dataAtual = Calendar.getInstance();
 		ArrayList<Calendar> datasDevolucao = new ArrayList<Calendar>();
 		ArrayList<EmprestavelVO> emprestaveis = new ArrayList<EmprestavelVO>();
 		ArrayList<Integer> quantidadesEmprestavel = new ArrayList<Integer>();
@@ -62,8 +61,7 @@ public class MainVO {
 		quantidadesEmprestavel.add(2);
 		quantidadesEmprestavel.add(1);
 		// dataEmprestimo, dataDevolucao, emprestavel, quantidadeEmprestavel, cliente
-		EmprestimoVO emprestimo1 = new EmprestimoVO(dataAtual, datasDevolucao, emprestaveis, quantidadesEmprestavel,
-				cliente1);
+		EmprestimoVO emprestimo1 = new EmprestimoVO(datasDevolucao, emprestaveis, quantidadesEmprestavel, cliente1);
 
 		// Livros
 		System.out.println(

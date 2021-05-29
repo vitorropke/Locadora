@@ -26,10 +26,12 @@ public class MainDAO {
 		// 'numeroDiasAlugado', anoLancamento, valorAluguel
 		LivroVO livro1 = new LivroVO("oi", "romance", 150, 4, 2010, 12);
 		LivroVO livro2 = new LivroVO("em", "acao", 220, 1, 2018, 26);
+		ArrayList<LivroVO> livros = new ArrayList<LivroVO>();
 
 		// titulo, nomeBanda, estilo, 'numeroExemplares', 'numeroEmprestimos',
 		// 'numeroDiasAlugado', anoLancamento, valorAluguel
 		DiscoVO disco1 = new DiscoVO("ola", "ssd", "pagode", 15, 2, 28, 2018, 8.80f);
+		ArrayList<DiscoVO> discos = new ArrayList<DiscoVO>();
 
 		// nome, cpf, endereco, 'email', 'telefone'
 		ClienteVO cliente1 = new ClienteVO("joao", "19315322061", enderecos, emails, telefones);
@@ -48,7 +50,6 @@ public class MainDAO {
 		// login, senha, nome, cpf, endereco, 'email', 'telefone'
 		GerenteVO gerente1 = new GerenteVO("gen", "asds", "aaaa", "327.886.720-39", enderecos, emails, telefones);
 
-		Calendar dataAtual = Calendar.getInstance();
 		ArrayList<Calendar> datasDevolucao = new ArrayList<Calendar>();
 		ArrayList<EmprestavelVO> emprestaveis = new ArrayList<EmprestavelVO>();
 		ArrayList<Integer> quantidadesEmprestavel = new ArrayList<Integer>();
@@ -70,8 +71,7 @@ public class MainDAO {
 		quantidadesEmprestavel.add(2);
 		quantidadesEmprestavel.add(1);
 		// dataEmprestimo, dataDevolucao, emprestavel, quantidadeEmprestavel, cliente
-		EmprestimoVO emprestimo1 = new EmprestimoVO(dataAtual, datasDevolucao, emprestaveis, quantidadesEmprestavel,
-				cliente1);
+		EmprestimoVO emprestimo1 = new EmprestimoVO(datasDevolucao, emprestaveis, quantidadesEmprestavel, cliente1);
 
 		// Cria objetos do tipo DAO
 		LivroDAO livroDAO = new LivroDAO();
@@ -112,7 +112,7 @@ public class MainDAO {
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa titulo----------------------------------------");
-		ArrayList<LivroVO> livros = livroDAO.pesquisarTitulo("em");
+		livros = livroDAO.pesquisarTitulo("em");
 		int numeroLivros = livros.size();
 		for (int i = 0; i < numeroLivros; i++) {
 			System.out.println(livros.get(i));
@@ -164,7 +164,7 @@ public class MainDAO {
 		System.out.println();
 		System.out.println(
 				"---------------------------------------Pesquisa titulo----------------------------------------");
-		ArrayList<DiscoVO> discos = discoDAO.pesquisarTitulo("em");
+		discos = discoDAO.pesquisarTitulo("em");
 		int numeroDiscos = discos.size();
 		for (int i = 0; i < numeroDiscos; i++) {
 			System.out.println(discos.get(i));

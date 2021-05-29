@@ -4,10 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+//import br.edu.ufersa.ropke.locadoramaven.model.DAO.EmprestimoDAO;
+
 public class EmprestimoVO implements Serializable {
 	private static final long serialVersionUID = 1L;
+	// private static EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
 
 	// Variáveis
+	// private static long contadorId = emprestimoDAO.listar().size();
 	private static long contadorId = 0;
 	private static float faturamento = 0;
 	private long idEmprestimo;
@@ -31,16 +35,6 @@ public class EmprestimoVO implements Serializable {
 
 		setIdEmprestimo(contadorId++);
 		setDataEmprestimo(dataAtual);
-		setDataDevolucao(dataDevolucao);
-		setEmprestavel(emprestavel);
-		setQuantidadeEmprestavel(quantidadeEmprestavel);
-		setCliente(cliente);
-	}
-
-	public EmprestimoVO(Calendar dataEmprestimo, ArrayList<Calendar> dataDevolucao,
-			ArrayList<EmprestavelVO> emprestavel, ArrayList<Integer> quantidadeEmprestavel, ClienteVO cliente) {
-		setIdEmprestimo(contadorId++);
-		setDataEmprestimo(dataEmprestimo);
 		setDataDevolucao(dataDevolucao);
 		setEmprestavel(emprestavel);
 		setQuantidadeEmprestavel(quantidadeEmprestavel);
@@ -91,6 +85,19 @@ public class EmprestimoVO implements Serializable {
 		}
 
 		emprestimo += "\n-----------------------------------------------------------------";
+		emprestimo += "\nQuantidade do emprestavel:\n";
+
+		if (!quantidadeEmprestavel.isEmpty()) {
+			int numeroEmprestaveis = quantidadeEmprestavel.size();
+
+			for (int x = 0; x < numeroEmprestaveis; x++) {
+				emprestimo += "\t\t\t\t" + quantidadeEmprestavel.get(x) + "\n";
+			}
+		} else {
+			emprestimo += "\t\t\t\tSem quantidades de emprestavel\n";
+		}
+
+		emprestimo += "\n-----------------------------------------------------------------";
 		emprestimo += "\nCliente:\n";
 
 		if (cliente != null) {
@@ -133,8 +140,8 @@ public class EmprestimoVO implements Serializable {
 
 	public void setDataEmprestimo(Calendar dataEmprestimo) {
 		if (dataEmprestimo != null) {
+			// Obtêm a data atual
 			Calendar dataAtual = Calendar.getInstance();
-			// Obtem a data atual
 
 			if (dataEmprestimo.after(dataAtual)) {
 				System.out.println("Data de emprestimo nao pode ser no futuro!");
@@ -203,10 +210,10 @@ public class EmprestimoVO implements Serializable {
 			if (!emprestaveisValidos.isEmpty()) {
 				this.emprestavel = emprestaveisValidos;
 			} else {
-				System.out.println("Sem empestaveis validos!");
+				System.out.println("Sem emprestaveis validos!");
 			}
 		} else {
-			System.out.println("Empestaveis nao podem ser vazios!");
+			System.out.println("Emprestaveis nao podem ser vazios!");
 		}
 	}
 
