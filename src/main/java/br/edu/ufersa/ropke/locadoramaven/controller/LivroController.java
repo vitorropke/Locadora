@@ -1,6 +1,7 @@
 package br.edu.ufersa.ropke.locadoramaven.controller;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import br.edu.ufersa.ropke.locadoramaven.model.BO.LivroBO;
@@ -51,6 +52,57 @@ public class LivroController extends ComumController implements Initializable {
 		colunaNumeroPaginas.setCellValueFactory(new PropertyValueFactory<>("numeroPaginas"));
 		colunaQuantidade.setCellValueFactory(new PropertyValueFactory<>("numeroExemplares"));
 		colunaValorAluguel.setCellValueFactory(new PropertyValueFactory<>("valorAluguel"));
+	}
+
+	@FXML
+	public void pesquisar() {
+		String stringPesquisaLivro = pesquisaLivro.getText();
+
+		LivroBO livroBO = new LivroBO();
+		LivroVO livroAtual = new LivroVO();
+
+		ArrayList<LivroVO> livros = livroBO.listar();
+		ArrayList<LivroVO> livrosValidos = new ArrayList<LivroVO>();
+
+		int numeroLivros = livros.size();
+		int intPesquisaEmprestimo = 0;
+		boolean isNumero = false;
+
+		try {
+			intPesquisaEmprestimo = Integer.parseInt(stringPesquisaLivro);
+			isNumero = true;
+		} catch (NumberFormatException e) {
+		}
+
+		for (int i = 0; i < numeroLivros; i++) {
+			livroAtual = livros.get(i);
+
+			if ((livroAtual.getTitulo().contains(stringPesquisaLivro))
+					|| (livroAtual.getGenero().contains(stringPesquisaLivro))) {
+				livrosValidos.add(livroAtual);
+			}
+
+			if (isNumero) {
+				if ((livroAtual.getAnoLancamento()) == (intPesquisaEmprestimo)) {
+					livrosValidos.add(livroAtual);
+				}
+			}
+		}
+
+		listaLivros.clear();
+		listaLivros.addAll(livrosValidos);
+		tabelaLivros.setItems(listaLivros);
+		tabelaLivros.getItems().stream().forEach(doc -> System.out.println(doc.toString()));
+	}
+
+	@FXML
+	public void atualizar() {
+		LivroBO livroBO = new LivroBO();
+
+		listaLivros.clear();
+		listaLivros.addAll(livroBO.listar());
+		tabelaLivros.setItems(listaLivros);
+		tabelaLivros.getItems().stream().forEach(doc -> System.out.println(doc.toString()));
 	}
 
 	@FXML

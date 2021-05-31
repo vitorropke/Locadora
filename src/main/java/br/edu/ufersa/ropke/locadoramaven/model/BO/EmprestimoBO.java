@@ -18,8 +18,9 @@ public class EmprestimoBO {
 		// Verifica se a entrada de argumento não é nula
 		if (emprestimo != null) {
 			// Verifica se parâmetros importantes não são nulos nem inválidos
-			if ((emprestimo.getIdEmprestimo() != -1) && (emprestimo.getCliente() != null)
-					&& (emprestimo.getDataEmprestimo() != null)) {
+			if ((emprestimo.getCliente() != null) && (emprestimo.getDataEmprestimo() != null)
+					&& (!emprestimo.getDataDevolucao().isEmpty()) && (!emprestimo.getEmprestavel().isEmpty())
+					&& (!emprestimo.getQuantidadeEmprestavel().isEmpty())) {
 				return false;
 			} else {
 				return true;
@@ -167,16 +168,15 @@ public class EmprestimoBO {
 		}
 	}
 
-	public void devolver(EmprestimoVO emprestimo, ArrayList<Calendar> dataDevolucaoEfetiva,
-			ArrayList<EmprestavelVO> emprestavel, ArrayList<Integer> quantidadeDevolucaoEmprestavel) {
+	public void devolver(EmprestimoVO emprestimo, ArrayList<EmprestavelVO> emprestavel,
+			ArrayList<Integer> quantidadeDevolucaoEmprestavel) {
 		// Verifica se os dados não são nulos/vazios
-		if ((emprestimo != null) && (!dataDevolucaoEfetiva.isEmpty())
-				&& (!emprestavel.isEmpty() && (!quantidadeDevolucaoEmprestavel.isEmpty()))) {
+		if ((emprestimo != null) && (!emprestavel.isEmpty() && (!quantidadeDevolucaoEmprestavel.isEmpty()))) {
 			int numeroEmprestaveis = emprestavel.size();
+			Calendar dataAtual = Calendar.getInstance();
 
 			// Verifica se os vetores possuem o mesmo tamanho
-			if ((numeroEmprestaveis == dataDevolucaoEfetiva.size())
-					&& (numeroEmprestaveis == quantidadeDevolucaoEmprestavel.size())) {
+			if (numeroEmprestaveis == quantidadeDevolucaoEmprestavel.size()) {
 				// Insere os atributos que já existem no empréstimo
 				ArrayList<Calendar> datasDevolucao = emprestimo.getDataDevolucao();
 				ArrayList<EmprestavelVO> emprestaveis = emprestimo.getEmprestavel();
@@ -192,8 +192,7 @@ public class EmprestimoBO {
 				// Percorre os emprestaveis
 				for (int x = 0; x < numeroEmprestaveis; x++) {
 					// Verifica se o emprestavel e a data de devolução não são nulos
-					if ((emprestavel.get(x) != null) && (dataDevolucaoEfetiva.get(x) != null)
-							&& (quantidadeDevolucaoEmprestavel.get(x) != null)) {
+					if ((emprestavel.get(x) != null) && (quantidadeDevolucaoEmprestavel.get(x) != null)) {
 						if (quantidadeDevolucaoEmprestavel.get(x) >= 1) {
 							// Obtem a posição do emprestável no vetor de emprestaveis
 							posicaoEmprestavel = emprestaveis.indexOf(emprestavel.get(x));
@@ -211,84 +210,74 @@ public class EmprestimoBO {
 								// emprestaveis que foram emprestados anteriormente
 								if (quantidadeDevolucaoEmprestavel
 										.get(x) <= quantidadeEmprestavelEmprestadoAnteriormente) {
-									// Verifica se a data de devolução é depois da data de empréstimo
-									if (dataDevolucaoEfetiva.get(x).after(emprestimo.getDataEmprestimo())) {
-										// Repõe o emprestável
-										emprestavel.get(x).setNumeroExemplares(emprestavel.get(x).getNumeroExemplares()
-												+ quantidadeDevolucaoEmprestavel.get(x));
+									// Repõe o emprestável
+									emprestavel.get(x).setNumeroExemplares(emprestavel.get(x).getNumeroExemplares()
+											+ quantidadeDevolucaoEmprestavel.get(x));
 
-										// Obtém a quantidade de emprestaveis que sobrou após a devolução
-										quantidadeEmprestaveisQueSobrou = quantidadesEmprestavel.get(posicaoEmprestavel)
-												- quantidadeDevolucaoEmprestavel.get(x);
+									// Obtém a quantidade de emprestaveis que sobrou após a devolução
+									quantidadeEmprestaveisQueSobrou = quantidadesEmprestavel.get(posicaoEmprestavel)
+											- quantidadeDevolucaoEmprestavel.get(x);
 
-										// Se sobraram emprestáveis então atualiza a quantidade no vetor de quantidades
-										if (quantidadeEmprestaveisQueSobrou != 0) {
-											quantidadesEmprestavel.set(posicaoEmprestavel,
-													quantidadeEmprestaveisQueSobrou);
-										} else {
-											// Se não sobraram emprestáveis então remove essa posição dos vetores
-											datasDevolucao.remove(posicaoEmprestavel);
-											emprestaveis.remove(posicaoEmprestavel);
-											quantidadesEmprestavel.remove(posicaoEmprestavel);
-										}
+									// Se sobraram emprestáveis então atualiza a quantidade no vetor de quantidades
+									if (quantidadeEmprestaveisQueSobrou != 0) {
+										quantidadesEmprestavel.set(posicaoEmprestavel, quantidadeEmprestaveisQueSobrou);
+									} else {
+										// Se não sobraram emprestáveis então remove essa posição dos vetores
+										datasDevolucao.remove(posicaoEmprestavel);
+										emprestaveis.remove(posicaoEmprestavel);
+										quantidadesEmprestavel.remove(posicaoEmprestavel);
+									}
 
-										// Cálculo de adicionais e multa se existirem
+									// Cálculo de adicionais e multa se existirem
+									adicionaisMonetarios = 0;
+									// A cada 10 dias de empréstimo há um adicional de 2% do valor de empréstimo do
+									// emprestável no valor final
+
+									// http://burnignorance.com/java-web-development-tips/calculating-difference-between-two-dates-using-java/
+									diferencaMilissegundos = 0;
+									diferencaDias = 0;
+
+									// Get the difference between two dates in milliseconds
+									// diferença entre data de empréstimo e data de devolução
+									diferencaMilissegundos = dataAtual.getTimeInMillis()
+											- emprestimo.getDataEmprestimo().getTimeInMillis();
+
+									// Get difference between two dates in days
+									diferencaDias = (int) diferencaMilissegundos / (24 * 60 * 60 * 1000);
+
+									// Adiciona os dias no atributo do emprestavel, dias alugado
+									emprestavel.get(x).setNumeroDiasAlugado(
+											emprestavel.get(x).getNumeroDiasAlugado() + diferencaDias);
+
+									// Calcula os ciclos de 10 dias de empréstimo
+									adicionaisMonetarios = (int) (diferencaDias) / 10;
+
+									// Atualiza o faturamento com os adicionais
+									EmprestimoVO.setFaturamento(EmprestimoVO.getFaturamento()
+											+ (emprestavel.get(x).getValorAluguel() * adicionaisMonetarios * 0.02f));
+
+									// Verifica se há multa
+									// A data de devolução efetiva ocorre depois da data de devolução proposta
+									if (dataAtual.after(dataDevolucaoEmprestavelEmprestadoAnteriormente)) {
+										// A multa será de 5% do valor de empréstimo do emprestavel e se repetirá a
+										// cada 3 dias até a data de devolução
+
 										adicionaisMonetarios = 0;
-										// A cada 10 dias de empréstimo há um adicional de 2% do valor de empréstimo do
-										// emprestável no valor final
 
-										// http://burnignorance.com/java-web-development-tips/calculating-difference-between-two-dates-using-java/
-										diferencaMilissegundos = 0;
-										diferencaDias = 0;
-
-										// Get the difference between two dates in milliseconds
-										// diferença entre data de empréstimo e data de devolução
-										diferencaMilissegundos = dataDevolucaoEfetiva.get(x).getTimeInMillis()
-												- emprestimo.getDataEmprestimo().getTimeInMillis();
+										// difereça entre o dia de devolução proposto e o dia de devolução atual
+										diferencaMilissegundos = dataAtual.getTimeInMillis()
+												- dataDevolucaoEmprestavelEmprestadoAnteriormente.getTimeInMillis();
 
 										// Get difference between two dates in days
 										diferencaDias = (int) diferencaMilissegundos / (24 * 60 * 60 * 1000);
 
-										// Adiciona os dias no atributo do emprestavel, dias alugado
-										emprestavel.get(x).setNumeroDiasAlugado(
-												emprestavel.get(x).getNumeroDiasAlugado() + diferencaDias);
+										// Calcula os ciclos de 3 dias de multa
+										adicionaisMonetarios = (int) (diferencaDias) / 3;
 
-										// Calcula os ciclos de 10 dias de empréstimo
-										adicionaisMonetarios = (int) (diferencaDias) / 10;
-
-										// Atualiza o faturamento com os adicionais
+										// Atualiza o faturamento com a multa
 										EmprestimoVO.setFaturamento(
 												EmprestimoVO.getFaturamento() + (emprestavel.get(x).getValorAluguel()
-														* adicionaisMonetarios * 0.02f));
-
-										// Verifica se há multa
-										// A data de devolução efetiva ocorre depois da data de devolução proposta
-										if (dataDevolucaoEfetiva.get(x)
-												.after(dataDevolucaoEmprestavelEmprestadoAnteriormente)) {
-											// A multa será de 5% do valor de empréstimo do emprestavel e se repetirá a
-											// cada 3 dias até a data de devolução
-
-											adicionaisMonetarios = 0;
-
-											// difereça entre o dia de devolução proposto e o dia de devolução atual
-											diferencaMilissegundos = dataDevolucaoEfetiva.get(x).getTimeInMillis()
-													- dataDevolucaoEmprestavelEmprestadoAnteriormente.getTimeInMillis();
-
-											// Get difference between two dates in days
-											diferencaDias = (int) diferencaMilissegundos / (24 * 60 * 60 * 1000);
-
-											// Calcula os ciclos de 3 dias de multa
-											adicionaisMonetarios = (int) (diferencaDias) / 3;
-
-											// Atualiza o faturamento com a multa
-											EmprestimoVO.setFaturamento(EmprestimoVO.getFaturamento()
-													+ (emprestavel.get(x).getValorAluguel() * adicionaisMonetarios
-															* 0.05f));
-										}
-									} else {
-										System.out.println(
-												"Data de devolucao do emprestavel \"" + emprestavel.get(x).getTitulo()
-														+ "\" nao pode ser antes da data de emprestimo!\n");
+														* adicionaisMonetarios * 0.05f));
 									}
 								} else {
 									System.out.println("Voce nao tem essa quantidade de emprestaveis para devolver\n");
@@ -299,7 +288,7 @@ public class EmprestimoBO {
 						}
 
 					} else {
-						System.out.println("Emprestavel ou data de devolucao proposta nao podem ser nulos!\n");
+						System.out.println("Emprestavel nao pode ser nulo!\n");
 					}
 				}
 
@@ -343,7 +332,7 @@ public class EmprestimoBO {
 
 			// Obtém os empréstimos válidos
 			for (int i = 0; i < numeroEmprestimos; i++) {
-				if (emprestimos.get(i).getCliente().equals(cliente)
+				if (emprestimos.get(i).getCliente().getCpf().equals(cliente.getCpf())
 						&& emprestimos.get(i).getDataEmprestimo().after(dataInicio)
 						&& emprestimos.get(i).getDataEmprestimo().before(dataFim)) {
 					emprestimosValidos.add(emprestimos.get(i));

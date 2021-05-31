@@ -6,7 +6,13 @@ public enum View {
 	CLIENTE_GERENTE("cliente_gerente.fxml"), CLIENTE_FUNCIONARIO("cliente_funcionario.fxml"),
 	CADASTRO_LIVRO("cadastro_livro.fxml"), CADASTRO_DISCO("cadastro_disco.fxml"),
 	CADASTRO_CLIENTE_GERENTE("cadastro_cliente_gerente.fxml"),
-	CADASTRO_CLIENTE_FUNCIONARIO("cadastro_cliente_funcionario.fxml");
+	CADASTRO_CLIENTE_FUNCIONARIO("cadastro_cliente_funcionario.fxml"),
+	CADASTRO_EMPRESTIMO_GERENTE("cadastro_emprestimo_gerente.fxml"),
+	CADASTRO_EMPRESTIMO_FUNCIONARIO("cadastro_emprestimo_funcionario.fxml"),
+	CADASTRO_DEVOLUCAO_GERENTE("cadastro_devolucao_gerente.fxml"),
+	CADASTRO_DEVOLUCAO_FUNCIONARIO("cadastro_devolucao_funcionario.fxml"), RELATORIO("relatorio.fxml"),
+	RELATORIO_OBJETO("relatorio_objeto.fxml"), RELATORIO_CLIENTE("relatorio_cliente.fxml"),
+	FATURAMENTO("faturamento.fxml");
 
 	private String nomeArquivo;
 

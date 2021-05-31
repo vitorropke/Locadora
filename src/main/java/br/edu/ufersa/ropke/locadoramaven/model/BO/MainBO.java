@@ -303,14 +303,6 @@ public class MainBO {
 		emprestaveis.clear();
 		quantidadesEmprestavel.clear();
 
-		// the month starts with 0 and goes to 11
-		cal.set(2021, 5, 14, 04, 15, 20);
-		cal0.set(2021, 5, 10, 04, 15, 20);
-		cal1.set(2021, 5, 1, 04, 15, 20);
-		datasDevolucao.add(cal);
-		datasDevolucao.add(cal0);
-		// datasDevolucao.add(cal1);
-
 		emprestaveis.add(livro1);
 		// emprestaveis.add(livro2);
 		emprestaveis.add(disco1);
@@ -320,7 +312,7 @@ public class MainBO {
 		// quantidadesEmprestavel.add(1);
 		System.out.println(
 				"---------------------------------------Altera emprestimo 1----------------------------------------");
-		emprestimoBO.devolver(emprestimo1, datasDevolucao, emprestaveis, quantidadesEmprestavel);
+		emprestimoBO.devolver(emprestimo1, emprestaveis, quantidadesEmprestavel);
 		emprestimoBO.alterar(emprestimo1);
 		emprestimoBO.pesquisar();
 

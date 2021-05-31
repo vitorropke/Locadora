@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ufersa.ropke.locadoramaven.controller.RelatorioObjetoController">
+   <children>
+      <GridPane layoutX="8.0" layoutY="-1.0" prefHeight="391.0" prefWidth="586.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="94.0" minHeight="3.0" prefHeight="16.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="94.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="240.0" minHeight="10.0" prefHeight="240.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <GridPane prefHeight="76.0" prefWidth="500.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" />
+                  <ColumnConstraints hgrow="SOMETIMES" />
+                  <ColumnConstraints hgrow="SOMETIMES" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button mnemonicParsing="false" onAction="#irParaTelaPrincipal" style="-fx-background-color: lightgray;" text="Ir para tela principal" GridPane.halignment="CENTER">
+                     <font>
+                        <Font name="Pagul" size="18.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#relatorioCliente" style="-fx-background-color: lightgray;" text="Relatório por cliente" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                     <font>
+                        <Font name="Pagul" size="18.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#faturamento" style="-fx-background-color: lightgray;" text="Faturamento" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                     <font>
+                        <Font name="Pagul" size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+            </GridPane>
+            <TableView fx:id="tabelaEmprestimos" prefHeight="295.0" prefWidth="586.0" style="-fx-background-color: darkgray;" GridPane.rowIndex="2">
+              <columns>
+                  <TableColumn fx:id="colunaTitulo" prefWidth="75.0" text="Título" />
+                  <TableColumn fx:id="colunaQuantidade" prefWidth="87.0" text="Quantidade" />
+                  <TableColumn fx:id="colunaDataEmprestimo" prefWidth="146.0" text="Data de empréstimo" />
+                <TableColumn fx:id="colunaValorTotal" prefWidth="75.0" text="Valor total" />
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+            <GridPane GridPane.rowIndex="1">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" />
+                <ColumnConstraints hgrow="SOMETIMES" />
+                  <ColumnConstraints hgrow="SOMETIMES" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="Data inicial" GridPane.halignment="CENTER">
+                           <font>
+                              <Font name="Pagul" size="18.0" />
+                           </font>
+                        </Label>
+                        <DatePicker fx:id="dataInicio" GridPane.columnIndex="1" />
+                     </children>
+                  </GridPane>
+                  <GridPane GridPane.columnIndex="1">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Label text="Data final" GridPane.halignment="CENTER">
+                           <font>
+                              <Font name="Pagul" size="18.0" />
+                           </font>
+                        </Label>
+                        <DatePicker fx:id="dataFim" GridPane.columnIndex="1" />
+                     </children>
+                  </GridPane>
+                  <Button mnemonicParsing="false" onAction="#gerar" text="Gerar" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+               </children>
+            </GridPane>
+         </children>
+      </GridPane>
+   </children>
+</Pane>

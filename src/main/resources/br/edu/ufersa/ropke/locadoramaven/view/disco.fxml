@@ -23,12 +23,12 @@
           <RowConstraints maxHeight="240.0" minHeight="10.0" prefHeight="240.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <GridPane prefHeight="76.0" prefWidth="500.0">
+            <GridPane>
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="224.0" minWidth="127.0" prefWidth="192.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="83.0" prefWidth="147.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="174.0" minWidth="120.0" prefWidth="124.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="87.0" prefWidth="117.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -60,12 +60,12 @@
                      <children>
                         <Button mnemonicParsing="false" onAction="#irParaTelaPrincipal" style="-fx-background-color: lightgray;" text="Ir para tela principal" GridPane.halignment="CENTER">
                            <font>
-                              <Font name="Pagul" size="14.0" />
+                              <Font name="Pagul" size="18.0" />
                            </font>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#cadastrarDisco" prefHeight="26.0" prefWidth="144.0" style="-fx-background-color: lightgray;" text="Cadastrar disco" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                        <Button mnemonicParsing="false" onAction="#cadastrarDisco" prefHeight="33.0" prefWidth="186.0" style="-fx-background-color: lightgray;" text="Cadastrar disco" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                            <font>
-                              <Font name="Pagul" size="14.0" />
+                              <Font name="Pagul" size="18.0" />
                            </font>
                         </Button>
                      </children>
@@ -74,8 +74,9 @@
             </GridPane>
             <GridPane prefHeight="30.0" prefWidth="589.0" GridPane.rowIndex="1">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="288.0" minWidth="10.0" prefWidth="167.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="438.0" minWidth="10.0" prefWidth="422.0" />
+                <ColumnConstraints hgrow="SOMETIMES" />
+                <ColumnConstraints hgrow="SOMETIMES" />
+                  <ColumnConstraints hgrow="SOMETIMES" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -83,6 +84,27 @@
                <children>
                   <Label text="Pesquisar disco" GridPane.halignment="CENTER" />
                   <TextField fx:id="pesquisaDisco" style="-fx-background-color: darkgray;" GridPane.columnIndex="1" />
+                  <GridPane GridPane.columnIndex="2">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#pesquisar" style="-fx-background-color: lightgray;" text="Pesquisar" GridPane.halignment="CENTER">
+                           <font>
+                              <Font name="Pagul" size="18.0" />
+                           </font>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#atualizar" style="-fx-background-color: lightgray;" text="Atualizar" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                           <font>
+                              <Font name="Pagul" size="18.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </GridPane>
                </children>
             </GridPane>
             <TableView fx:id="tabelaDiscos" prefHeight="282.0" prefWidth="586.0" style="-fx-background-color: darkgray;" GridPane.rowIndex="2">

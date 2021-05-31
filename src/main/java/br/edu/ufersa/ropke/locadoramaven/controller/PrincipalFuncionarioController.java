@@ -9,19 +9,14 @@ public class PrincipalFuncionarioController extends PrincipalController {
 	public void acessarClientes() {
 		ViewSwitcher.switchTo(View.CLIENTE_FUNCIONARIO);
 	}
-	
+
 	@FXML
 	public void cadastrarEmprestimo() {
-
+		ViewSwitcher.switchTo(View.CADASTRO_EMPRESTIMO_FUNCIONARIO);
 	}
 
 	@FXML
 	public void cadastrarDevolucao() {
-
-	}
-
-	@FXML
-	public void gerarRelatorio() {
-
+		ViewSwitcher.switchTo(View.CADASTRO_DEVOLUCAO_FUNCIONARIO);
 	}
 }

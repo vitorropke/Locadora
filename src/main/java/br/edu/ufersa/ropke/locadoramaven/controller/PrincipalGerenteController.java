@@ -19,11 +19,24 @@ public class PrincipalGerenteController extends PrincipalController {
 	public void acessarDiscos() {
 		ViewSwitcher.switchTo(View.DISCO);
 	}
-	
+
 	@FXML
 	public void acessarClientes() {
 		ViewSwitcher.switchTo(View.CLIENTE_GERENTE);
 	}
 
-	
+	@FXML
+	public void cadastrarEmprestimo() {
+		ViewSwitcher.switchTo(View.CADASTRO_EMPRESTIMO_GERENTE);
+	}
+
+	@FXML
+	public void cadastrarDevolucao() {
+		ViewSwitcher.switchTo(View.CADASTRO_DEVOLUCAO_GERENTE);
+	}
+
+	@FXML
+	public void gerarRelatorio() {
+		ViewSwitcher.switchTo(View.RELATORIO);
+	}
 }

@@ -1,6 +1,7 @@
 package br.edu.ufersa.ropke.locadoramaven.controller;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import br.edu.ufersa.ropke.locadoramaven.model.BO.DiscoBO;
@@ -51,6 +52,58 @@ public class DiscoController extends ComumController implements Initializable {
 		colunaEstilo.setCellValueFactory(new PropertyValueFactory<>("estilo"));
 		colunaQuantidade.setCellValueFactory(new PropertyValueFactory<>("numeroExemplares"));
 		colunaValorAluguel.setCellValueFactory(new PropertyValueFactory<>("valorAluguel"));
+	}
+
+	@FXML
+	public void pesquisar() {
+		String stringPesquisaEmprestimo = pesquisaDisco.getText();
+
+		DiscoBO discoBO = new DiscoBO();
+		DiscoVO discoAtual = new DiscoVO();
+
+		ArrayList<DiscoVO> discos = discoBO.listar();
+		ArrayList<DiscoVO> discosValidos = new ArrayList<DiscoVO>();
+
+		int numeroDiscos = discos.size();
+		int intPesquisaEmprestimo = 0;
+		boolean isNumero = false;
+
+		try {
+			intPesquisaEmprestimo = Integer.parseInt(stringPesquisaEmprestimo);
+			isNumero = true;
+		} catch (NumberFormatException e) {
+		}
+
+		for (int i = 0; i < numeroDiscos; i++) {
+			discoAtual = discos.get(i);
+
+			if ((discoAtual.getTitulo().contains(stringPesquisaEmprestimo))
+					|| (discoAtual.getBanda().contains(stringPesquisaEmprestimo))
+					|| (discoAtual.getEstilo().contains(stringPesquisaEmprestimo))) {
+				discosValidos.add(discoAtual);
+			}
+
+			if (isNumero) {
+				if ((discoAtual.getAnoLancamento()) == (intPesquisaEmprestimo)) {
+					discosValidos.add(discoAtual);
+				}
+			}
+		}
+
+		listaDiscos.clear();
+		listaDiscos.addAll(discosValidos);
+		tabelaDiscos.setItems(listaDiscos);
+		tabelaDiscos.getItems().stream().forEach(doc -> System.out.println(doc.toString()));
+	}
+
+	@FXML
+	public void atualizar() {
+		DiscoBO discoBO = new DiscoBO();
+
+		listaDiscos.clear();
+		listaDiscos.addAll(discoBO.listar());
+		tabelaDiscos.setItems(listaDiscos);
+		tabelaDiscos.getItems().stream().forEach(doc -> System.out.println(doc.toString()));
 	}
 
 	@FXML

@@ -52,7 +52,7 @@ public class EmprestimoDAO {
 					emprestimoLeitura = (EmprestimoVO) objetoLeitura.readObject();
 
 					// Compara os empréstimos pelo id deles
-					if (emprestimoLeitura.getIdEmprestimo() == (emprestimo.getIdEmprestimo())) {
+					if (emprestimoLeitura.getIdEmprestimo() == emprestimo.getIdEmprestimo()) {
 						// Quando for o empréstimo a ser alterado, insere no vetor, o empréstimo que vem
 						// do parâmetro do método 'alterar'
 						emprestimos.add(emprestimo);
@@ -103,7 +103,7 @@ public class EmprestimoDAO {
 					emprestimoLeitura = (EmprestimoVO) objetoLeitura.readObject();
 
 					// Compara os empréstimos pelo id deles
-					if (emprestimoLeitura.getIdEmprestimo() != (emprestimo.getIdEmprestimo())) {
+					if (emprestimoLeitura.getIdEmprestimo() != emprestimo.getIdEmprestimo()) {
 						// Quando não encontrar o empréstimo, insere no vetor
 						// Quando encontrar o empréstimo, não insere no vetor
 						emprestimos.add(emprestimoLeitura);
@@ -174,7 +174,7 @@ public class EmprestimoDAO {
 					emprestimoLeitura = (EmprestimoVO) objetoLeitura.readObject();
 
 					// Compara os empréstimos pelo id deles
-					if (emprestimoLeitura.getIdEmprestimo() == (emprestimo.getIdEmprestimo())) {
+					if (emprestimoLeitura.getIdEmprestimo() == emprestimo.getIdEmprestimo()) {
 						arquivoLeitura.close();
 						objetoLeitura.close();
 						return emprestimoLeitura;

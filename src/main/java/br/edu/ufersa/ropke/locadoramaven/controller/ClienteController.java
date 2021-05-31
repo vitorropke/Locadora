@@ -1,6 +1,7 @@
 package br.edu.ufersa.ropke.locadoramaven.controller;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import br.edu.ufersa.ropke.locadoramaven.model.BO.ClienteBO;
@@ -50,5 +51,37 @@ public class ClienteController extends ComumController implements Initializable 
 		colunaEndereco.setCellValueFactory(new PropertyValueFactory<>("endereco"));
 		colunaEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
 		colunaTelefone.setCellValueFactory(new PropertyValueFactory<>("telefone"));
+	}
+
+	@FXML
+	public void pesquisar() {
+		String stringPesquisaEmprestimo = pesquisaCliente.getText();
+
+		ClienteBO clienteBO = new ClienteBO();
+		ClienteVO cliente = clienteBO.pesquisarCpf(stringPesquisaEmprestimo);
+
+		if (cliente != null) {
+			listaClientes.clear();
+			listaClientes.addAll(cliente);
+			tabelaClientes.setItems(listaClientes);
+			tabelaClientes.getItems().stream().forEach(doc -> System.out.println(doc.toString()));
+		} else {
+			ArrayList<ClienteVO> clientes = clienteBO.pesquisarNome(stringPesquisaEmprestimo);
+
+			listaClientes.clear();
+			listaClientes.addAll(clientes);
+			tabelaClientes.setItems(listaClientes);
+			tabelaClientes.getItems().stream().forEach(doc -> System.out.println(doc.toString()));
+		}
+	}
+
+	@FXML
+	public void atualizar() {
+		ClienteBO clienteBO = new ClienteBO();
+
+		listaClientes.clear();
+		listaClientes.addAll(clienteBO.listar());
+		tabelaClientes.setItems(listaClientes);
+		tabelaClientes.getItems().stream().forEach(doc -> System.out.println(doc.toString()));
 	}
 }
