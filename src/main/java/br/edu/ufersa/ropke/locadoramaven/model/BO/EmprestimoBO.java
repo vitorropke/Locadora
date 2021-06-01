@@ -18,9 +18,7 @@ public class EmprestimoBO {
 		// Verifica se a entrada de argumento não é nula
 		if (emprestimo != null) {
 			// Verifica se parâmetros importantes não são nulos nem inválidos
-			if ((emprestimo.getCliente() != null) && (emprestimo.getDataEmprestimo() != null)
-					&& (!emprestimo.getDataDevolucao().isEmpty()) && (!emprestimo.getEmprestavel().isEmpty())
-					&& (!emprestimo.getQuantidadeEmprestavel().isEmpty())) {
+			if ((emprestimo.getCliente() != null) && (emprestimo.getDataEmprestimo() != null)) {
 				return false;
 			} else {
 				return true;
@@ -154,7 +152,7 @@ public class EmprestimoBO {
 
 				// Insere somente emprestáveis válidos
 				if (!emprestaveis.isEmpty()) {
-					emprestimo.setDataDevolucao(datasDevolucao);
+					emprestimo.setDataDevolucaoEmprestavel(datasDevolucao);
 					emprestimo.setEmprestavel(emprestaveis);
 					emprestimo.setQuantidadeEmprestavel(quantidadesEmprestavel);
 				} else {
@@ -178,11 +176,11 @@ public class EmprestimoBO {
 			// Verifica se os vetores possuem o mesmo tamanho
 			if (numeroEmprestaveis == quantidadeDevolucaoEmprestavel.size()) {
 				// Insere os atributos que já existem no empréstimo
-				ArrayList<Calendar> datasDevolucao = emprestimo.getDataDevolucao();
+				ArrayList<Calendar> datasDevolucao = emprestimo.getDataDevolucaoEmprestavel();
 				ArrayList<EmprestavelVO> emprestaveis = emprestimo.getEmprestavel();
 				ArrayList<Integer> quantidadesEmprestavel = emprestimo.getQuantidadeEmprestavel();
 
-				int posicaoEmprestavel;
+				int posicaoEmprestavel = -1;
 				int quantidadeEmprestaveisQueSobrou;
 				int adicionaisMonetarios;
 				int diferencaDias;
@@ -194,8 +192,13 @@ public class EmprestimoBO {
 					// Verifica se o emprestavel e a data de devolução não são nulos
 					if ((emprestavel.get(x) != null) && (quantidadeDevolucaoEmprestavel.get(x) != null)) {
 						if (quantidadeDevolucaoEmprestavel.get(x) >= 1) {
-							// Obtem a posição do emprestável no vetor de emprestaveis
-							posicaoEmprestavel = emprestaveis.indexOf(emprestavel.get(x));
+							// Obtém a posição do emprestável no vetor de emprestaveis
+							for (int i = 0; i < numeroEmprestaveis; i++) {
+								if (emprestaveis.get(i).getTitulo().equals(emprestavel.get(x).getTitulo())) {
+									posicaoEmprestavel = i;
+									break;
+								}
+							}
 
 							// Faz as modificações quando alguma posição é encontrada
 							if (posicaoEmprestavel == -1) {
@@ -293,7 +296,7 @@ public class EmprestimoBO {
 				}
 
 				// Insere os emprestáveis que sobraram
-				emprestimo.setDataDevolucao(datasDevolucao);
+				emprestimo.setDataDevolucaoEmprestavel(datasDevolucao);
 				emprestimo.setEmprestavel(emprestaveis);
 				emprestimo.setQuantidadeEmprestavel(quantidadesEmprestavel);
 			} else {

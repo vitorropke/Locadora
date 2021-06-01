@@ -38,15 +38,6 @@ public class RelatorioObjetoController extends ComumRelatorioController {
 
 	ObservableList<EmprestimoVO> listaEmprestimos = FXCollections.observableArrayList();
 
-	public Calendar localDateToCalendar(DatePicker data) {
-		LocalDate localDate = data.getValue();
-		Calendar calendar = Calendar.getInstance();
-
-		calendar.set(localDate.getYear(), localDate.getMonthValue() - 1, localDate.getDayOfMonth());
-
-		return calendar;
-	}
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		loadEmprestimos();
@@ -76,8 +67,24 @@ public class RelatorioObjetoController extends ComumRelatorioController {
 
 	@FXML
 	public void gerar() {
-		Calendar calendarDataInicio = localDateToCalendar(dataInicio);
-		Calendar calendarDataFim = localDateToCalendar(dataFim);
+		Calendar calendarDataInicio = Calendar.getInstance();
+		Calendar calendarDataFim = Calendar.getInstance();
+
+		LocalDate localDate = dataInicio.getValue();
+		if (localDate != null) {
+			calendarDataInicio.set(localDate.getYear(), localDate.getMonthValue() - 1, localDate.getDayOfMonth(), 0, 0,
+					0);
+		} else {
+			calendarDataInicio = null;
+		}
+
+		localDate = dataFim.getValue();
+		if (localDate != null) {
+			calendarDataFim.set(localDate.getYear(), localDate.getMonthValue() - 1, localDate.getDayOfMonth(), 23, 59,
+					59);
+		} else {
+			calendarDataFim = null;
+		}
 
 		EmprestimoBO emprestimoBO = new EmprestimoBO();
 

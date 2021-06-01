@@ -106,13 +106,18 @@ public class LivroController extends ComumController implements Initializable {
 	}
 
 	@FXML
-	public void irParaTelaPrincipal() {
+	public void inicio() {
 		ViewSwitcher.switchTo(View.PRINCIPAL_GERENTE);
 	}
 
 	@FXML
-	public void cadastrarLivro() {
+	public void cadastrar() {
 		ViewSwitcher.switchTo(View.CADASTRO_LIVRO);
+	}
+
+	@FXML
+	public void editar() {
+		ViewSwitcher.switchTo(View.EDITA_LIVRO);
 	}
 
 	@FXML

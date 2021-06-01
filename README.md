@@ -1,12 +1,15 @@
 # Locadora
 Locadora feita em Java. UFERSA - 2020.2, POO
 
-Main DAO está em src/br/edu/ufersa/ropke/model/DAO/MainDAO.java
+Executador principal está em src/main/java/br/edu/ufersa/ropke/locadoramaven/Locadora.java
 
-Main VO está em src/br/edu/ufersa/ropke/model/VO/MainVO.java
+Main DAO está em src/main/java/br/edu/ufersa/ropke/locadoramaven/model/DAO/MainDAO.java
 
-Main BO está em src/br/edu/ufersa/ropke/model/BO/MainBO.java
+Main VO está em src/main/java/br/edu/ufersa/ropke/locadoramaven/model/VO/MainVO.java
 
+Main BO está em src/main/java/edu/ufersa/ropke/locadoramaven/model/BO/MainBO.java
+
+Arquivos de armazenamento estão em src/main/java/br/edu/ufersa/ropke/locadoramaven/model/DAO/arquivos
 
 
 1-Locadora de livros e vinil: 

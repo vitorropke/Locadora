@@ -10,7 +10,7 @@ import javafx.fxml.Initializable;
 
 public class ComumRelatorioController implements Initializable {
 	@FXML
-	public void irParaTelaPrincipal() {
+	public void inicio() {
 		ViewSwitcher.switchTo(View.PRINCIPAL_GERENTE);
 	}
 

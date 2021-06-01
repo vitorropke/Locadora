@@ -65,7 +65,7 @@ public class RelatorioController extends ComumRelatorioController {
 				}
 			}
 		});
-		colunaDataDevolucao.setCellValueFactory(new PropertyValueFactory<>("dataDevolucao"));
+		colunaDataDevolucao.setCellValueFactory(new PropertyValueFactory<>("dataDevolucaoEmprestavel"));
 	}
 
 	@FXML

@@ -70,8 +70,12 @@ public class MainDAO {
 
 		quantidadesEmprestavel.add(2);
 		quantidadesEmprestavel.add(1);
-		// dataEmprestimo, dataDevolucao, emprestavel, quantidadeEmprestavel, cliente
-		EmprestimoVO emprestimo1 = new EmprestimoVO(datasDevolucao, emprestaveis, quantidadesEmprestavel, cliente1);
+
+		EmprestimoVO emprestimo1 = new EmprestimoVO();
+		emprestimo1.setDataDevolucaoEmprestavel(datasDevolucao);
+		emprestimo1.setEmprestavel(emprestaveis);
+		emprestimo1.setQuantidadeEmprestavel(quantidadesEmprestavel);
+		emprestimo1.setCliente(cliente1);
 
 		// Cria objetos do tipo DAO
 		LivroDAO livroDAO = new LivroDAO();

@@ -75,7 +75,7 @@ public class PrincipalController extends ComumController implements Initializabl
 				}
 			}
 		});
-		colunaDataDevolucao.setCellValueFactory(new PropertyValueFactory<>("dataDevolucao"));
+		colunaDataDevolucao.setCellValueFactory(new PropertyValueFactory<>("dataDevolucaoEmprestavel"));
 	}
 
 	@FXML

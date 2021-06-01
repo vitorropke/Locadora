@@ -35,7 +35,7 @@ public class CadastroLivroController {
 	private TextField valorAluguel;
 
 	@FXML
-	public void cadastrarLivro() {
+	public void cadastrar() {
 		LivroBO livroBO = new LivroBO();
 
 		String stringTitulo = titulo.getText();
@@ -57,7 +57,7 @@ public class CadastroLivroController {
 		try {
 			intAnoLancamento = Integer.parseInt(stringAnoLancamento);
 			intNumeroPaginas = Integer.parseInt(stringNumeroPaginas);
-			
+
 			if ((stringNumeroExemplares != null) && (!stringNumeroExemplares.isBlank())) {
 				intNumeroExemplares = Integer.parseInt(stringNumeroExemplares);
 			}
@@ -98,7 +98,7 @@ public class CadastroLivroController {
 	}
 
 	@FXML
-	public void cancelarCadastro() {
+	public void cancelar() {
 		ViewSwitcher.switchTo(View.LIVRO);
 	}
 }

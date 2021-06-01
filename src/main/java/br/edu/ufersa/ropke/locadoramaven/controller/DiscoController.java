@@ -107,13 +107,18 @@ public class DiscoController extends ComumController implements Initializable {
 	}
 
 	@FXML
-	public void irParaTelaPrincipal() {
+	public void inicio() {
 		ViewSwitcher.switchTo(View.PRINCIPAL_GERENTE);
 	}
 
 	@FXML
-	public void cadastrarDisco() {
+	public void cadastrar() {
 		ViewSwitcher.switchTo(View.CADASTRO_DISCO);
+	}
+
+	@FXML
+	public void editar() {
+		ViewSwitcher.switchTo(View.EDITA_DISCO);
 	}
 
 	@FXML

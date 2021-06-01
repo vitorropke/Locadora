@@ -6,11 +6,6 @@ import javafx.fxml.FXML;
 
 public class PrincipalGerenteController extends PrincipalController {
 	@FXML
-	public void irParaTelaPrincipal() {
-		ViewSwitcher.switchTo(View.PRINCIPAL_GERENTE);
-	}
-
-	@FXML
 	public void acessarLivros() {
 		ViewSwitcher.switchTo(View.LIVRO);
 	}

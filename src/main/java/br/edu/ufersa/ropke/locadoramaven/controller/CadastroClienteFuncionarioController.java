@@ -6,14 +6,14 @@ import javafx.fxml.FXML;
 
 public class CadastroClienteFuncionarioController extends CadastroClienteController {
 	@FXML
-	public void cadastrarCliente() {
+	public void cadastrar() {
 		if (cadastrarClienteSuper()) {
 			ViewSwitcher.switchTo(View.CLIENTE_FUNCIONARIO);
 		}
 	}
 
 	@FXML
-	public void cancelarCadastro() {
+	public void cancelar() {
 		ViewSwitcher.switchTo(View.CLIENTE_FUNCIONARIO);
 	}
 }

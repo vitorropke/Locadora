@@ -10,7 +10,9 @@ public enum View {
 	CADASTRO_EMPRESTIMO_GERENTE("cadastro_emprestimo_gerente.fxml"),
 	CADASTRO_EMPRESTIMO_FUNCIONARIO("cadastro_emprestimo_funcionario.fxml"),
 	CADASTRO_DEVOLUCAO_GERENTE("cadastro_devolucao_gerente.fxml"),
-	CADASTRO_DEVOLUCAO_FUNCIONARIO("cadastro_devolucao_funcionario.fxml"), RELATORIO("relatorio.fxml"),
+	CADASTRO_DEVOLUCAO_FUNCIONARIO("cadastro_devolucao_funcionario.fxml"), EDITA_LIVRO("edita_livro.fxml"),
+	EDITA_DISCO("edita_disco.fxml"), EDITA_CLIENTE_GERENTE("edita_cliente_gerente.fxml"),
+	EDITA_CLIENTE_FUNCIONARIO("edita_cliente_funcionario.fxml"), RELATORIO("relatorio.fxml"),
 	RELATORIO_OBJETO("relatorio_objeto.fxml"), RELATORIO_CLIENTE("relatorio_cliente.fxml"),
 	FATURAMENTO("faturamento.fxml");
 

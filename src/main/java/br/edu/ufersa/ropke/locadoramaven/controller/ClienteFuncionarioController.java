@@ -6,12 +6,17 @@ import javafx.fxml.FXML;
 
 public class ClienteFuncionarioController extends ClienteController {
 	@FXML
-	public void irParaTelaPrincipal() {
+	public void inicio() {
 		ViewSwitcher.switchTo(View.PRINCIPAL_FUNCIONARIO);
 	}
 
 	@FXML
-	public void cadastrarCliente() {
+	public void cadastrar() {
 		ViewSwitcher.switchTo(View.CADASTRO_CLIENTE_FUNCIONARIO);
+	}
+	
+	@FXML
+	public void editar() {
+		ViewSwitcher.switchTo(View.EDITA_CLIENTE_FUNCIONARIO);
 	}
 }

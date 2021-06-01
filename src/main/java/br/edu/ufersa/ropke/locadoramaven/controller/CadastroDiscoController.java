@@ -35,7 +35,7 @@ public class CadastroDiscoController {
 	private TextField valorAluguel;
 
 	@FXML
-	public void cadastrarDisco() {
+	public void cadastrar() {
 		DiscoBO discoBO = new DiscoBO();
 
 		String stringTitulo = titulo.getText();
@@ -96,7 +96,7 @@ public class CadastroDiscoController {
 	}
 
 	@FXML
-	public void cancelarCadastro() {
+	public void cancelar() {
 		ViewSwitcher.switchTo(View.DISCO);
 	}
 }

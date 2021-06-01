@@ -22,7 +22,7 @@ import javafx.scene.control.TextField;
 
 public class CadastroEmprestimoController {
 	@FXML
-	private Label emprestimoJaCadastrado;
+	private Label jaCadastrado;
 	@FXML
 	private Label dadosIncompletos;
 	@FXML
@@ -38,11 +38,16 @@ public class CadastroEmprestimoController {
 
 	public Calendar localDateToCalendar(DatePicker data) {
 		LocalDate localDate = data.getValue();
-		Calendar calendar = Calendar.getInstance();
 
-		calendar.set(localDate.getYear(), localDate.getMonthValue() - 1, localDate.getDayOfMonth(), 23, 59, 59);
+		if (localDate != null) {
+			Calendar calendar = Calendar.getInstance();
 
-		return calendar;
+			calendar.set(localDate.getYear(), localDate.getMonthValue() - 1, localDate.getDayOfMonth(), 23, 59, 59);
+
+			return calendar;
+		} else {
+			return null;
+		}
 	}
 
 	public boolean cadastrarEmprestimoSuper() {
@@ -62,11 +67,19 @@ public class CadastroEmprestimoController {
 			LivroBO livroBO = new LivroBO();
 			DiscoBO discoBO = new DiscoBO();
 			ClienteBO clienteBO = new ClienteBO();
-			ClienteVO clienteVO = clienteBO.pesquisarCpf(stringCliente);
+			ClienteVO clienteVO = new ClienteVO();
+
+			ArrayList<ClienteVO> clientes = clienteBO.pesquisarNome(stringCliente);
+			int quantidadeClientes = clientes.size();
+
+			if (quantidadeClientes == 1) {
+				clienteVO = clientes.get(0);
+			} else {
+				clienteVO = clienteBO.pesquisarCpf(stringCliente);
+			}
 
 			ArrayList<LivroVO> livros = livroBO.pesquisarTitulo(stringEmprestavel);
 			ArrayList<DiscoVO> discos = discoBO.pesquisarTitulo(stringEmprestavel);
-
 			ArrayList<Calendar> datas = new ArrayList<Calendar>();
 			ArrayList<EmprestavelVO> emprestaveis = new ArrayList<EmprestavelVO>();
 			ArrayList<Integer> quantidades = new ArrayList<Integer>();
@@ -80,21 +93,21 @@ public class CadastroEmprestimoController {
 			emprestimoVO.setCliente(clienteVO);
 			emprestimoBO.cadastrar(emprestimoVO);
 
-			emprestimoJaCadastrado.setVisible(false);
+			jaCadastrado.setVisible(false);
 			dadosIncompletos.setVisible(false);
 			dadosIncorretos.setVisible(false);
 
 			return true;
 		} catch (NumberFormatException e) {
-			emprestimoJaCadastrado.setVisible(false);
+			jaCadastrado.setVisible(false);
 			dadosIncompletos.setVisible(false);
 			dadosIncorretos.setVisible(true);
 		} catch (FoundException e) {
-			emprestimoJaCadastrado.setVisible(true);
+			jaCadastrado.setVisible(true);
 			dadosIncompletos.setVisible(false);
 			dadosIncorretos.setVisible(false);
 		} catch (InvalidParameterException e) {
-			emprestimoJaCadastrado.setVisible(false);
+			jaCadastrado.setVisible(false);
 			dadosIncompletos.setVisible(true);
 			dadosIncorretos.setVisible(false);
 		}

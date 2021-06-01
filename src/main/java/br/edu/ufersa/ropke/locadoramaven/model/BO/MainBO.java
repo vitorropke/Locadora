@@ -75,7 +75,7 @@ public class MainBO {
 		quantidadesEmprestavel.add(2);
 		quantidadesEmprestavel.add(1);
 		quantidadesEmprestavel.add(1);
-		// dataEmprestimo, dataDevolucao, emprestavel, quantidadeEmprestavel, cliente
+
 		EmprestimoVO emprestimo1 = new EmprestimoVO();
 
 		// Cria objetos do tipo BO

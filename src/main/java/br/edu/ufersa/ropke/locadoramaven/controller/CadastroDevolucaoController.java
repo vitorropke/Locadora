@@ -41,7 +41,16 @@ public class CadastroDevolucaoController {
 			intQuantidadeEmprestavel = Integer.parseInt(stringQuantidadeEmprestavel);
 
 			ClienteBO clienteBO = new ClienteBO();
-			ClienteVO clienteVO = clienteBO.pesquisarCpf(stringCliente);
+			ClienteVO clienteVO = new ClienteVO();
+
+			ArrayList<ClienteVO> clientes = clienteBO.pesquisarNome(stringCliente);
+			int quantidadeClientes = clientes.size();
+
+			if (quantidadeClientes == 1) {
+				clienteVO = clientes.get(0);
+			} else {
+				clienteVO = clienteBO.pesquisarCpf(stringCliente);
+			}
 
 			if (clienteVO != null) {
 				LivroBO livroBO = new LivroBO();

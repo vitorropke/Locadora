@@ -4,19 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-//import br.edu.ufersa.ropke.locadoramaven.model.DAO.EmprestimoDAO;
-
 public class EmprestimoVO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	// private static EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
 
 	// Variáveis
-	// private static long contadorId = emprestimoDAO.listar().size();
 	private static long contadorId = 0;
 	private static float faturamento = 0;
 	private long idEmprestimo;
 	private Calendar dataEmprestimo;
-	private ArrayList<Calendar> dataDevolucao = new ArrayList<Calendar>();
+	private ArrayList<Calendar> dataDevolucaoEmprestavel = new ArrayList<Calendar>();
 	private ArrayList<EmprestavelVO> emprestavel = new ArrayList<EmprestavelVO>();
 	private ArrayList<Integer> quantidadeEmprestavel = new ArrayList<Integer>();
 	private ClienteVO cliente;
@@ -27,18 +23,6 @@ public class EmprestimoVO implements Serializable {
 
 		setIdEmprestimo(contadorId++);
 		setDataEmprestimo(dataAtual);
-	}
-
-	public EmprestimoVO(ArrayList<Calendar> dataDevolucao, ArrayList<EmprestavelVO> emprestavel,
-			ArrayList<Integer> quantidadeEmprestavel, ClienteVO cliente) {
-		Calendar dataAtual = Calendar.getInstance();
-
-		setIdEmprestimo(contadorId++);
-		setDataEmprestimo(dataAtual);
-		setDataDevolucao(dataDevolucao);
-		setEmprestavel(emprestavel);
-		setQuantidadeEmprestavel(quantidadeEmprestavel);
-		setCliente(cliente);
 	}
 
 	// toString
@@ -60,11 +44,11 @@ public class EmprestimoVO implements Serializable {
 		emprestimo += "\n-----------------------------------------------------------------";
 		emprestimo += "\nData de devolucao de emprestaveis:\n";
 
-		if (!dataDevolucao.isEmpty()) {
-			int numeroDatasDevolucao = dataDevolucao.size();
+		if (!dataDevolucaoEmprestavel.isEmpty()) {
+			int numeroDatasDevolucao = dataDevolucaoEmprestavel.size();
 
 			for (int x = 0; x < numeroDatasDevolucao; x++) {
-				emprestimo += "\t\t\t\t" + dataDevolucao.get(x).getTime() + "\n";
+				emprestimo += "\t\t\t\t" + dataDevolucaoEmprestavel.get(x).getTime() + "\n";
 			}
 		} else {
 			emprestimo += "\t\t\t\tSem emprestaveis\n";
@@ -153,22 +137,22 @@ public class EmprestimoVO implements Serializable {
 		}
 	}
 
-	public ArrayList<Calendar> getDataDevolucao() {
-		return dataDevolucao;
+	public ArrayList<Calendar> getDataDevolucaoEmprestavel() {
+		return dataDevolucaoEmprestavel;
 	}
 
-	public void setDataDevolucao(ArrayList<Calendar> dataDevolucao) {
-		if (!dataDevolucao.isEmpty()) {
+	public void setDataDevolucaoEmprestavel(ArrayList<Calendar> dataDevolucaoEmprestavel) {
+		if (!dataDevolucaoEmprestavel.isEmpty()) {
 			// Obtêm a data atual
 			Calendar dataAtual = Calendar.getInstance();
 			ArrayList<Calendar> datasValidas = new ArrayList<Calendar>();
-			int numeroDatasDevolucao = dataDevolucao.size();
+			int numeroDatasDevolucao = dataDevolucaoEmprestavel.size();
 
 			// Insere somente datas válidas
 			for (int x = 0; x < numeroDatasDevolucao; x++) {
-				if ((dataDevolucao.get(x) != null)) {
-					if (dataDevolucao.get(x).after(dataAtual)) {
-						datasValidas.add(dataDevolucao.get(x));
+				if ((dataDevolucaoEmprestavel.get(x) != null)) {
+					if (dataDevolucaoEmprestavel.get(x).after(dataAtual)) {
+						datasValidas.add(dataDevolucaoEmprestavel.get(x));
 					} else {
 						System.out.println("Data de devolucao so pode ser no futuro!");
 					}
@@ -179,7 +163,7 @@ public class EmprestimoVO implements Serializable {
 
 			// Se existirem datas válidas, adicione-as
 			if (!datasValidas.isEmpty()) {
-				this.dataDevolucao = datasValidas;
+				this.dataDevolucaoEmprestavel = datasValidas;
 			} else {
 				System.out.println("Sem datas validas!");
 			}

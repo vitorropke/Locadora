@@ -6,14 +6,14 @@ import javafx.fxml.FXML;
 
 public class CadastroEmprestimoGerenteController extends CadastroEmprestimoController {
 	@FXML
-	public void cadastrarEmprestimo() {
+	public void cadastrar() {
 		if (cadastrarEmprestimoSuper()) {
 			ViewSwitcher.switchTo(View.PRINCIPAL_GERENTE);
 		}
 	}
 
 	@FXML
-	public void cancelarCadastro() {
+	public void cancelar() {
 		ViewSwitcher.switchTo(View.PRINCIPAL_GERENTE);
 	}
 }

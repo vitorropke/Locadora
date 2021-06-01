@@ -3,6 +3,7 @@ package br.edu.ufersa.ropke.locadoramaven.controller;
 import java.net.URL;
 import java.text.DateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 
@@ -43,15 +44,6 @@ public class RelatorioClienteController extends ComumRelatorioController {
 
 	ObservableList<EmprestimoVO> listaEmprestimos = FXCollections.observableArrayList();
 
-	public Calendar localDateToCalendar(DatePicker data) {
-		LocalDate localDate = data.getValue();
-		Calendar calendar = Calendar.getInstance();
-
-		calendar.set(localDate.getYear(), localDate.getMonthValue() - 1, localDate.getDayOfMonth());
-
-		return calendar;
-	}
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		loadEmprestimos();
@@ -81,15 +73,42 @@ public class RelatorioClienteController extends ComumRelatorioController {
 
 	@FXML
 	public void gerar() {
+		Calendar calendarDataInicio = Calendar.getInstance();
+		Calendar calendarDataFim = Calendar.getInstance();
+
 		String stringClinte = cliente.getText();
 
 		EmprestimoBO emprestimoBO = new EmprestimoBO();
 		ClienteBO clienteBO = new ClienteBO();
-		ClienteVO cliente = clienteBO.pesquisarCpf(stringClinte);
+		ClienteVO cliente = new ClienteVO();
+
+		ArrayList<ClienteVO> clientes = clienteBO.pesquisarNome(stringClinte);
+		int quantidadeClientes = clientes.size();
+
+		if (quantidadeClientes == 1) {
+			cliente = clientes.get(0);
+		} else {
+			cliente = clienteBO.pesquisarCpf(stringClinte);
+		}
+
+		LocalDate localDate = dataInicio.getValue();
+		if (localDate != null) {
+			calendarDataInicio.set(localDate.getYear(), localDate.getMonthValue() - 1, localDate.getDayOfMonth(), 0, 0,
+					0);
+		} else {
+			calendarDataInicio = null;
+		}
+
+		localDate = dataFim.getValue();
+		if (localDate != null) {
+			calendarDataFim.set(localDate.getYear(), localDate.getMonthValue() - 1, localDate.getDayOfMonth(), 23, 59,
+					59);
+		} else {
+			calendarDataFim = null;
+		}
 
 		listaEmprestimos.clear();
-		listaEmprestimos.addAll(emprestimoBO.gerarRelatorioCliente(cliente, localDateToCalendar(dataInicio),
-				localDateToCalendar(dataFim)));
+		listaEmprestimos.addAll(emprestimoBO.gerarRelatorioCliente(cliente, calendarDataInicio, calendarDataFim));
 		tabelaEmprestimos.setItems(listaEmprestimos);
 		tabelaEmprestimos.getItems().stream().forEach(doc -> System.out.println(doc.toString()));
 	}
