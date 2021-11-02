@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ufersa.ropke.locadoramaven.controller.AlteraSenhaController">
+   <children>
+      <GridPane layoutX="82.0" layoutY="78.0" prefHeight="245.0" prefWidth="437.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints vgrow="SOMETIMES" />
+          <RowConstraints vgrow="SOMETIMES" />
+          <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Login" GridPane.halignment="CENTER">
+               <font>
+                  <Font name="Pagul" size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="login" style="-fx-background-color: darkgray;" GridPane.rowIndex="1" />
+            <Label text="Nova senha" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <font>
+                  <Font name="Pagul" size="18.0" />
+               </font>
+            </Label>
+            <PasswordField fx:id="novaSenha" style="-fx-background-color: darkgray;" GridPane.rowIndex="3" />
+            <Label text="Confirmar senha" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+               <font>
+                  <Font name="Pagul" size="18.0" />
+               </font>
+            </Label>
+            <PasswordField fx:id="confirmaNovaSenha" style="-fx-background-color: darkgray;" GridPane.rowIndex="5" />
+            <GridPane GridPane.rowIndex="6">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" />
+                <ColumnConstraints hgrow="SOMETIMES" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button onAction="#alterarSenha" style="-fx-background-color: lightgray;" text="Alterar senha" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <font>
+                        <Font name="Pagul" size="18.0" />
+                     </font>
+                  </Button>
+                  <Button onAction="#cancelar" style="-fx-background-color: lightgray;" text="Cancelar" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                     <font>
+                        <Font name="Pagul" size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+            </GridPane>
+            <Label fx:id="usuarioNaoEncontrado" text="Usuário não encontrado" textFill="RED" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="7">
+               <font>
+                  <Font name="Pagul" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="senhasNaoConferem" text="Senhas não são iguais" textFill="RED" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="7">
+               <font>
+                  <Font name="Pagul" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </GridPane>
+   </children>
+</Pane>

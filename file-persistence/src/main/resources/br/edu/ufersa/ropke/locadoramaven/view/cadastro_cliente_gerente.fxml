@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ufersa.ropke.locadoramaven.controller.CadastroClienteGerenteController">
+   <children>
+      <GridPane layoutX="8.0" layoutY="4.0" prefHeight="400.0" prefWidth="584.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="332.0" minHeight="252.0" prefHeight="330.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="148.0" minHeight="68.0" prefHeight="70.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" />
+                <ColumnConstraints hgrow="SOMETIMES" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Nome*">
+                     <font>
+                        <Font name="Pagul" size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="nome" style="-fx-background-color: darkgray;" GridPane.columnIndex="1" />
+                  <Label text="CPF*" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Pagul" size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="cpf" style="-fx-background-color: darkgray;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="Endereço*" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="Pagul" size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="endereco" style="-fx-background-color: darkgray;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label text="Email" GridPane.rowIndex="3">
+                     <font>
+                        <Font name="Pagul" size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="email" style="-fx-background-color: darkgray;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label text="Telefone" GridPane.rowIndex="4">
+                     <font>
+                        <Font name="Pagul" size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="telefone" style="-fx-background-color: darkgray;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+               </children>
+            </GridPane>
+            <GridPane GridPane.rowIndex="1">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" />
+                <ColumnConstraints hgrow="SOMETIMES" />
+                  <ColumnConstraints hgrow="SOMETIMES" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button mnemonicParsing="false" onAction="#cadastrar" style="-fx-background-color: lightgray;" text="Cadastrar" GridPane.halignment="CENTER">
+                     <font>
+                        <Font name="Pagul" size="18.0" />
+                     </font>
+                  </Button>
+                  <Label fx:id="clienteJaCadastrado" text="Cliente já cadastrado" textFill="RED" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                     <font>
+                        <Font name="Pagul" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="dadosIncompletos" text="Dados incompletos" textFill="RED" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                     <font>
+                        <Font name="Pagul" size="18.0" />
+                     </font>
+                  </Label>
+                  <Button mnemonicParsing="false" onAction="#cancelar" style="-fx-background-color: lightgray;" text="Cancelar" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                     <font>
+                        <Font name="Pagul" size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+            </GridPane>
+         </children>
+      </GridPane>
+   </children>
+</Pane>
