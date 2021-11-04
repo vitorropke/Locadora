@@ -122,17 +122,5 @@ public class MainVO {
 		// Empréstimo
 		System.out.println("---------------------------------------Emprestimos--------------------------------------");
 		System.out.println(emprestimo1);
-		
-		// Devolução
-		List<Integer> quantidadesDevolucao = new ArrayList<>();
-
-		quantidadesDevolucao.add(1);
-		quantidadesDevolucao.add(2);
-		
-		emprestimo1.devolver(objetosEmprestados, quantidadesDevolucao);
-
-		System.out.println(emprestimo1);
-		
-		System.out.println(cliente1.getDevolucoes());
 	}
 }

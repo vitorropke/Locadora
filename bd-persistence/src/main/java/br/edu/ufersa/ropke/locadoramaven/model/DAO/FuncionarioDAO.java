@@ -50,7 +50,18 @@ public class FuncionarioDAO extends UsuarioDAO<FuncionarioVO> {
 	}
 
 	public ResultSet listar() {
-		return null;
+		String sql = "SELECT * FROM funcionarios LEFT JOIN usuarios ON (funcionarios.id_usuario = usuarios.id) LEFT JOIN pessoas ON (usuarios.id_pessoa = pessoas.id);";
+		Statement st;
+		ResultSet rs = null;
+
+		try {
+			st = getConnection().createStatement();
+			rs = st.executeQuery(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
 	}
 
 	public FuncionarioVO pesquisarLogin(FuncionarioVO funcionario) {

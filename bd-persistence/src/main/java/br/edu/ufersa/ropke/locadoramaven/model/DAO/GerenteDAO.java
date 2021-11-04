@@ -13,7 +13,7 @@ public class GerenteDAO extends UsuarioDAO<GerenteVO> {
 		try {
 			super.cadastrar(gerente);
 
-			String sql = "INSERT INTO usuarios (id_usuario) VALUES (?)";
+			String sql = "INSERT INTO gerentes (id_usuario) VALUES (?)";
 			PreparedStatement ptst;
 
 			ptst = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -54,7 +54,18 @@ public class GerenteDAO extends UsuarioDAO<GerenteVO> {
 	}
 
 	public ResultSet listar() {
-		return null;
+		String sql = "SELECT * FROM gerentes LEFT JOIN usuarios ON (gerentes.id_usuario = usuarios.id) LEFT JOIN pessoas ON (usuarios.id_pessoa = pessoas.id);";
+		Statement st;
+		ResultSet rs = null;
+
+		try {
+			st = getConnection().createStatement();
+			rs = st.executeQuery(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
 	}
 
 	public GerenteVO pesquisarLogin(GerenteVO gerente) {

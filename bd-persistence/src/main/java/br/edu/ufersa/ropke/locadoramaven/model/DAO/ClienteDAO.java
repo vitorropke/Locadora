@@ -52,7 +52,7 @@ public class ClienteDAO extends PessoaDAO<ClienteVO> {
 	}
 
 	public ResultSet listar() {
-		String sql = "SELECT * FROM clientes";
+		String sql = "SELECT * FROM clientes LEFT JOIN pessoas ON clientes.id_pessoa = pessoas.id;";
 		Statement st;
 		ResultSet rs = null;
 
