@@ -4,6 +4,7 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import br.edu.ufersa.ropke.locadoramaven.model.BO.ClienteBO;
@@ -88,12 +89,12 @@ public class PrincipalController extends ComumController implements Initializabl
 		DiscoBO discoBO = new DiscoBO();
 		ClienteVO cliente = clienteBO.pesquisarCpf(stringPesquisaEmprestimo);
 
-		ArrayList<EmprestimoVO> emprestimos = emprestimoBO.listar();
-		ArrayList<EmprestavelVO> emprestaveis = new ArrayList<EmprestavelVO>();
-		ArrayList<EmprestimoVO> emprestimosValidos = new ArrayList<EmprestimoVO>();
-		ArrayList<ClienteVO> clientes = clienteBO.pesquisarNome(stringPesquisaEmprestimo);
-		ArrayList<LivroVO> livros = livroBO.pesquisarTitulo(stringPesquisaEmprestimo);
-		ArrayList<DiscoVO> discos = discoBO.pesquisarTitulo(stringPesquisaEmprestimo);
+		List<EmprestimoVO> emprestimos = emprestimoBO.listar();
+		List<EmprestavelVO> emprestaveis = new ArrayList<EmprestavelVO>();
+		List<EmprestimoVO> emprestimosValidos = new ArrayList<EmprestimoVO>();
+		List<ClienteVO> clientes = clienteBO.pesquisarNome(stringPesquisaEmprestimo);
+		List<LivroVO> livros = livroBO.pesquisarTitulo(stringPesquisaEmprestimo);
+		List<DiscoVO> discos = discoBO.pesquisarTitulo(stringPesquisaEmprestimo);
 
 		if (cliente != null) {
 			clientes.add(cliente);
@@ -121,11 +122,11 @@ public class PrincipalController extends ComumController implements Initializabl
 			}
 
 			for (int j = 0; j < numeroEmprestaveis; j++) {
-				int numeroEmprestaveisEmprestimo = emprestimos.get(i).getEmprestavel().size();
+				int numeroEmprestaveisEmprestimo = emprestimos.get(i).getObjetos().size();
 
 				for (int k = 0; k < numeroEmprestaveisEmprestimo; k++) {
-					if ((emprestimos.get(i).getEmprestavel().get(k).getTitulo().equals(emprestaveis.get(j).getTitulo()))
-							|| ((emprestimos.get(i).getEmprestavel().get(k).getAnoLancamento()) == (emprestaveis.get(j)
+					if ((emprestimos.get(i).getObjetos().get(k).getObjeto().getTitulo().equals(emprestaveis.get(j).getTitulo()))
+							|| ((emprestimos.get(i).getObjetos().get(k).getObjeto().getAnoLancamento()) == (emprestaveis.get(j)
 									.getAnoLancamento()))) {
 						emprestimosValidos.add(emprestimos.get(i));
 					}

@@ -8,7 +8,7 @@ public class ClienteVO extends PessoaVO {
 	private List<EmprestimoVO> emprestimos = new ArrayList<EmprestimoVO>();
 	private List<EmprestimoVO> devolucoes = new ArrayList<EmprestimoVO>();
 
-	public ClienteVO(String nome, String cpf, List<Endereco> enderecos, List<String> emails, List<Telefone> telefones) {
+	public ClienteVO(String nome, String cpf, List<EnderecoVO> enderecos, List<String> emails, List<TelefoneVO> telefones) {
 		super(nome, cpf, enderecos, emails, telefones);
 	}
 

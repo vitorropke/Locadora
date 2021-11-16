@@ -2,6 +2,7 @@ package br.edu.ufersa.ropke.locadoramaven.controller;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import br.edu.ufersa.ropke.locadoramaven.model.BO.LivroBO;
@@ -59,10 +60,10 @@ public class LivroController extends ComumController implements Initializable {
 		String stringPesquisaLivro = pesquisaLivro.getText();
 
 		LivroBO livroBO = new LivroBO();
-		LivroVO livroAtual = new LivroVO();
+		LivroVO livroAtual;
 
-		ArrayList<LivroVO> livros = livroBO.listar();
-		ArrayList<LivroVO> livrosValidos = new ArrayList<LivroVO>();
+		List<LivroVO> livros = livroBO.listar();
+		List<LivroVO> livrosValidos = new ArrayList<LivroVO>();
 
 		int numeroLivros = livros.size();
 		int intPesquisaEmprestimo = 0;

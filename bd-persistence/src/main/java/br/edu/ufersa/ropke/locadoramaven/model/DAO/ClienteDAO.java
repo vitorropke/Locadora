@@ -4,8 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-
 import br.edu.ufersa.ropke.locadoramaven.model.VO.ClienteVO;
 
 public class ClienteDAO extends PessoaDAO<ClienteVO> {
@@ -14,10 +12,11 @@ public class ClienteDAO extends PessoaDAO<ClienteVO> {
 		try {
 			super.cadastrar(cliente);
 
-			String sql = "INSERT INTO clientes (id_pessoa) VALUES (?)";
+			String sql = "INSERT INTO clientes (id_pessoa) VALUES (?);";
 			PreparedStatement ptst;
 
 			ptst = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
 			ptst.setLong(1, cliente.getIdPessoa());
 
 			int affectedRows = ptst.executeUpdate();
@@ -33,26 +32,14 @@ public class ClienteDAO extends PessoaDAO<ClienteVO> {
 			} else {
 				throw new SQLException("A insercao falhou. Nenhuma linha foi alterada");
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void alterar(ClienteVO cliente) {
-		// super.alterar(cliente);
-	}
-
-	public void deletar(ClienteVO cliente) {
-		// super.deletar(cliente);
-	}
-
-	public ResultSet pesquisar(ClienteVO cliente) {
-		// return super.pesquisar(cliente, arquivo);
-		return null;
-	}
-
+	@Override
 	public ResultSet listar() {
-		String sql = "SELECT * FROM clientes LEFT JOIN pessoas ON clientes.id_pessoa = pessoas.id;";
+		String sql = "SELECT * FROM clientes LEFT JOIN pessoas ON (clientes.id_pessoa = pessoas.id);";
 		Statement st;
 		ResultSet rs = null;
 
@@ -66,11 +53,63 @@ public class ClienteDAO extends PessoaDAO<ClienteVO> {
 		return rs;
 	}
 
-	public ArrayList<ClienteVO> pesquisarNome(String nome) {
-		return null;
+	@Override
+	public ResultSet pesquisarId(long idCliente) {
+		String sql = "SELECT * FROM clientes LEFT JOIN pessoas ON (clientes.id_pessoa = pessoas.id) "
+				+ "WHERE clientes.id = ?;";
+		PreparedStatement ptst;
+		ResultSet rs = null;
+
+		try {
+			ptst = getConnection().prepareStatement(sql);
+
+			ptst.setLong(1, idCliente);
+
+			rs = ptst.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
 	}
 
-	public ClienteVO pesquisarCpf(String cpf) {
-		return null;
+	@Override
+	public ResultSet pesquisarNome(String nome) {
+		String sql = "SELECT * FROM clientes LEFT JOIN pessoas ON (clientes.id_pessoa = pessoas.id) "
+				+ "WHERE nome LIKE ?;";
+		PreparedStatement ptst;
+		ResultSet rs = null;
+
+		try {
+			ptst = getConnection().prepareStatement(sql);
+
+			ptst.setString(1, nome);
+
+			rs = ptst.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
+	}
+
+	@Override
+	public ResultSet pesquisarCpf(String cpf) {
+		String sql = "SELECT * FROM clientes LEFT JOIN pessoas ON (clientes.id_pessoa = pessoas.id) "
+				+ "WHERE cpf = ?;";
+		PreparedStatement ptst;
+		ResultSet rs = null;
+
+		try {
+			ptst = getConnection().prepareStatement(sql);
+
+			ptst.setString(1, cpf);
+
+			rs = ptst.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
 	}
 }

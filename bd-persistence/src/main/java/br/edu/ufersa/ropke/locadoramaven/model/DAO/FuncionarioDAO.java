@@ -13,10 +13,11 @@ public class FuncionarioDAO extends UsuarioDAO<FuncionarioVO> {
 		try {
 			super.cadastrar(funcionario);
 
-			String sql = "INSERT INTO funcionarios (id_usuario) VALUES (?)";
+			String sql = "INSERT INTO funcionarios (id_usuario) VALUES (?);";
 			PreparedStatement ptst;
 
 			ptst = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
 			ptst.setLong(1, funcionario.getIdUsuario());
 
 			int affectedRows = ptst.executeUpdate();
@@ -32,25 +33,15 @@ public class FuncionarioDAO extends UsuarioDAO<FuncionarioVO> {
 			} else {
 				throw new SQLException("A insercao falhou. Nenhuma linha foi alterada");
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void alterar(FuncionarioVO funcionario) {
-		// super.alterar(funcionario, arquivo);
-	}
-
-	public void deletar(FuncionarioVO funcionario) {
-		// super.deletar(funcionario, arquivo);
-	}
-
-	public ResultSet pesquisar(FuncionarioVO funcionario) {
-		return null;
-	}
-
+	@Override
 	public ResultSet listar() {
-		String sql = "SELECT * FROM funcionarios LEFT JOIN usuarios ON (funcionarios.id_usuario = usuarios.id) LEFT JOIN pessoas ON (usuarios.id_pessoa = pessoas.id);";
+		String sql = "SELECT * FROM funcionarios LEFT JOIN usuarios ON (funcionarios.id_usuario = usuarios.id) "
+				+ "LEFT JOIN pessoas ON (usuarios.id_pessoa = pessoas.id);";
 		Statement st;
 		ResultSet rs = null;
 
@@ -64,7 +55,83 @@ public class FuncionarioDAO extends UsuarioDAO<FuncionarioVO> {
 		return rs;
 	}
 
-	public FuncionarioVO pesquisarLogin(FuncionarioVO funcionario) {
-		return null;
+	@Override
+	public ResultSet pesquisarId(long idFuncionario) {
+		String sql = "SELECT * FROM funcionarios LEFT JOIN usuarios ON (funcionarios.id_usuario = usuarios.id) "
+				+ "LEFT JOIN pessoas ON (usuarios.id_pessoa = pessoas.id) WHERE funcionarios.id = ?;";
+		PreparedStatement ptst;
+		ResultSet rs = null;
+
+		try {
+			ptst = getConnection().prepareStatement(sql);
+
+			ptst.setLong(1, idFuncionario);
+
+			rs = ptst.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
+	}
+
+	@Override
+	public ResultSet pesquisarNome(String nome) {
+		String sql = "SELECT * FROM funcionarios LEFT JOIN usuarios ON (funcionarios.id_usuario = usuarios.id) "
+				+ "LEFT JOIN pessoas ON (usuarios.id_pessoa = pessoas.id) WHERE nome LIKE ?;";
+		PreparedStatement ptst;
+		ResultSet rs = null;
+
+		try {
+			ptst = getConnection().prepareStatement(sql);
+
+			ptst.setString(1, nome);
+
+			rs = ptst.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
+	}
+
+	@Override
+	public ResultSet pesquisarCpf(String cpf) {
+		String sql = "SELECT * FROM funcionarios LEFT JOIN usuarios ON (funcionarios.id_usuario = usuarios.id) "
+				+ "LEFT JOIN pessoas ON (usuarios.id_pessoa = pessoas.id) WHERE cpf = ?;";
+		PreparedStatement ptst;
+		ResultSet rs = null;
+
+		try {
+			ptst = getConnection().prepareStatement(sql);
+
+			ptst.setString(1, cpf);
+
+			rs = ptst.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
+	}
+
+	@Override
+	public ResultSet pesquisarLogin(String login) {
+		String sql = "SELECT * FROM funcionarios LEFT JOIN usuarios ON (funcionarios.id_usuario = usuarios.id) "
+				+ "LEFT JOIN pessoas ON (usuarios.id_pessoa = pessoas.id) WHERE login = ?;";
+		PreparedStatement ptst;
+		ResultSet rs = null;
+
+		try {
+			ptst = getConnection().prepareStatement(sql);
+
+			ptst.setString(1, login);
+
+			rs = ptst.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
 	}
 }

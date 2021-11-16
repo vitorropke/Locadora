@@ -1,87 +1,201 @@
 package br.edu.ufersa.ropke.locadoramaven.model.BO;
 
-import java.io.File;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import br.edu.ufersa.ropke.locadoramaven.exception.InvalidParameterException;
+import br.edu.ufersa.ropke.locadoramaven.exception.NotFoundException;
 import br.edu.ufersa.ropke.locadoramaven.model.DAO.LivroDAO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.LivroVO;
 
 public class LivroBO extends EmprestavelBO<LivroVO> {
-	private final File arquivo = LivroDAO.getArquivo();
-	private LivroDAO livroDAO = new LivroDAO();
+	private static final LivroDAO livroDAO = new LivroDAO();
 
-	public boolean isNull(LivroVO livro) {
-		// Verifica se a entrada de argumentos não é nula
-		if ((livro != null) && (arquivo != null)) {
-			// Verifica se parâmetros importantes não são nulos
-			if ((livro.getNumeroPaginas() != 0) && (livro.getGenero() != null)) {
-				return false;
-			} else {
-				return true;
-			}
+	public boolean isInvalid(LivroVO livro) {
+		if (!super.isInvalid(livro) && (livro.getGenero() != null) && (livro.getNumeroPaginas() != 0)) {
+			return false;
 		} else {
 			return true;
 		}
 	}
 
-	public void cadastrar(LivroVO livro) {
-		// Verifica se a entrada de argumentos não é nula
-		if (!isNull(livro)) {
-			super.cadastrar(livro, arquivo);
+	@Override
+	public void cadastrar(LivroVO livro) throws InvalidParameterException {
+		if (!super.isInvalid(livro)) {
+			livroDAO.cadastrar(livro);
 		} else {
 			throw new InvalidParameterException();
 		}
 	}
 
-	public void alterar(LivroVO livro) {
-		// Verifica se a entrada de argumentos não é nula
-		if (!isNull(livro)) {
-			super.alterar(livro, arquivo);
+	@Override
+	public void alterar(LivroVO livro) throws NotFoundException, InvalidParameterException {
+		if (!super.isInvalid(livro)) {
+			ResultSet rs = livroDAO.pesquisarId(livro.getId());
+
+			try {
+				if (rs.next()) {
+					livroDAO.alterar(livro);
+				} else {
+					throw new NotFoundException();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		} else {
 			throw new InvalidParameterException();
 		}
 	}
 
-	public void deletar(LivroVO livro) {
-		// Verifica se a entrada de argumentos não é nula
-		if (!isNull(livro)) {
-			super.deletar(livro, arquivo);
+	@Override
+	public void deletar(long idLivro) throws NotFoundException, InvalidParameterException {
+		if (idLivro != 0) {
+			ResultSet rs = livroDAO.pesquisarId(idLivro);
+
+			try {
+				if (rs.next()) {
+					livroDAO.deletar(idLivro);
+				} else {
+					throw new NotFoundException();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		} else {
 			throw new InvalidParameterException();
 		}
 	}
 
-	public void pesquisar() {
-		super.pesquisar(arquivo);
+	@Override
+	public List<LivroVO> listar() {
+		List<LivroVO> livros = new ArrayList<LivroVO>();
+
+		ResultSet rs = livroDAO.listar();
+
+		try {
+			while (rs.next()) {
+				livros.add(getLivro(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return livros;
 	}
 
-	public LivroVO pesquisar(LivroVO livro) {
-		// Verifica se a entrada de argumentos não é nula
-		if (!isNull(livro)) {
-			return super.pesquisar(livro, arquivo);
+	@Override
+	public LivroVO pesquisarId(long idLivro) throws NotFoundException, InvalidParameterException {
+		if (idLivro != 0) {
+			ResultSet rs = livroDAO.pesquisarId(idLivro);
+
+			try {
+				if (rs.next()) {
+					return getLivro(rs);
+				} else {
+					throw new NotFoundException();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		} else {
 			throw new InvalidParameterException();
 		}
+
+		return null;
 	}
 
-	public ArrayList<LivroVO> listar() {
-		return super.listar(arquivo);
-	}
+	@Override
+	public List<LivroVO> pesquisarTitulo(String titulo) throws InvalidParameterException {
+		List<LivroVO> livros = new ArrayList<LivroVO>();
 
-	public ArrayList<LivroVO> pesquisarTitulo(String titulo) {
-		return super.pesquisarTitulo(titulo, arquivo);
-	}
+		if ((titulo != null) && !titulo.isBlank()) {
+			ResultSet rs = livroDAO.pesquisarTitulo('%' + titulo.trim() + '%');
 
-	public ArrayList<LivroVO> pesquisarAnoLancamento(int anoLancamento) {
-		return super.pesquisarAnoLancamento(anoLancamento, arquivo);
-	}
-
-	public ArrayList<LivroVO> pesquisarGenero(String titulo) {
-		if ((titulo != null) && (!titulo.isBlank())) {
-			return livroDAO.pesquisarGenero(titulo);
+			try {
+				while (rs.next()) {
+					livros.add(getLivro(rs));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		} else {
-			return new ArrayList<LivroVO>();
+			throw new InvalidParameterException();
 		}
+
+		return livros;
+	}
+
+	@Override
+	public List<LivroVO> pesquisarAnoLancamento(int anoLancamento) {
+		List<LivroVO> livros = new ArrayList<LivroVO>();
+		ResultSet rs = livroDAO.pesquisarAnoLancamento(anoLancamento);
+
+		try {
+			while (rs.next()) {
+				livros.add(getLivro(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return livros;
+	}
+
+	public List<LivroVO> pesquisarGenero(String genero) {
+		List<LivroVO> livros = new ArrayList<LivroVO>();
+
+		if ((genero != null) && !genero.isBlank()) {
+			ResultSet rs = livroDAO.pesquisarGenero('%' + genero.trim() + '%');
+
+			try {
+				while (rs.next()) {
+					livros.add(getLivro(rs));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else {
+			throw new InvalidParameterException();
+		}
+
+		return livros;
+	}
+
+	public List<LivroVO> pesquisarNumeroPaginas(int numeroPaginas) throws InvalidParameterException {
+		List<LivroVO> livros = new ArrayList<LivroVO>();
+
+		if (numeroPaginas != 0) {
+			ResultSet rs = livroDAO.pesquisarNumeroPaginas(numeroPaginas);
+
+			try {
+				while (rs.next()) {
+					livros.add(getLivro(rs));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else {
+			throw new InvalidParameterException();
+		}
+
+		return livros;
+	}
+
+	private LivroVO getLivro(ResultSet rs) {
+		try {
+			LivroVO livro = new LivroVO(rs.getString("titulo"), rs.getString("genero"), rs.getInt("numero_paginas"),
+					rs.getInt("numero_exemplares"), rs.getInt("numero_emprestimos"), rs.getInt("numero_dias_alugado"),
+					rs.getInt("ano_lancamento"), rs.getFloat("valor_aluguel"));
+			livro.setId(rs.getLong("id"));
+			livro.setIdEmprestavel(rs.getLong("id_emprestavel"));
+
+			return livro;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

@@ -2,6 +2,7 @@ package br.edu.ufersa.ropke.locadoramaven.controller;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import br.edu.ufersa.ropke.locadoramaven.model.BO.DiscoBO;
@@ -59,10 +60,10 @@ public class DiscoController extends ComumController implements Initializable {
 		String stringPesquisaEmprestimo = pesquisaDisco.getText();
 
 		DiscoBO discoBO = new DiscoBO();
-		DiscoVO discoAtual = new DiscoVO();
+		DiscoVO discoAtual;
 
-		ArrayList<DiscoVO> discos = discoBO.listar();
-		ArrayList<DiscoVO> discosValidos = new ArrayList<DiscoVO>();
+		List<DiscoVO> discos = discoBO.listar();
+		List<DiscoVO> discosValidos = new ArrayList<DiscoVO>();
 
 		int numeroDiscos = discos.size();
 		int intPesquisaEmprestimo = 0;

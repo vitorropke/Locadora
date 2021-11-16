@@ -1,112 +1,176 @@
 package br.edu.ufersa.ropke.locadoramaven.model.DAO;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import br.edu.ufersa.ropke.locadoramaven.model.VO.DiscoVO;
 
 public class DiscoDAO extends EmprestavelDAO<DiscoVO> {
-	private static final File arquivo = new File(
-			"src/main/java/br/edu/ufersa/ropke/locadoramaven/model/DAO/arquivos/discos.dat");
-
-	public static File getArquivo() {
-		return arquivo;
-	}
-
+	@Override
 	public void cadastrar(DiscoVO disco) {
-		//super.cadastrar(disco, arquivo);
+		try {
+			super.cadastrar(disco);
+
+			String sql = "INSERT INTO discos (id_emprestavel, banda, estilo) VALUES (?, ?, ?);";
+			PreparedStatement ptst;
+
+			ptst = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+			ptst.setLong(1, disco.getIdEmprestavel());
+			ptst.setString(2, disco.getBanda());
+			ptst.setString(3, disco.getEstilo());
+
+			int affectedRows = ptst.executeUpdate();
+
+			if (affectedRows == 0) {
+				throw new SQLException("A insercao falhou. Nenhuma linha foi alterada");
+			}
+
+			ResultSet generatedKeys = ptst.getGeneratedKeys();
+
+			if (generatedKeys.next()) {
+				disco.setId(generatedKeys.getLong(1));
+			} else {
+				throw new SQLException("A insercao falhou. Nenhuma linha foi alterada");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
+	@Override
 	public void alterar(DiscoVO disco) {
-		super.alterar(disco, arquivo);
+		try {
+			super.alterar(disco);
+
+			String sql = "UPDATE discos SET (banda, estilo) = (?, ?) WHERE id = ?;";
+			PreparedStatement ptst;
+
+			ptst = getConnection().prepareStatement(sql);
+
+			ptst.setString(1, disco.getBanda());
+			ptst.setString(2, disco.getEstilo());
+			ptst.setLong(3, disco.getId());
+
+			ptst.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void deletar(DiscoVO disco) {
-		super.deletar(disco, arquivo);
-	}
-
-	public void pesquisar() {
-		//super.pesquisar(arquivo);
-	}
-
-	public ResultSet pesquisar(DiscoVO disco) {
-		return null;
-	}
-
+	@Override
 	public ResultSet listar() {
-		return null;
-	}
-
-	public ArrayList<DiscoVO> pesquisarTitulo(String titulo) {
-		return super.pesquisarTitulo(titulo, arquivo);
-	}
-
-	public ArrayList<DiscoVO> pesquisarAnoLancamento(int anoLancamento) {
-		return super.pesquisarAnoLancamento(anoLancamento, arquivo);
-	}
-
-	public ArrayList<DiscoVO> pesquisarBanda(String banda) {
-		ArrayList<DiscoVO> discos = new ArrayList<DiscoVO>();
+		String sql = "SELECT * FROM discos LEFT JOIN emprestaveis ON (discos.id_emprestavel = emprestaveis.id);";
+		Statement st;
+		ResultSet rs = null;
 
 		try {
-			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
-				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
-				ObjectInputStream objetoLeitura;
-				DiscoVO discoLeitura;
-
-				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os discos do arquivo
-					objetoLeitura = new ObjectInputStream(arquivoLeitura);
-
-					discoLeitura = (DiscoVO) objetoLeitura.readObject();
-
-					// Salva o disco no vetor quando parte do nome da banda coincidir com o
-					// parâmetro
-					if (discoLeitura.getBanda().contains(banda)) {
-						discos.add(discoLeitura);
-					}
-				}
-
-				arquivoLeitura.close();
-			}
-		} catch (Exception e) {
+			st = getConnection().createStatement();
+			rs = st.executeQuery(sql);
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return discos;
+		return rs;
 	}
 
-	public ArrayList<DiscoVO> pesquisarEstilo(String estilo) {
-		ArrayList<DiscoVO> discos = new ArrayList<DiscoVO>();
+	@Override
+	public ResultSet pesquisarId(long idDisco) {
+		String sql = "SELECT * FROM discos LEFT JOIN emprestaveis ON (discos.id_emprestavel = emprestaveis.id) "
+				+ "WHERE discos.id = ?;";
+		PreparedStatement ptst;
+		ResultSet rs = null;
 
 		try {
-			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
-				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
-				ObjectInputStream objetoLeitura;
-				DiscoVO discoLeitura;
+			ptst = getConnection().prepareStatement(sql);
 
-				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os discos do arquivo
-					objetoLeitura = new ObjectInputStream(arquivoLeitura);
+			ptst.setLong(1, idDisco);
 
-					discoLeitura = (DiscoVO) objetoLeitura.readObject();
-
-					// Salva o disco no vetor quando parte do nome do estilo coincidir com o
-					// parâmetro
-					if (discoLeitura.getEstilo().contains(estilo)) {
-						discos.add(discoLeitura);
-					}
-				}
-
-				arquivoLeitura.close();
-			}
-		} catch (Exception e) {
+			rs = ptst.executeQuery();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return discos;
+		return rs;
+	}
+
+	@Override
+	public ResultSet pesquisarTitulo(String titulo) {
+		String sql = "SELECT * FROM discos LEFT JOIN emprestaveis ON (discos.id_emprestavel = emprestaveis.id) "
+				+ "WHERE titulo LIKE ?;";
+		PreparedStatement ptst;
+		ResultSet rs = null;
+
+		try {
+			ptst = getConnection().prepareStatement(sql);
+
+			ptst.setString(1, titulo);
+
+			rs = ptst.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
+	}
+
+	@Override
+	public ResultSet pesquisarAnoLancamento(int anoLancamento) {
+		String sql = "SELECT * FROM discos LEFT JOIN emprestaveis ON (discos.id_emprestavel = emprestaveis.id) "
+				+ "WHERE ano_lancamento = ?;";
+		PreparedStatement ptst;
+		ResultSet rs = null;
+
+		try {
+			ptst = getConnection().prepareStatement(sql);
+
+			ptst.setInt(1, anoLancamento);
+
+			rs = ptst.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
+	}
+
+	public ResultSet pesquisarBanda(String banda) {
+		String sql = "SELECT * FROM discos LEFT JOIN emprestaveis ON (discos.id_emprestavel = emprestaveis.id) "
+				+ "WHERE banda LIKE ?;";
+		PreparedStatement ptst;
+		ResultSet rs = null;
+
+		try {
+			ptst = getConnection().prepareStatement(sql);
+
+			ptst.setString(1, banda);
+
+			rs = ptst.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
+	}
+
+	public ResultSet pesquisarEstilo(String estilo) {
+		String sql = "SELECT * FROM discos LEFT JOIN emprestaveis ON (discos.id_emprestavel = emprestaveis.id) "
+				+ "WHERE estilo LIKE ?;";
+		PreparedStatement ptst;
+		ResultSet rs = null;
+
+		try {
+			ptst = getConnection().prepareStatement(sql);
+
+			ptst.setString(1, estilo);
+
+			rs = ptst.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
 	}
 }

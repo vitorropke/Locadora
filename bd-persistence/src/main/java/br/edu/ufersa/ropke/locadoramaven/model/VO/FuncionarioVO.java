@@ -5,8 +5,8 @@ import java.util.List;
 public class FuncionarioVO extends UsuarioVO {
 	private long id;
 
-	public FuncionarioVO(String login, String senha, String nome, String cpf, List<Endereco> enderecos,
-			List<String> emails, List<Telefone> telefones) {
+	public FuncionarioVO(String login, String senha, String nome, String cpf, List<EnderecoVO> enderecos,
+			List<String> emails, List<TelefoneVO> telefones) {
 		super(login, senha, nome, cpf, enderecos, emails, telefones);
 	}
 

@@ -1,7 +1,7 @@
 package br.edu.ufersa.ropke.locadoramaven.controller;
 
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import br.edu.ufersa.ropke.locadoramaven.model.BO.ClienteBO;
@@ -66,7 +66,7 @@ public class ClienteController extends ComumController implements Initializable 
 			tabelaClientes.setItems(listaClientes);
 			tabelaClientes.getItems().stream().forEach(doc -> System.out.println(doc.toString()));
 		} else {
-			ArrayList<ClienteVO> clientes = clienteBO.pesquisarNome(stringPesquisaEmprestimo);
+			List<ClienteVO> clientes = clienteBO.pesquisarNome(stringPesquisaEmprestimo);
 
 			listaClientes.clear();
 			listaClientes.addAll(clientes);

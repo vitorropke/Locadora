@@ -3,8 +3,8 @@ package br.edu.ufersa.ropke.locadoramaven.controller;
 import java.net.URL;
 import java.text.DateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import br.edu.ufersa.ropke.locadoramaven.model.BO.ClienteBO;
@@ -80,9 +80,9 @@ public class RelatorioClienteController extends ComumRelatorioController {
 
 		EmprestimoBO emprestimoBO = new EmprestimoBO();
 		ClienteBO clienteBO = new ClienteBO();
-		ClienteVO cliente = new ClienteVO();
+		ClienteVO cliente;
 
-		ArrayList<ClienteVO> clientes = clienteBO.pesquisarNome(stringClinte);
+		List<ClienteVO> clientes = clienteBO.pesquisarNome(stringClinte);
 		int quantidadeClientes = clientes.size();
 
 		if (quantidadeClientes == 1) {

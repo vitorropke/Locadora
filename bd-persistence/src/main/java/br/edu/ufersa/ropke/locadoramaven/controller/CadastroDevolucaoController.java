@@ -1,6 +1,7 @@
 package br.edu.ufersa.ropke.locadoramaven.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.edu.ufersa.ropke.locadoramaven.exception.InvalidParameterException;
 import br.edu.ufersa.ropke.locadoramaven.model.BO.ClienteBO;
@@ -41,9 +42,9 @@ public class CadastroDevolucaoController {
 			intQuantidadeEmprestavel = Integer.parseInt(stringQuantidadeEmprestavel);
 
 			ClienteBO clienteBO = new ClienteBO();
-			ClienteVO clienteVO = new ClienteVO();
+			ClienteVO clienteVO;
 
-			ArrayList<ClienteVO> clientes = clienteBO.pesquisarNome(stringCliente);
+			List<ClienteVO> clientes = clienteBO.pesquisarNome(stringCliente);
 			int quantidadeClientes = clientes.size();
 
 			if (quantidadeClientes == 1) {
@@ -56,12 +57,12 @@ public class CadastroDevolucaoController {
 				LivroBO livroBO = new LivroBO();
 				DiscoBO discoBO = new DiscoBO();
 
-				ArrayList<LivroVO> livros = livroBO.pesquisarTitulo(stringEmprestavel);
-				ArrayList<DiscoVO> discos = discoBO.pesquisarTitulo(stringEmprestavel);
-				ArrayList<EmprestavelVO> emprestaveis = new ArrayList<EmprestavelVO>();
-				ArrayList<Integer> quantidades = new ArrayList<Integer>();
-				ArrayList<EmprestimoVO> emprestimos = emprestimoBO.listar();
-				ArrayList<EmprestimoVO> emprestimosValidos = new ArrayList<EmprestimoVO>();
+				List<LivroVO> livros = livroBO.pesquisarTitulo(stringEmprestavel);
+				List<DiscoVO> discos = discoBO.pesquisarTitulo(stringEmprestavel);
+				List<EmprestavelVO> emprestaveis = new ArrayList<EmprestavelVO>();
+				List<Integer> quantidades = new ArrayList<Integer>();
+				List<EmprestimoVO> emprestimos = emprestimoBO.listar();
+				List<EmprestimoVO> emprestimosValidos = new ArrayList<EmprestimoVO>();
 
 				int numeroEmprestimos = emprestimos.size();
 
@@ -76,7 +77,6 @@ public class CadastroDevolucaoController {
 				emprestaveis.addAll(discos);
 				quantidades.add(intQuantidadeEmprestavel);
 
-				emprestimoBO.devolver(emprestimosValidos.get(0), emprestaveis, quantidades);
 				emprestimoBO.alterar(emprestimosValidos.get(0));
 
 				dadosIncompletos.setVisible(false);

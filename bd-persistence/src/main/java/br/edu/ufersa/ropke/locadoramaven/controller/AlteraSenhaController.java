@@ -26,23 +26,15 @@ public class AlteraSenhaController {
 	@FXML
 	public void alterarSenha() {
 		GerenteBO gerenteBO = new GerenteBO();
-		GerenteVO gerenteVO = new GerenteVO();
 		FuncionarioBO funcionarioBO = new FuncionarioBO();
-		FuncionarioVO funcionarioVO = new FuncionarioVO();
 
 		String stringLogin = login.getText();
 		String stringNovaSenha = novaSenha.getText();
 		String stringConfirmaNovaSenha = confirmaNovaSenha.getText();
 
-		// Define o login
-		gerenteVO.setLogin(stringLogin);
-		gerenteVO.setSenha("senha aleatoria");
-		funcionarioVO.setLogin(stringLogin);
-		funcionarioVO.setSenha("senha aleatoria");
-
 		// Procura pelo objeto
-		gerenteVO = gerenteBO.pesquisarLogin(gerenteVO);
-		funcionarioVO = funcionarioBO.pesquisarLogin(funcionarioVO);
+		GerenteVO gerenteVO = gerenteBO.pesquisarLogin(stringLogin);
+		FuncionarioVO funcionarioVO = funcionarioBO.pesquisarLogin(stringLogin);
 
 		// Busca pelo gerente ou funcionário
 		if (gerenteVO != null) {

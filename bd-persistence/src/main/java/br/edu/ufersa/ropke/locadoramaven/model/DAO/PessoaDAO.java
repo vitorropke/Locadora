@@ -4,15 +4,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import br.edu.ufersa.ropke.locadoramaven.model.VO.PessoaVO;
 
-public class PessoaDAO<VO extends PessoaVO> extends OperacaoDAO<VO> {
-	public void cadastrar(VO pessoa) throws SQLException {
-		String sql = "INSERT INTO pessoas (nome, cpf) VALUES (?,?)";
+import br.edu.ufersa.ropke.locadoramaven.model.VO.EnderecoVO;
+import br.edu.ufersa.ropke.locadoramaven.model.VO.PessoaVO;
+import br.edu.ufersa.ropke.locadoramaven.model.VO.TelefoneVO;
+
+public abstract class PessoaDAO<VO extends PessoaVO> extends ConexaoDAO implements PessoaInterDAO<VO> {
+	@Override
+	public void cadastrar(VO pessoa) {
+		String sql = "INSERT INTO pessoas (nome, cpf) VALUES (?, ?);";
 		PreparedStatement ptst;
 
 		try {
 			ptst = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
 			ptst.setString(1, pessoa.getNome());
 			ptst.setString(2, pessoa.getCpf());
 
@@ -26,6 +31,16 @@ public class PessoaDAO<VO extends PessoaVO> extends OperacaoDAO<VO> {
 
 			if (generatedKeys.next()) {
 				pessoa.setIdPessoa(generatedKeys.getLong(1));
+
+				for (EnderecoVO enderecoAtual : pessoa.getEnderecos()) {
+					EnderecoDAO.cadastrar(enderecoAtual, pessoa.getIdPessoa());
+				}
+				for (String emailAtual : pessoa.getEmails()) {
+					EmailDAO.cadastrar(emailAtual, pessoa.getIdPessoa());
+				}
+				for (TelefoneVO telefoneAtual : pessoa.getTelefones()) {
+					TelefoneDAO.cadastrar(telefoneAtual, pessoa.getIdPessoa());
+				}
 			} else {
 				throw new SQLException("A insercao falhou. Nenhuma linha foi alterada");
 			}
@@ -34,42 +49,81 @@ public class PessoaDAO<VO extends PessoaVO> extends OperacaoDAO<VO> {
 		}
 	}
 
-	public void alterar(VO pessoa) throws SQLException {
-		String sql = "UPDATE pessoas SET nome = ? WHERE id= ?";
+	@Override
+	public void alterar(VO pessoa) {
+		String sql = "UPDATE pessoas SET (nome, cpf) = (?, ?) WHERE id = ?;";
 		PreparedStatement ptst;
 
 		try {
 			ptst = getConnection().prepareStatement(sql);
+
 			ptst.setString(1, pessoa.getNome());
-			ptst.setLong(2, pessoa.getIdPessoa());
+			ptst.setString(2, pessoa.getCpf());
+			ptst.setLong(3, pessoa.getIdPessoa());
+
 			ptst.executeUpdate();
+
+			EnderecoDAO.deletar(pessoa.getIdPessoa());
+			EmailDAO.deletar(pessoa.getIdPessoa());
+			TelefoneDAO.deletar(pessoa.getIdPessoa());
+
+			for (EnderecoVO enderecoAtual : pessoa.getEnderecos()) {
+				EnderecoDAO.cadastrar(enderecoAtual, pessoa.getIdPessoa());
+			}
+			for (String emailAtual : pessoa.getEmails()) {
+				EmailDAO.cadastrar(emailAtual, pessoa.getIdPessoa());
+			}
+			for (TelefoneVO telefoneAtual : pessoa.getTelefones()) {
+				TelefoneDAO.cadastrar(telefoneAtual, pessoa.getIdPessoa());
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void deletar(VO pessoa) throws SQLException {
-		String sql = "DELETE FROM pessoas WHERE id = ?";
+	@Override
+	public void deletar(long idPessoa) {
+		String sql = "DELETE FROM pessoas WHERE id = ?;";
 		PreparedStatement ptst;
 
 		try {
 			ptst = getConnection().prepareStatement(sql);
-			ptst.setLong(1, pessoa.getIdPessoa());
+
+			ptst.setLong(1, idPessoa);
+
 			ptst.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public ResultSet pesquisar(VO pessoa) throws SQLException {
-		String sql = "SELECT * FROM pessoas WHERE id = ?";
+	@Override
+	public ResultSet listar() {
+		String sql = "SELECT * FROM pessoas;";
+		Statement st;
+		ResultSet rs = null;
+
+		try {
+			st = getConnection().createStatement();
+			rs = st.executeQuery(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
+	}
+
+	@Override
+	public ResultSet pesquisarId(long idPessoa) {
+		String sql = "SELECT * FROM pessoas WHERE id = ?;";
 		PreparedStatement ptst;
 		ResultSet rs = null;
 
 		try {
 			ptst = getConnection().prepareStatement(sql);
-			ptst.setLong(1, pessoa.getIdPessoa());
-			System.out.println(ptst);
+
+			ptst.setLong(1, idPessoa);
+
 			rs = ptst.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -78,14 +132,37 @@ public class PessoaDAO<VO extends PessoaVO> extends OperacaoDAO<VO> {
 		return rs;
 	}
 
-	public ResultSet listar() throws SQLException {
-		String sql = "SELECT * FROM pessoas";
-		Statement st;
+	@Override
+	public ResultSet pesquisarNome(String nome) {
+		String sql = "SELECT * FROM pessoas WHERE nome LIKE ?;";
+		PreparedStatement ptst;
 		ResultSet rs = null;
 
 		try {
-			st = getConnection().createStatement();
-			rs = st.executeQuery(sql);
+			ptst = getConnection().prepareStatement(sql);
+
+			ptst.setString(1, nome);
+
+			rs = ptst.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
+	}
+
+	@Override
+	public ResultSet pesquisarCpf(String cpf) {
+		String sql = "SELECT * FROM pessoas WHERE cpf = ?;";
+		PreparedStatement ptst;
+		ResultSet rs = null;
+
+		try {
+			ptst = getConnection().prepareStatement(sql);
+
+			ptst.setString(1, cpf);
+
+			rs = ptst.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

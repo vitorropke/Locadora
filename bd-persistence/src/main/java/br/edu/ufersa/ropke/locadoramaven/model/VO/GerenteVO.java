@@ -5,8 +5,8 @@ import java.util.List;
 public class GerenteVO extends UsuarioVO {
 	private long id;
 
-	public GerenteVO(String login, String senha, String nome, String cpf, List<Endereco> enderecos, List<String> emails,
-			List<Telefone> telefones) {
+	public GerenteVO(String login, String senha, String nome, String cpf, List<EnderecoVO> enderecos, List<String> emails,
+			List<TelefoneVO> telefones) {
 		super(login, senha, nome, cpf, enderecos, emails, telefones);
 	}
 

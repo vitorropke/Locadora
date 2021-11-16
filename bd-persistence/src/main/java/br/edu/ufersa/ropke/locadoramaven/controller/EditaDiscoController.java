@@ -1,6 +1,6 @@
 package br.edu.ufersa.ropke.locadoramaven.controller;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import br.edu.ufersa.ropke.locadoramaven.exception.InvalidParameterException;
 import br.edu.ufersa.ropke.locadoramaven.exception.NotFoundException;
@@ -41,7 +41,7 @@ public class EditaDiscoController {
 		String stringPesquisaDisco = titulo.getText();
 
 		DiscoBO discoBO = new DiscoBO();
-		ArrayList<DiscoVO> discos = discoBO.pesquisarTitulo(stringPesquisaDisco);
+		List<DiscoVO> discos = discoBO.pesquisarTitulo(stringPesquisaDisco);
 		int quantidadeDiscos = discos.size();
 
 		if (quantidadeDiscos == 1) {
@@ -131,13 +131,13 @@ public class EditaDiscoController {
 		String stringPesquisaDisco = titulo.getText();
 
 		DiscoBO discoBO = new DiscoBO();
-		ArrayList<DiscoVO> discos = discoBO.pesquisarTitulo(stringPesquisaDisco);
+		List<DiscoVO> discos = discoBO.pesquisarTitulo(stringPesquisaDisco);
 		int quantidadeDiscos = discos.size();
 
 		if (quantidadeDiscos == 1) {
 			DiscoVO discoAtual = discos.get(0);
 
-			discoBO.deletar(discoAtual);
+			discoBO.deletar(discoAtual.getIdEmprestavel());
 
 			naoEncontrado.setVisible(false);
 			dadosIncompletos.setVisible(false);

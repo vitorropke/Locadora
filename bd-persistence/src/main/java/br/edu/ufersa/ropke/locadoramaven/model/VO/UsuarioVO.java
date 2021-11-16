@@ -7,8 +7,8 @@ public abstract class UsuarioVO extends PessoaVO {
 	private String login;
 	private String senha;
 
-	public UsuarioVO(String login, String senha, String nome, String cpf, List<Endereco> enderecos, List<String> emails,
-			List<Telefone> telefones) {
+	public UsuarioVO(String login, String senha, String nome, String cpf, List<EnderecoVO> enderecos, List<String> emails,
+			List<TelefoneVO> telefones) {
 		super(nome, cpf, enderecos, emails, telefones);
 		setLogin(login);
 		setSenha(senha);

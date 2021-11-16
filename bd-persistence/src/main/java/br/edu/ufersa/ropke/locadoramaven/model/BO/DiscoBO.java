@@ -1,95 +1,202 @@
 package br.edu.ufersa.ropke.locadoramaven.model.BO;
 
-import java.io.File;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import br.edu.ufersa.ropke.locadoramaven.exception.InvalidParameterException;
+import br.edu.ufersa.ropke.locadoramaven.exception.NotFoundException;
 import br.edu.ufersa.ropke.locadoramaven.model.DAO.DiscoDAO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.DiscoVO;
 
 public class DiscoBO extends EmprestavelBO<DiscoVO> {
-	private final File arquivo = DiscoDAO.getArquivo();
-	private DiscoDAO discoDAO = new DiscoDAO();
+	private static final DiscoDAO discoDAO = new DiscoDAO();
 
-	public boolean isNull(DiscoVO disco) {
-		// Verifica se a entrada de argumentos não é nula
-		if ((disco != null) && (arquivo != null)) {
-			// Verifica se parâmetros importantes não são nulos
-			if ((disco.getBanda() != null) && (disco.getEstilo() != null)) {
-				return false;
-			} else {
-				return true;
-			}
+	@Override
+	public boolean isInvalid(DiscoVO disco) {
+		if (!super.isInvalid(disco) && (disco.getBanda() != null) && (disco.getEstilo() != null)) {
+			return false;
 		} else {
 			return true;
 		}
 	}
 
-	public void cadastrar(DiscoVO disco) {
-		// Verifica se a entrada de argumentos não é nula
-		if (!isNull(disco)) {
-			super.cadastrar(disco, arquivo);
+	@Override
+	public void cadastrar(DiscoVO disco) throws InvalidParameterException {
+		if (!isInvalid(disco)) {
+			discoDAO.cadastrar(disco);
 		} else {
 			throw new InvalidParameterException();
 		}
 	}
 
-	public void alterar(DiscoVO disco) {
-		// Verifica se a entrada de argumentos não é nula
-		if (!isNull(disco)) {
-			super.alterar(disco, arquivo);
+	@Override
+	public void alterar(DiscoVO disco) throws NotFoundException, InvalidParameterException {
+		if (!isInvalid(disco)) {
+			ResultSet rs = discoDAO.pesquisarId(disco.getId());
+
+			try {
+				if (rs.next()) {
+					discoDAO.alterar(disco);
+				} else {
+					throw new NotFoundException();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		} else {
 			throw new InvalidParameterException();
 		}
 	}
 
-	public void deletar(DiscoVO disco) {
-		// Verifica se a entrada de argumentos não é nula
-		if (!isNull(disco)) {
-			super.deletar(disco, arquivo);
+	@Override
+	public void deletar(long idDisco) throws NotFoundException, InvalidParameterException {
+		if (idDisco != 0) {
+			ResultSet rs = discoDAO.pesquisarId(idDisco);
+
+			try {
+				if (rs.next()) {
+					discoDAO.deletar(idDisco);
+				} else {
+					throw new NotFoundException();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		} else {
 			throw new InvalidParameterException();
 		}
 	}
 
-	public void pesquisar() {
-		super.pesquisar(arquivo);
+	@Override
+	public List<DiscoVO> listar() {
+		List<DiscoVO> discos = new ArrayList<DiscoVO>();
+
+		ResultSet rs = discoDAO.listar();
+
+		try {
+			while (rs.next()) {
+				discos.add(getDisco(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return discos;
 	}
 
-	public DiscoVO pesquisar(DiscoVO disco) {
-		// Verifica se a entrada de argumentos não é nula
-		if (!isNull(disco)) {
-			return super.pesquisar(disco, arquivo);
+	@Override
+	public DiscoVO pesquisarId(long idDisco) throws NotFoundException, InvalidParameterException {
+		if (idDisco != 0) {
+			ResultSet rs = discoDAO.pesquisarId(idDisco);
+
+			try {
+				if (rs.next()) {
+					return getDisco(rs);
+				} else {
+					throw new NotFoundException();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		} else {
 			throw new InvalidParameterException();
 		}
+
+		return null;
 	}
 
-	public ArrayList<DiscoVO> listar() {
-		return super.listar(arquivo);
-	}
+	@Override
+	public List<DiscoVO> pesquisarTitulo(String titulo) throws InvalidParameterException {
+		List<DiscoVO> discos = new ArrayList<DiscoVO>();
 
-	public ArrayList<DiscoVO> pesquisarTitulo(String titulo) {
-		return super.pesquisarTitulo(titulo, arquivo);
-	}
+		if ((titulo != null) && !titulo.isBlank()) {
+			ResultSet rs = discoDAO.pesquisarTitulo('%' + titulo.trim() + '%');
 
-	public ArrayList<DiscoVO> pesquisarAnoLancamento(int anoLancamento) {
-		return super.pesquisarAnoLancamento(anoLancamento, arquivo);
-	}
-
-	public ArrayList<DiscoVO> pesquisarBanda(String banda) {
-		if ((banda != null) && (!banda.isBlank())) {
-			return discoDAO.pesquisarBanda(banda);
+			try {
+				while (rs.next()) {
+					discos.add(getDisco(rs));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		} else {
-			return new ArrayList<DiscoVO>();
+			throw new InvalidParameterException();
 		}
+
+		return discos;
 	}
 
-	public ArrayList<DiscoVO> pesquisarEstilo(String estilo) {
-		if ((estilo != null) && (!estilo.isBlank())) {
-			return discoDAO.pesquisarEstilo(estilo);
-		} else {
-			return new ArrayList<DiscoVO>();
+	@Override
+	public List<DiscoVO> pesquisarAnoLancamento(int anoLancamento) {
+		List<DiscoVO> discos = new ArrayList<DiscoVO>();
+		ResultSet rs = discoDAO.pesquisarAnoLancamento(anoLancamento);
+
+		try {
+			while (rs.next()) {
+				discos.add(getDisco(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
+
+		return discos;
+	}
+
+	public List<DiscoVO> pesquisarBanda(String banda) throws InvalidParameterException {
+		List<DiscoVO> discos = new ArrayList<DiscoVO>();
+
+		if ((banda != null) && !banda.isBlank()) {
+			ResultSet rs = discoDAO.pesquisarBanda('%' + banda.trim() + '%');
+
+			try {
+				while (rs.next()) {
+					discos.add(getDisco(rs));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else {
+			throw new InvalidParameterException();
+		}
+
+		return discos;
+	}
+
+	public List<DiscoVO> pesquisarEstilo(String estilo) throws InvalidParameterException {
+		List<DiscoVO> discos = new ArrayList<DiscoVO>();
+
+		if ((estilo != null) && !estilo.isBlank()) {
+			ResultSet rs = discoDAO.pesquisarEstilo('%' + estilo.trim() + '%');
+
+			try {
+				while (rs.next()) {
+					discos.add(getDisco(rs));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else {
+			throw new InvalidParameterException();
+		}
+
+		return discos;
+	}
+
+	private DiscoVO getDisco(ResultSet rs) {
+		try {
+			DiscoVO disco = new DiscoVO(rs.getString("titulo"), rs.getString("banda"), rs.getString("estilo"),
+					rs.getInt("numero_exemplares"), rs.getInt("numero_emprestimos"), rs.getInt("numero_dias_alugado"),
+					rs.getInt("ano_lancamento"), rs.getFloat("valor_aluguel"));
+			disco.setId(rs.getLong("id"));
+			disco.setIdEmprestavel(rs.getLong("id_emprestavel"));
+
+			return disco;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

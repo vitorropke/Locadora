@@ -1,240 +1,156 @@
 package br.edu.ufersa.ropke.locadoramaven.model.DAO;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.sql.Statement;
 
 import br.edu.ufersa.ropke.locadoramaven.model.VO.EmprestavelVO;
 
-public class EmprestavelDAO<VO extends EmprestavelVO> extends OperacaoDAO<VO> {
-	
-	public void alterar(VO emprestavel, File arquivo) {
+public abstract class EmprestavelDAO<VO extends EmprestavelVO> extends ConexaoDAO implements EmprestavelInterDAO<VO> {
+	@Override
+	public void cadastrar(VO emprestavel) {
+		String sql = "INSERT INTO emprestaveis (titulo, numero_exemplares, numero_emprestimos, numero_dias_alugado, ano_lancamento, valor_aluguel) "
+				+ "VALUES (?, ?, ?, ?, ?, ?);";
+		PreparedStatement ptst;
+
 		try {
-			ArrayList<VO> emprestaveis = new ArrayList<VO>();
+			ptst = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-			// Procura pelo emprestável enquanto salva os outros em um vetor de emprestáveis
-			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
-				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
-				ObjectInputStream objetoLeitura;
-				VO emprestavelLeitura;
+			ptst.setString(1, emprestavel.getTitulo());
+			ptst.setInt(2, emprestavel.getNumeroExemplares());
+			ptst.setInt(3, emprestavel.getNumeroEmprestimos());
+			ptst.setInt(4, emprestavel.getNumeroDiasAlugado());
+			ptst.setInt(5, emprestavel.getAnoLancamento());
+			ptst.setFloat(6, emprestavel.getValorAluguel());
 
-				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os emprestáveis do arquivo
-					objetoLeitura = new ObjectInputStream(arquivoLeitura);
+			int affectedRows = ptst.executeUpdate();
 
-					emprestavelLeitura = (VO) objetoLeitura.readObject();
-
-					// Compara os emprestáveis pelo título deles
-					if (emprestavelLeitura.getTitulo().equals(emprestavel.getTitulo())) {
-						// Quando for o emprestável a ser alterado, insere no vetor, o emprestável que
-						// vem do parâmetro do método 'alterar'
-						emprestaveis.add(emprestavel);
-					} else {
-						// Quando não for o emprestável a ser alterado, insere do arquivo
-						emprestaveis.add(emprestavelLeitura);
-					}
-				}
-
-				arquivoLeitura.close();
+			if (affectedRows == 0) {
+				throw new SQLException("A insercao falhou. Nenhuma linha foi alterada");
 			}
 
-			// Escrita com o emprestável modificado
-			FileOutputStream arquivoGravador = new FileOutputStream(arquivo);
-			ObjectOutputStream objetoGravador;
-			int tamanhoVetorEmprestaveis = emprestaveis.size();
+			ResultSet generatedKeys = ptst.getGeneratedKeys();
 
-			for (int i = 0; i < tamanhoVetorEmprestaveis; i++) {
-				// Classe responsável por inserir os emprestáveis
-				objetoGravador = new ObjectOutputStream(arquivoGravador);
-
-				// Grava o emprestável no arquivo
-				objetoGravador.writeObject(emprestaveis.get(i));
-				objetoGravador.flush();
+			if (generatedKeys.next()) {
+				emprestavel.setIdEmprestavel(generatedKeys.getLong(1));
+			} else {
+				throw new SQLException("A insercao falhou. Nenhuma linha foi alterada");
 			}
-
-			arquivoGravador.close();
-
-			System.out.println("Emprestavel alterado com sucesso!");
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void deletar(VO emprestavel, File arquivo) {
+	@Override
+	public void alterar(VO emprestavel) {
+		String sql = "UPDATE emprestaveis SET (titulo, numero_exemplares, numero_emprestimos, numero_dias_alugado, ano_lancamento, valor_aluguel) = (?, ?, ?, ?, ? ,?) "
+				+ "WHERE id = ?;";
+		PreparedStatement ptst;
+
 		try {
-			ArrayList<VO> emprestaveis = new ArrayList<VO>();
+			ptst = getConnection().prepareStatement(sql);
 
-			// Procura pelo emprestável enquanto salva os outros em um vetor de emprestáveis
-			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
-				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
-				ObjectInputStream objetoLeitura;
-				VO emprestavelLeitura;
+			ptst.setString(1, emprestavel.getTitulo());
+			ptst.setInt(2, emprestavel.getNumeroExemplares());
+			ptst.setInt(3, emprestavel.getNumeroEmprestimos());
+			ptst.setInt(4, emprestavel.getNumeroDiasAlugado());
+			ptst.setInt(5, emprestavel.getAnoLancamento());
+			ptst.setFloat(6, emprestavel.getValorAluguel());
+			ptst.setLong(7, emprestavel.getIdEmprestavel());
 
-				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os emprestáveis do arquivo
-					objetoLeitura = new ObjectInputStream(arquivoLeitura);
-
-					emprestavelLeitura = (VO) objetoLeitura.readObject();
-
-					// Compara os emprestáveis pelo título deles
-					if (!emprestavelLeitura.getTitulo().equals(emprestavel.getTitulo())) {
-						// Quando não encontrar o emprestável, insere no vetor
-						// Quando encontrar o emprestável, não insere no vetor
-						emprestaveis.add(emprestavelLeitura);
-					}
-				}
-
-				arquivoLeitura.close();
-			}
-
-			// Escrita com o emprestável removido
-			FileOutputStream arquivoGravador = new FileOutputStream(arquivo);
-			ObjectOutputStream objetoGravador;
-			int tamanhoVetorEmprestaveis = emprestaveis.size();
-
-			for (int i = 0; i < tamanhoVetorEmprestaveis; i++) {
-				// Classe responsável por inserir os emprestáveis
-				objetoGravador = new ObjectOutputStream(arquivoGravador);
-
-				// Grava o emprestável no arquivo
-				objetoGravador.writeObject(emprestaveis.get(i));
-				objetoGravador.flush();
-			}
-
-			arquivoGravador.close();
-
-			System.out.println("Emprestavel apagado com sucesso!");
-		} catch (Exception e) {
+			ptst.executeUpdate();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public VO pesquisar(VO emprestavel, File arquivo) {
+	@Override
+	public void deletar(long idEmprestavel) {
+		String sql = "DELETE FROM emprestaveis WHERE id = ?;";
+		PreparedStatement ptst;
+
 		try {
-			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
-				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
-				ObjectInputStream objetoLeitura;
-				VO emprestavelLeitura;
+			ptst = getConnection().prepareStatement(sql);
 
-				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os emprestáveis do arquivo
-					objetoLeitura = new ObjectInputStream(arquivoLeitura);
+			ptst.setLong(1, idEmprestavel);
 
-					emprestavelLeitura = (VO) objetoLeitura.readObject();
+			ptst.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
-					// Retorna o emprestável quando obter o mesmo título
-					if (emprestavelLeitura.getTitulo().equals(emprestavel.getTitulo())) {
-						arquivoLeitura.close();
-						objetoLeitura.close();
-						return emprestavelLeitura;
-					}
-				}
+	@Override
+	public ResultSet listar() {
+		String sql = "SELECT * FROM emprestaveis;";
+		Statement st;
+		ResultSet rs = null;
 
-				arquivoLeitura.close();
-			}
-		} catch (Exception e) {
+		try {
+			st = getConnection().createStatement();
+			rs = st.executeQuery(sql);
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		System.out.println("Emprestavel nao encontrado");
-		return null;
+		return rs;
 	}
 
-	@SuppressWarnings("unchecked")
-	public ArrayList<VO> pesquisarTitulo(String titulo, File arquivo) {
-		ArrayList<VO> emprestaveis = new ArrayList<VO>();
+	@Override
+	public ResultSet pesquisarId(long idEmprestavel) {
+		String sql = "SELECT * FROM emprestaveis WHERE id = ?;";
+		PreparedStatement ptst;
+		ResultSet rs = null;
 
 		try {
-			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
-				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
-				ObjectInputStream objetoLeitura;
-				VO emprestavelLeitura;
+			ptst = getConnection().prepareStatement(sql);
 
-				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os emprestáveis do arquivo
-					objetoLeitura = new ObjectInputStream(arquivoLeitura);
+			ptst.setLong(1, idEmprestavel);
 
-					emprestavelLeitura = (VO) objetoLeitura.readObject();
-
-					// Salva o emprestável no vetor quando parte do nome do título coincidir com o
-					// parâmetro
-					if (emprestavelLeitura.getTitulo().contains(titulo)) {
-						emprestaveis.add(emprestavelLeitura);
-					}
-				}
-
-				arquivoLeitura.close();
-			}
-		} catch (Exception e) {
+			rs = ptst.executeQuery();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return emprestaveis;
+		return rs;
 	}
 
-	@SuppressWarnings("unchecked")
-	public ArrayList<VO> pesquisarAnoLancamento(int anoLancamento, File arquivo) {
-		ArrayList<VO> emprestaveis = new ArrayList<VO>();
+	@Override
+	public ResultSet pesquisarTitulo(String titulo) {
+		String sql = "SELECT * FROM emprestaveis WHERE titulo LIKE ?;";
+		PreparedStatement ptst;
+		ResultSet rs = null;
 
 		try {
-			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
-				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
-				ObjectInputStream objetoLeitura;
-				VO emprestavelLeitura;
+			ptst = getConnection().prepareStatement(sql);
 
-				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os emprestáveis do arquivo
-					objetoLeitura = new ObjectInputStream(arquivoLeitura);
+			ptst.setString(1, titulo);
 
-					emprestavelLeitura = (VO) objetoLeitura.readObject();
-
-					// Salva o emprestável no vetor quando o ano for igual ao parâmetro
-					if (emprestavelLeitura.getAnoLancamento() == anoLancamento) {
-						emprestaveis.add(emprestavelLeitura);
-					}
-				}
-
-				arquivoLeitura.close();
-			}
-		} catch (Exception e) {
+			rs = ptst.executeQuery();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return emprestaveis;
+		return rs;
 	}
 
 	@Override
-	public void cadastrar(VO entidade) throws SQLException {
-		// TODO Auto-generated method stub
-		
-	}
+	public ResultSet pesquisarAnoLancamento(int anoLancamento) {
+		String sql = "SELECT * FROM emprestaveis WHERE ano_lancamento = ?;";
+		PreparedStatement ptst;
+		ResultSet rs = null;
 
-	@Override
-	public void alterar(VO entidade) throws SQLException {
-		// TODO Auto-generated method stub
-		
-	}
+		try {
+			ptst = getConnection().prepareStatement(sql);
 
-	@Override
-	public void deletar(VO entidade) throws SQLException {
-		// TODO Auto-generated method stub
-		
-	}
+			ptst.setInt(1, anoLancamento);
 
-	@Override
-	public ResultSet pesquisar(VO entidade) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+			rs = ptst.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-	@Override
-	public ResultSet listar() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		return rs;
 	}
 }

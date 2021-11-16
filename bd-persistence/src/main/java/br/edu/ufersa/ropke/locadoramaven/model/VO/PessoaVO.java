@@ -7,11 +7,11 @@ public abstract class PessoaVO {
 	private long id;
 	private String nome;
 	private String cpf;
-	private List<Endereco> enderecos = new ArrayList<Endereco>();
+	private List<EnderecoVO> enderecos = new ArrayList<EnderecoVO>();
 	private List<String> emails = new ArrayList<String>();
-	private List<Telefone> telefones = new ArrayList<Telefone>();
+	private List<TelefoneVO> telefones = new ArrayList<TelefoneVO>();
 
-	public PessoaVO(String nome, String cpf, List<Endereco> enderecos, List<String> emails, List<Telefone> telefones) {
+	public PessoaVO(String nome, String cpf, List<EnderecoVO> enderecos, List<String> emails, List<TelefoneVO> telefones) {
 		setNome(nome);
 		setCpf(cpf);
 		setEnderecos(enderecos);
@@ -34,7 +34,7 @@ public abstract class PessoaVO {
 
 		if (!enderecos.isEmpty()) {
 			pessoa += '\n';
-			for (Endereco enderecoAtual : enderecos) {
+			for (EnderecoVO enderecoAtual : enderecos) {
 				pessoa += enderecoAtual;
 			}
 		} else {
@@ -58,7 +58,7 @@ public abstract class PessoaVO {
 
 		if (!telefones.isEmpty()) {
 			pessoa += '\n';
-			for (Telefone telefoneAtual : telefones) {
+			for (TelefoneVO telefoneAtual : telefones) {
 				pessoa += telefoneAtual;
 			}
 		} else {
@@ -105,19 +105,19 @@ public abstract class PessoaVO {
 		}
 	}
 
-	public List<Endereco> getEnderecos() {
+	public List<EnderecoVO> getEnderecos() {
 		return enderecos;
 	}
 
-	public void setEnderecos(List<Endereco> enderecos) {
+	public void setEnderecos(List<EnderecoVO> enderecos) {
 		if ((enderecos != null) && !enderecos.isEmpty()) {
 			int indice = 0;
 			// Procura por endereços vazios ou inválidos
-			for (Endereco enderecoAtual : enderecos) {
+			for (EnderecoVO enderecoAtual : enderecos) {
 				if ((enderecoAtual == null) || (enderecoAtual.getLogradouro() == null)
-						|| (enderecoAtual.getNumero() == null) || (enderecoAtual.getComplemento() == null)
-						|| (enderecoAtual.getBairro() == null) || (enderecoAtual.getCidade() == null)
-						|| (enderecoAtual.getEstado() == null) || (enderecoAtual.getCep() == null)) {
+						|| (enderecoAtual.getNumero() == null) || (enderecoAtual.getBairro() == null)
+						|| (enderecoAtual.getCidade() == null) || (enderecoAtual.getEstado() == null)
+						|| (enderecoAtual.getCep() == null)) {
 					System.out.println("Endereco " + indice + " vazio ou invalido");
 					return;
 				}
@@ -155,15 +155,15 @@ public abstract class PessoaVO {
 		}
 	}
 
-	public List<Telefone> getTelefones() {
+	public List<TelefoneVO> getTelefones() {
 		return telefones;
 	}
 
-	public void setTelefones(List<Telefone> telefones) {
+	public void setTelefones(List<TelefoneVO> telefones) {
 		if ((telefones != null) && !telefones.isEmpty()) {
 			int indice = 0;
 			// Procura por telefones vazios ou inválidos
-			for (Telefone telefoneAtual : telefones) {
+			for (TelefoneVO telefoneAtual : telefones) {
 				if ((telefoneAtual == null) || (telefoneAtual.getDdd() == null)
 						|| (telefoneAtual.getTelefone() == null)) {
 					System.out.println("Telefone " + indice + " vazio ou invalido");

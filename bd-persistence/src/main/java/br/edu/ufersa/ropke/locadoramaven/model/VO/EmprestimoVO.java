@@ -9,13 +9,13 @@ public class EmprestimoVO {
 	private long id;
 	private Calendar dataOperacao;
 	private ClienteVO cliente;
-	private List<ObjetoEmprestado> objetos = new ArrayList<ObjetoEmprestado>();
+	private List<ObjetoEmprestadoVO> objetos = new ArrayList<ObjetoEmprestadoVO>();
 
 	public EmprestimoVO() {
 		dataOperacao = Calendar.getInstance();
 	}
 
-	public EmprestimoVO(ClienteVO cliente, List<ObjetoEmprestado> objetos) {
+	public EmprestimoVO(ClienteVO cliente, List<ObjetoEmprestadoVO> objetos) {
 		dataOperacao = Calendar.getInstance();
 		setCliente(cliente);
 		emprestar(objetos);
@@ -41,7 +41,7 @@ public class EmprestimoVO {
 
 		if (!objetos.isEmpty()) {
 			emprestimo += '\n';
-			for (ObjetoEmprestado objetoAtual : objetos) {
+			for (ObjetoEmprestadoVO objetoAtual : objetos) {
 				emprestimo += objetoAtual;
 				emprestimo += "\n\n----------------------\n";
 			}
@@ -109,15 +109,15 @@ public class EmprestimoVO {
 		}
 	}
 
-	public List<ObjetoEmprestado> getObjetos() {
+	public List<ObjetoEmprestadoVO> getObjetos() {
 		return objetos;
 	}
 
-	private void setObjetos(List<ObjetoEmprestado> objetos) {
+	private void setObjetos(List<ObjetoEmprestadoVO> objetos) {
 		if ((objetos != null) && !objetos.isEmpty()) {
 			int indice = 0;
 			// Procura por objetos vazios ou inválidos
-			for (ObjetoEmprestado objetoAtual : objetos) {
+			for (ObjetoEmprestadoVO objetoAtual : objetos) {
 				Calendar dataAtual = Calendar.getInstance();
 				// Verifica se o objeto atual é nulo
 				// Se a data não é no futuro
@@ -137,11 +137,11 @@ public class EmprestimoVO {
 		}
 	}
 
-	public void emprestar(List<ObjetoEmprestado> objetosEmprestados) {
+	public void emprestar(List<ObjetoEmprestadoVO> objetosEmprestados) {
 		if ((objetosEmprestados != null) && !objetosEmprestados.isEmpty()) {
 			int indice = 0;
 			// Procura por objetos vazios ou inválidos
-			for (ObjetoEmprestado objetoAtual : objetosEmprestados) {
+			for (ObjetoEmprestadoVO objetoAtual : objetosEmprestados) {
 				Calendar dataAtual = Calendar.getInstance();
 				// Verifica se o objeto atual é nulo
 				// Se a data não é no futuro
@@ -155,7 +155,7 @@ public class EmprestimoVO {
 				indice++;
 			}
 
-			for (ObjetoEmprestado objetoAtual : objetosEmprestados) {
+			for (ObjetoEmprestadoVO objetoAtual : objetosEmprestados) {
 				EmprestavelVO objetoEmprestado = objetoAtual.getObjeto();
 				int quantidadeObjeto = objetoAtual.getQuantidade();
 
@@ -174,12 +174,12 @@ public class EmprestimoVO {
 		}
 	}
 
-	public void devolver(List<ObjetoEmprestado> objetosDevolvidos, List<Integer> quantidadeDevolucao) {
+	public void devolver(List<ObjetoEmprestadoVO> objetosDevolvidos, List<Integer> quantidadeDevolucao) {
 		if ((objetosDevolvidos != null) && (quantidadeDevolucao != null) && !objetosDevolvidos.isEmpty()
 				&& !quantidadeDevolucao.isEmpty() && (objetosDevolvidos.size() == quantidadeDevolucao.size())) {
 			int indice = 0;
 			// Procura por objetos vazios ou inválidos
-			for (ObjetoEmprestado objetoAtual : objetosDevolvidos) {
+			for (ObjetoEmprestadoVO objetoAtual : objetosDevolvidos) {
 				// Verifica se o índice atual do objeto e da quantidade de devolução é nulo
 				// Se a quantidade a ser devolvida é 0
 				// Se o emprestável não foi emprestado
@@ -196,11 +196,11 @@ public class EmprestimoVO {
 			}
 
 			// Altera dados nos emprestáveis
-			List<ObjetoEmprestado> objetosRemoviveis = new ArrayList<ObjetoEmprestado>();
+			List<ObjetoEmprestadoVO> objetosRemoviveis = new ArrayList<ObjetoEmprestadoVO>();
 			Calendar dataAtual = Calendar.getInstance();
 			indice = 0;
 
-			for (ObjetoEmprestado objetoAtual : objetosDevolvidos) {
+			for (ObjetoEmprestadoVO objetoAtual : objetosDevolvidos) {
 				EmprestavelVO objetoDevolvido = objetoAtual.getObjeto();
 				int quantidadeDevolvida = quantidadeDevolucao.get(indice);
 
@@ -242,7 +242,7 @@ public class EmprestimoVO {
 			devolucao.setObjetos(objetosDevolvidos);
 			devolucao.setCliente(cliente);
 			indice = 0;
-			for (ObjetoEmprestado objetoAtual : devolucao.getObjetos()) {
+			for (ObjetoEmprestadoVO objetoAtual : devolucao.getObjetos()) {
 				objetoAtual.setQuantidade(quantidadeDevolucao.get(indice));
 				indice++;
 			}
@@ -260,10 +260,10 @@ public class EmprestimoVO {
 		}
 	}
 
-	private int indiceObjeto(ObjetoEmprestado objeto) {
+	private int indiceObjeto(ObjetoEmprestadoVO objeto) {
 		int indice = 0;
 
-		for (ObjetoEmprestado objetoAtual : objetos) {
+		for (ObjetoEmprestadoVO objetoAtual : objetos) {
 			if (objetoAtual.getId() == objeto.getId()) {
 				return indice;
 			}

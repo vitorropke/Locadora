@@ -1,6 +1,6 @@
 package br.edu.ufersa.ropke.locadoramaven.controller;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import br.edu.ufersa.ropke.locadoramaven.exception.InvalidParameterException;
 import br.edu.ufersa.ropke.locadoramaven.exception.NotFoundException;
@@ -41,7 +41,7 @@ public class EditaLivroController {
 		String stringPesquisaLivro = titulo.getText();
 
 		LivroBO livroBO = new LivroBO();
-		ArrayList<LivroVO> livros = livroBO.pesquisarTitulo(stringPesquisaLivro);
+		List<LivroVO> livros = livroBO.pesquisarTitulo(stringPesquisaLivro);
 		int quantidadeLivros = livros.size();
 
 		if (quantidadeLivros == 1) {
@@ -134,13 +134,13 @@ public class EditaLivroController {
 		String stringPesquisaLivro = titulo.getText();
 
 		LivroBO livroBO = new LivroBO();
-		ArrayList<LivroVO> livros = livroBO.pesquisarTitulo(stringPesquisaLivro);
+		List<LivroVO> livros = livroBO.pesquisarTitulo(stringPesquisaLivro);
 		int quantidadeLivros = livros.size();
 
 		if (quantidadeLivros == 1) {
 			LivroVO livroAtual = livros.get(0);
 
-			livroBO.deletar(livroAtual);
+			livroBO.deletar(livroAtual.getIdEmprestavel());
 
 			naoEncontrado.setVisible(false);
 			dadosIncompletos.setVisible(false);

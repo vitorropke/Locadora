@@ -3,11 +3,13 @@ package br.edu.ufersa.ropke.locadoramaven.controller;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import br.edu.ufersa.ropke.locadoramaven.model.BO.EmprestimoBO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.EmprestavelVO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.EmprestimoVO;
+import br.edu.ufersa.ropke.locadoramaven.model.VO.ObjetoEmprestadoVO;
 import br.edu.ufersa.ropke.locadoramaven.view.View;
 import br.edu.ufersa.ropke.locadoramaven.view.ViewSwitcher;
 import javafx.collections.FXCollections;
@@ -20,7 +22,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class FaturamentoController extends ComumRelatorioController {
 	@FXML
-	private TableView<EmprestavelVO> tabelaEmprestaveis;
+	private TableView<ObjetoEmprestadoVO> tabelaEmprestaveis;
 	@FXML
 	private TableColumn<EmprestavelVO, String> colunaTitulo;
 	@FXML
@@ -34,7 +36,7 @@ public class FaturamentoController extends ComumRelatorioController {
 	@FXML
 	private TextField faturamentoMensal;
 
-	ObservableList<EmprestavelVO> listaEmprestimos = FXCollections.observableArrayList();
+	ObservableList<ObjetoEmprestadoVO> listaEmprestimos = FXCollections.observableArrayList();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -46,12 +48,12 @@ public class FaturamentoController extends ComumRelatorioController {
 
 		EmprestimoBO emprestimoBO = new EmprestimoBO();
 
-		ArrayList<EmprestimoVO> emprestimos = emprestimoBO.gerarRelatorio(dataInicio, dataAtual);
-		ArrayList<EmprestavelVO> emprestaveis = new ArrayList<EmprestavelVO>();
+		List<EmprestimoVO> emprestimos = emprestimoBO.gerarRelatorio(dataInicio, dataAtual);
+		List<ObjetoEmprestadoVO> emprestaveis = new ArrayList<ObjetoEmprestadoVO>();
 		int numeroEmprestimosMes = emprestimos.size();
 
 		for (int i = 0; i < numeroEmprestimosMes; i++) {
-			emprestaveis.addAll(emprestimos.get(i).getEmprestavel());
+			emprestaveis.addAll(emprestimos.get(i).getObjetos());
 		}
 
 		listaEmprestimos.addAll(emprestaveis);
@@ -61,11 +63,11 @@ public class FaturamentoController extends ComumRelatorioController {
 		float floatFaturamentoMensal = 0;
 
 		for (int i = 0; i < numeroEmprestimosMes; i++) {
-			int numeroEmprestaveis = emprestimos.get(i).getEmprestavel().size();
+			int numeroEmprestaveis = emprestimos.get(i).getObjetos().size();
 
 			for (int j = 0; j < numeroEmprestaveis; j++) {
-				floatFaturamentoMensal += emprestimos.get(i).getEmprestavel().get(j).getValorAluguel()
-						* emprestimos.get(i).getQuantidadeEmprestavel().get(j);
+				floatFaturamentoMensal += emprestimos.get(i).getObjetos().get(j).getObjeto().getValorAluguel()
+						* emprestimos.get(i).getObjetos().get(j).getQuantidade();
 			}
 		}
 

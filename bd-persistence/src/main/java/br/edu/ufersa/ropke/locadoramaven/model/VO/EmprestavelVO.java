@@ -3,7 +3,6 @@ package br.edu.ufersa.ropke.locadoramaven.model.VO;
 import java.util.Calendar;
 
 public abstract class EmprestavelVO {
-	private static long idCount = 0;
 	private long id;
 	private String titulo;
 	private int numeroExemplares;
@@ -14,7 +13,6 @@ public abstract class EmprestavelVO {
 
 	public EmprestavelVO(String titulo, int numeroExemplares, int numeroEmprestimos, int numeroDiasAlugado,
 			int anoLancamento, float valorAluguel) {
-		id = idCount++;
 		setTitulo(titulo);
 		setNumeroExemplares(numeroExemplares);
 		setNumeroEmprestimos(numeroEmprestimos);
@@ -39,11 +37,11 @@ public abstract class EmprestavelVO {
 		return emprestavel;
 	}
 
-	public long getId() {
+	public long getIdEmprestavel() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setIdEmprestavel(long id) {
 		if (id >= 0) {
 			this.id = id;
 		} else {

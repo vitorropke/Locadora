@@ -1,220 +1,105 @@
 package br.edu.ufersa.ropke.locadoramaven.model.DAO;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import br.edu.ufersa.ropke.locadoramaven.model.VO.EmprestimoVO;
+import br.edu.ufersa.ropke.locadoramaven.model.VO.ObjetoEmprestadoVO;
 
-public class EmprestimoDAO {
-	private static final File arquivo = new File(
-			"src/main/java/br/edu/ufersa/ropke/locadoramaven/model/DAO/arquivos/emprestimos.dat");
-
-	public static File getArquivo() {
-		return arquivo;
-	}
-
+public class EmprestimoDAO extends ConexaoDAO implements BaseInterDAO<EmprestimoVO> {
+	@Override
 	public void cadastrar(EmprestimoVO emprestimo) {
+		String sql = "INSERT INTO emprestimos (data_emprestimo, id_cliente) VALUES (?, ?);";
+		PreparedStatement ptst;
+
 		try {
-			FileOutputStream arquivoGravador = new FileOutputStream(arquivo, true);
-			// Classe responsável por inserir o empréstimo
-			ObjectOutputStream objetoGravador = new ObjectOutputStream(arquivoGravador);
+			ptst = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-			// Grava o objeto empréstimo no arquivo
-			objetoGravador.writeObject(emprestimo);
-			objetoGravador.flush();
-			arquivoGravador.close();
-			objetoGravador.close();
+			ptst.setDate(1, new Date(emprestimo.getDataOperacao().getTimeInMillis()));
+			ptst.setLong(2, emprestimo.getCliente().getId());
 
-			System.out.println("Emprestimo gravado com sucesso!");
-		} catch (Exception e) {
+			int affectedRows = ptst.executeUpdate();
+
+			if (affectedRows == 0) {
+				throw new SQLException("A insercao falhou. Nenhuma linha foi alterada");
+			}
+
+			ResultSet generatedKeys = ptst.getGeneratedKeys();
+
+			if (generatedKeys.next()) {
+				emprestimo.setId(generatedKeys.getLong(1));
+
+				for (ObjetoEmprestadoVO objetoAtual : emprestimo.getObjetos()) {
+					ObjetoEmprestadoDAO.cadastrar(objetoAtual, emprestimo.getId());
+				}
+			} else {
+				throw new SQLException("A insercao falhou. Nenhuma linha foi alterada");
+			}
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
+	@Override
 	public void alterar(EmprestimoVO emprestimo) {
+		ObjetoEmprestadoDAO.deletar(emprestimo.getId());
+
+		for (ObjetoEmprestadoVO objetoAtual : emprestimo.getObjetos()) {
+			ObjetoEmprestadoDAO.cadastrar(objetoAtual, emprestimo.getId());
+		}
+	}
+
+	@Override
+	public void deletar(long idEmprestimo) {
+		String sql = "DELETE FROM emprestimos WHERE id = ?;";
+		PreparedStatement ptst;
+
 		try {
-			ArrayList<EmprestimoVO> emprestimos = new ArrayList<EmprestimoVO>();
+			ptst = getConnection().prepareStatement(sql);
 
-			// Procura pelo empréstimo enquanto salva os outros em um vetor de empréstimos
-			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
-				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
-				ObjectInputStream objetoLeitura;
-				EmprestimoVO emprestimoLeitura;
+			ptst.setLong(1, idEmprestimo);
 
-				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os empréstimos do arquivo
-					objetoLeitura = new ObjectInputStream(arquivoLeitura);
-
-					emprestimoLeitura = (EmprestimoVO) objetoLeitura.readObject();
-
-					// Compara os empréstimos pelo id deles
-					if (emprestimoLeitura.getId() == emprestimo.getId()) {
-						// Quando for o empréstimo a ser alterado, insere no vetor, o empréstimo que vem
-						// do parâmetro do método 'alterar'
-						emprestimos.add(emprestimo);
-					} else {
-						// Quando não for o empréstimo a ser alterado, insere do arquivo
-						emprestimos.add(emprestimoLeitura);
-					}
-				}
-
-				arquivoLeitura.close();
-			}
-
-			FileOutputStream arquivoGravador = new FileOutputStream(arquivo);
-			ObjectOutputStream objetoGravador;
-			int tamanhoVetorEmprestimos = emprestimos.size();
-
-			for (int i = 0; i < tamanhoVetorEmprestimos; i++) {
-				// Classe responsável por inserir os empréstimos
-				objetoGravador = new ObjectOutputStream(arquivoGravador);
-
-				// Grava o objeto empréstimo no arquivo
-				objetoGravador.writeObject(emprestimos.get(i));
-				objetoGravador.flush();
-			}
-
-			arquivoGravador.close();
-
-			System.out.println("Emprestimo alterado com sucesso!");
-		} catch (Exception e) {
+			ptst.executeUpdate();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void deletar(EmprestimoVO emprestimo) {
+	@Override
+	public ResultSet listar() {
+		String sql = "SELECT * FROM emprestimos;";
+		Statement st;
+		ResultSet rs = null;
+
 		try {
-			ArrayList<EmprestimoVO> emprestimos = new ArrayList<EmprestimoVO>();
-
-			// Procura pelo empréstimo enquanto salva os outros em um vetor de empréstimos
-			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
-				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
-				ObjectInputStream objetoLeitura;
-				EmprestimoVO emprestimoLeitura;
-
-				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os empréstimos do arquivo
-					objetoLeitura = new ObjectInputStream(arquivoLeitura);
-
-					emprestimoLeitura = (EmprestimoVO) objetoLeitura.readObject();
-
-					// Compara os empréstimos pelo id deles
-					if (emprestimoLeitura.getId() != emprestimo.getId()) {
-						// Quando não encontrar o empréstimo, insere no vetor
-						// Quando encontrar o empréstimo, não insere no vetor
-						emprestimos.add(emprestimoLeitura);
-					}
-				}
-
-				arquivoLeitura.close();
-			}
-
-			FileOutputStream arquivoGravador = new FileOutputStream(arquivo);
-			ObjectOutputStream objetoGravador;
-			int tamanhoVetorEmprestimos = emprestimos.size();
-
-			for (int i = 0; i < tamanhoVetorEmprestimos; i++) {
-				// Classe responsável por inserir o empréstimo
-				objetoGravador = new ObjectOutputStream(arquivoGravador);
-
-				// Grava o empréstimo no arquivo
-				objetoGravador.writeObject(emprestimos.get(i));
-				objetoGravador.flush();
-			}
-
-			arquivoGravador.close();
-
-			System.out.println("Emprestimo apagado com sucesso!");
-		} catch (Exception e) {
+			st = getConnection().createStatement();
+			rs = st.executeQuery(sql);
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
+		return rs;
 	}
 
-	public void pesquisar() {
+	@Override
+	public ResultSet pesquisarId(long idEmprestimo) {
+		String sql = "SELECT * FROM emprestimos WHERE id = ?;";
+		PreparedStatement ptst;
+		ResultSet rs = null;
+
 		try {
-			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
-				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
-				ObjectInputStream objetoLeitura;
-				EmprestimoVO emprestimo;
+			ptst = getConnection().prepareStatement(sql);
 
-				int indiceEmprestimo = 1;
-				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os empréstimos do arquivo
-					objetoLeitura = new ObjectInputStream(arquivoLeitura);
+			ptst.setLong(1, idEmprestimo);
 
-					emprestimo = (EmprestimoVO) objetoLeitura.readObject();
-					System.out.println("\nEmprestimo " + indiceEmprestimo + '\n');
-					System.out.println(emprestimo.toString());
-					System.out.println("==============================================");
-					indiceEmprestimo++;
-				}
-
-				arquivoLeitura.close();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public EmprestimoVO pesquisar(EmprestimoVO emprestimo) {
-		try {
-			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
-				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
-				ObjectInputStream objetoLeitura;
-				EmprestimoVO emprestimoLeitura;
-
-				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os empréstimos do arquivo
-					objetoLeitura = new ObjectInputStream(arquivoLeitura);
-
-					emprestimoLeitura = (EmprestimoVO) objetoLeitura.readObject();
-
-					// Compara os empréstimos pelo id deles
-					if (emprestimoLeitura.getId() == emprestimo.getId()) {
-						arquivoLeitura.close();
-						objetoLeitura.close();
-						return emprestimoLeitura;
-					}
-				}
-
-				arquivoLeitura.close();
-			}
-		} catch (Exception e) {
+			rs = ptst.executeQuery();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		System.out.println("Emprestimo nao encontrado!");
-		return null;
-	}
-
-	public ArrayList<EmprestimoVO> listar() {
-		ArrayList<EmprestimoVO> emprestimos = new ArrayList<EmprestimoVO>();
-
-		try {
-			if (arquivo.exists() && arquivo.isFile() && arquivo.canRead()) {
-				FileInputStream arquivoLeitura = new FileInputStream(arquivo);
-				ObjectInputStream objetoLeitura;
-				EmprestimoVO emprestimoLeitura;
-
-				while (arquivoLeitura.available() > 0) {
-					// Classe responsável por recuperar os empréstimos do arquivo
-					objetoLeitura = new ObjectInputStream(arquivoLeitura);
-
-					emprestimoLeitura = (EmprestimoVO) objetoLeitura.readObject();
-
-					emprestimos.add(emprestimoLeitura);
-				}
-
-				arquivoLeitura.close();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return emprestimos;
+		return rs;
 	}
 }

@@ -17,6 +17,7 @@ public class GerenteDAO extends UsuarioDAO<GerenteVO> {
 			PreparedStatement ptst;
 
 			ptst = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
 			ptst.setLong(1, gerente.getIdUsuario());
 
 			int affectedRows = ptst.executeUpdate();
@@ -32,29 +33,15 @@ public class GerenteDAO extends UsuarioDAO<GerenteVO> {
 			} else {
 				throw new SQLException("A insercao falhou. Nenhuma linha foi alterada");
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void alterar(GerenteVO gerente) {
-		// super.alterar(gerente, arquivo);
-	}
-
-	public void deletar(GerenteVO gerente) {
-		// super.deletar(gerente, arquivo);
-	}
-
-	public void pesquisar() {
-		// super.pesquisar(arquivo);
-	}
-
-	public ResultSet pesquisar(GerenteVO gerente) {
-		return null;
-	}
-
+	@Override
 	public ResultSet listar() {
-		String sql = "SELECT * FROM gerentes LEFT JOIN usuarios ON (gerentes.id_usuario = usuarios.id) LEFT JOIN pessoas ON (usuarios.id_pessoa = pessoas.id);";
+		String sql = "SELECT * FROM gerentes LEFT JOIN usuarios ON (gerentes.id_usuario = usuarios.id) "
+				+ "LEFT JOIN pessoas ON (usuarios.id_pessoa = pessoas.id);";
 		Statement st;
 		ResultSet rs = null;
 
@@ -68,8 +55,83 @@ public class GerenteDAO extends UsuarioDAO<GerenteVO> {
 		return rs;
 	}
 
-	public GerenteVO pesquisarLogin(GerenteVO gerente) {
+	@Override
+	public ResultSet pesquisarId(long idGerente) {
+		String sql = "SELECT * FROM gerentes LEFT JOIN usuarios ON (gerentes.id_usuario = usuarios.id) "
+				+ "LEFT JOIN pessoas ON (usuarios.id_pessoa = pessoas.id) WHERE gerentes.id = ?;";
+		PreparedStatement ptst;
+		ResultSet rs = null;
 
-		return null;
+		try {
+			ptst = getConnection().prepareStatement(sql);
+
+			ptst.setLong(1, idGerente);
+
+			rs = ptst.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
+	}
+
+	@Override
+	public ResultSet pesquisarNome(String nome) {
+		String sql = "SELECT * FROM gerentes LEFT JOIN usuarios ON (gerentes.id_usuario = usuarios.id) "
+				+ "LEFT JOIN pessoas ON (usuarios.id_pessoa = pessoas.id) WHERE nome LIKE ?;";
+		PreparedStatement ptst;
+		ResultSet rs = null;
+
+		try {
+			ptst = getConnection().prepareStatement(sql);
+
+			ptst.setString(1, nome);
+
+			rs = ptst.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
+	}
+
+	@Override
+	public ResultSet pesquisarCpf(String cpf) {
+		String sql = "SELECT * FROM gerentes LEFT JOIN usuarios ON (gerentes.id_usuario = usuarios.id) "
+				+ "LEFT JOIN pessoas ON (usuarios.id_pessoa = pessoas.id) WHERE cpf = ?;";
+		PreparedStatement ptst;
+		ResultSet rs = null;
+
+		try {
+			ptst = getConnection().prepareStatement(sql);
+
+			ptst.setString(1, cpf);
+
+			rs = ptst.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
+	}
+
+	@Override
+	public ResultSet pesquisarLogin(String login) {
+		String sql = "SELECT * FROM gerentes LEFT JOIN usuarios ON (gerentes.id_usuario = usuarios.id) "
+				+ "LEFT JOIN pessoas ON (usuarios.id_pessoa = pessoas.id) WHERE login = ?;";
+		PreparedStatement ptst;
+		ResultSet rs = null;
+
+		try {
+			ptst = getConnection().prepareStatement(sql);
+
+			ptst.setString(1, login);
+
+			rs = ptst.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
 	}
 }

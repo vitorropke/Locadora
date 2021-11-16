@@ -1,11 +1,14 @@
 package br.edu.ufersa.ropke.locadoramaven.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.edu.ufersa.ropke.locadoramaven.exception.FoundException;
 import br.edu.ufersa.ropke.locadoramaven.exception.InvalidParameterException;
 import br.edu.ufersa.ropke.locadoramaven.model.BO.ClienteBO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.ClienteVO;
+import br.edu.ufersa.ropke.locadoramaven.model.VO.EnderecoVO;
+import br.edu.ufersa.ropke.locadoramaven.model.VO.TelefoneVO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -36,13 +39,13 @@ public class CadastroClienteController {
 		String stringTelefone = telefone.getText();
 
 		try {
-			ArrayList<String> enderecos = new ArrayList<String>();
-			ArrayList<String> emails = new ArrayList<String>();
-			ArrayList<String> telefones = new ArrayList<String>();
+			List<EnderecoVO> enderecos = new ArrayList<EnderecoVO>();
+			List<String> emails = new ArrayList<String>();
+			List<TelefoneVO> telefones = new ArrayList<TelefoneVO>();
 
-			enderecos.add(stringEndereco);
+			enderecos.add(new EnderecoVO(stringEndereco));
 			emails.add(stringEmail);
-			telefones.add(stringTelefone);
+			telefones.add( new TelefoneVO(stringTelefone));
 
 			// nome, cpf, endereco, 'email', 'telefone'
 			ClienteVO clienteVO = new ClienteVO(stringNome, stringCpf, enderecos, emails, telefones);
