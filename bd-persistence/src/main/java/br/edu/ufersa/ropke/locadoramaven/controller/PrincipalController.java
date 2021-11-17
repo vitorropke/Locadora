@@ -1,7 +1,6 @@
 package br.edu.ufersa.ropke.locadoramaven.controller;
 
 import java.net.URL;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -16,12 +15,11 @@ import br.edu.ufersa.ropke.locadoramaven.model.VO.DiscoVO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.EmprestavelVO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.EmprestimoVO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.LivroVO;
-import javafx.beans.property.SimpleStringProperty;
+import br.edu.ufersa.ropke.locadoramaven.model.VO.ObjetoEmprestadoVO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -33,15 +31,11 @@ public class PrincipalController extends ComumController implements Initializabl
 	@FXML
 	private TableView<EmprestimoVO> tabelaEmprestimos;
 	@FXML
-	private TableColumn<EmprestimoVO, String> colunaCliente;
-	@FXML
-	private TableColumn<EmprestimoVO, String> colunaTitulo;
-	@FXML
-	private TableColumn<EmprestimoVO, Integer> colunaQuantidade;
-	@FXML
 	private TableColumn<EmprestimoVO, Calendar> colunaDataEmprestimo;
 	@FXML
-	private TableColumn<EmprestimoVO, Calendar> colunaDataDevolucao;
+	private TableColumn<EmprestimoVO, ClienteVO> colunaCliente;
+	@FXML
+	private TableColumn<EmprestimoVO, ObjetoEmprestadoVO> colunaObjetos;
 
 	ObservableList<EmprestimoVO> listaEmprestimos = FXCollections.observableArrayList();
 
@@ -57,26 +51,9 @@ public class PrincipalController extends ComumController implements Initializabl
 	}
 
 	private void loadEmprestimos() {
-		colunaCliente.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getCliente().getNome()));
-		colunaTitulo.setCellValueFactory(new PropertyValueFactory<>("emprestavel"));
-		colunaQuantidade.setCellValueFactory(new PropertyValueFactory<>("quantidadeEmprestavel"));
-		colunaDataEmprestimo.setCellValueFactory(new PropertyValueFactory<>("dataEmprestimo"));
-		// https://stackoverflow.com/questions/26224822/javafx-show-calendar-value-in-tableview
-		// Formata o horário para o formato "'dia' de 'mes' de 'ano'". Ex: 21 de mai. de
-		// 2020
-		final DateFormat dateFormat = DateFormat.getDateInstance();
-		colunaDataEmprestimo.setCellFactory(col -> new TableCell<EmprestimoVO, Calendar>() {
-			@Override
-			protected void updateItem(Calendar date, boolean empty) {
-				super.updateItem(date, empty);
-				if (date == null) {
-					setText(null);
-				} else {
-					setText(dateFormat.format(date.getTime()));
-				}
-			}
-		});
-		colunaDataDevolucao.setCellValueFactory(new PropertyValueFactory<>("dataDevolucaoEmprestavel"));
+		colunaCliente.setCellValueFactory(new PropertyValueFactory<>("cliente"));
+		colunaDataEmprestimo.setCellValueFactory(new PropertyValueFactory<>("dataOperacao"));
+		colunaObjetos.setCellValueFactory(new PropertyValueFactory<>("objetos"));
 	}
 
 	@FXML
@@ -125,9 +102,10 @@ public class PrincipalController extends ComumController implements Initializabl
 				int numeroEmprestaveisEmprestimo = emprestimos.get(i).getObjetos().size();
 
 				for (int k = 0; k < numeroEmprestaveisEmprestimo; k++) {
-					if ((emprestimos.get(i).getObjetos().get(k).getObjeto().getTitulo().equals(emprestaveis.get(j).getTitulo()))
-							|| ((emprestimos.get(i).getObjetos().get(k).getObjeto().getAnoLancamento()) == (emprestaveis.get(j)
-									.getAnoLancamento()))) {
+					if ((emprestimos.get(i).getObjetos().get(k).getObjeto().getTitulo()
+							.equals(emprestaveis.get(j).getTitulo()))
+							|| ((emprestimos.get(i).getObjetos().get(k).getObjeto().getAnoLancamento()) == (emprestaveis
+									.get(j).getAnoLancamento()))) {
 						emprestimosValidos.add(emprestimos.get(i));
 					}
 				}

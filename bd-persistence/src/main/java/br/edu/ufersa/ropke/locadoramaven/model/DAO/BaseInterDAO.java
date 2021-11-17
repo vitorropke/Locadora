@@ -7,7 +7,7 @@ public interface BaseInterDAO<VO> {
 
 	public void alterar(VO entidade);
 
-	public void deletar(long id);
+	public void deletar(VO entidade);
 
 	public ResultSet listar();
 

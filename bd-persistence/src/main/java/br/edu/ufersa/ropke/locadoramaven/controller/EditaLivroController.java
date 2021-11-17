@@ -35,6 +35,9 @@ public class EditaLivroController {
 	private TextField numeroDiasAlugado;
 	@FXML
 	private TextField valorAluguel;
+	
+	private long idLivro;
+	private long idEmprestavel;
 
 	@FXML
 	public void pesquisar() {
@@ -46,6 +49,8 @@ public class EditaLivroController {
 
 		if (quantidadeLivros == 1) {
 			LivroVO livroAtual = livros.get(0);
+			idLivro = livroAtual.getId();
+			idEmprestavel = livroAtual.getIdEmprestavel();
 
 			titulo.setText(livroAtual.getTitulo());
 			genero.setText(livroAtual.getGenero());
@@ -107,6 +112,8 @@ public class EditaLivroController {
 			// 'numeroDiasAlugado', anoLancamento, valorAluguel
 			LivroVO livroVO = new LivroVO(stringTitulo, stringGenero, intNumeroPaginas, intNumeroExemplares,
 					intNumeroEmprestimos, intNumeroDiasAlugado, intAnoLancamento, floatValorAluguel);
+			livroVO.setId(idLivro);
+			livroVO.setIdEmprestavel(idEmprestavel);
 
 			livroBO.alterar(livroVO);
 
@@ -140,7 +147,7 @@ public class EditaLivroController {
 		if (quantidadeLivros == 1) {
 			LivroVO livroAtual = livros.get(0);
 
-			livroBO.deletar(livroAtual.getIdEmprestavel());
+			livroBO.deletar(livroAtual);
 
 			naoEncontrado.setVisible(false);
 			dadosIncompletos.setVisible(false);

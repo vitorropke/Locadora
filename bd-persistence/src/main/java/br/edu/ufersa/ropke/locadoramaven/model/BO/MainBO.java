@@ -6,7 +6,6 @@ import java.util.List;
 
 import br.edu.ufersa.ropke.locadoramaven.model.VO.ClienteVO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.DiscoVO;
-import br.edu.ufersa.ropke.locadoramaven.model.VO.EmprestavelVO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.EmprestimoVO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.EnderecoVO;
 import br.edu.ufersa.ropke.locadoramaven.model.VO.FuncionarioVO;
@@ -263,6 +262,7 @@ public class MainBO {
 
 		livro2.setAnoLancamento(1999);
 		livroBO.alterar(livro2);
+
 		System.out.println("============================================");
 		System.out.println("Pesquisar usando ID");
 		System.out.println("============================================");
@@ -314,21 +314,34 @@ public class MainBO {
 		// System.out.println("Listar");
 		// System.out.println("============================================");
 		// System.out.println(discoBO.listar());
-		/*
-		 * // Empréstimos //
-		 * -----------------------------------------------------------------------------
-		 * // Empréstimo System.out.println(
-		 * "---------------------------------------Emprestimos--------------------------------------"
-		 * ); emprestimoDAO.cadastrar(emprestimo1); emprestimoDAO.pesquisar();
-		 * 
-		 * // Devolução List<Integer> quantidadesDevolucao = new ArrayList<>();
-		 * 
-		 * quantidadesDevolucao.add(1); quantidadesDevolucao.add(2);
-		 * 
-		 * emprestimo1.devolver(objetosEmprestados, quantidadesDevolucao);
-		 * emprestimoDAO.alterar(emprestimo1); emprestimoDAO.pesquisar();
-		 * 
-		 * // emprestimoDAO.deletar(emprestimo1); // emprestimoDAO.pesquisar();
-		 */
+
+		// Empréstimos
+		// -----------------------------------------------------------------------------
+		// Empréstimo
+		System.out.println("---------------------------------------Emprestimos--------------------------------------");
+		emprestimoBO.cadastrar(emprestimo1);
+		emprestimo1.setId(1);
+
+		System.out.println("============================================");
+		System.out.println("Listar");
+		System.out.println("============================================");
+		System.out.println(emprestimoBO.listar());
+
+		// Devolução
+		List<Integer> quantidadesDevolucao = new ArrayList<>();
+
+		quantidadesDevolucao.add(1);
+		quantidadesDevolucao.add(2);
+
+		emprestimo1.devolver(objetosEmprestados, quantidadesDevolucao);
+		emprestimoBO.alterar(emprestimo1);
+
+		System.out.println("============================================");
+		System.out.println("Listar");
+		System.out.println("============================================");
+		System.out.println(emprestimoBO.listar());
+
+		// emprestimoDAO.deletar(emprestimo1); // emprestimoDAO.pesquisar();
+
 	}
 }

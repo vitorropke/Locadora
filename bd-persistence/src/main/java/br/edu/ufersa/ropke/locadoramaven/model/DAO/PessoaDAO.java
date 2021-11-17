@@ -82,14 +82,14 @@ public abstract class PessoaDAO<VO extends PessoaVO> extends ConexaoDAO implemen
 	}
 
 	@Override
-	public void deletar(long idPessoa) {
+	public void deletar(VO pessoa) {
 		String sql = "DELETE FROM pessoas WHERE id = ?;";
 		PreparedStatement ptst;
 
 		try {
 			ptst = getConnection().prepareStatement(sql);
 
-			ptst.setLong(1, idPessoa);
+			ptst.setLong(1, pessoa.getIdPessoa());
 
 			ptst.executeUpdate();
 		} catch (SQLException e) {

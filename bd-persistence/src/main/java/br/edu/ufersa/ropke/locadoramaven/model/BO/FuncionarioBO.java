@@ -60,13 +60,13 @@ public class FuncionarioBO extends UsuarioBO<FuncionarioVO> {
 	}
 
 	@Override
-	public void deletar(long idFuncionario) throws NotFoundException, InvalidParameterException {
-		if (idFuncionario != 0) {
-			ResultSet rs = funcionarioDAO.pesquisarId(idFuncionario);
+	public void deletar(FuncionarioVO funcionario) throws NotFoundException, InvalidParameterException {
+		if (!super.isInvalid(funcionario)) {
+			ResultSet rs = funcionarioDAO.pesquisarId(funcionario.getId());
 
 			try {
 				if (rs.next()) {
-					funcionarioDAO.deletar(idFuncionario);
+					funcionarioDAO.deletar(funcionario);
 				} else {
 					throw new NotFoundException();
 				}

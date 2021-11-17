@@ -36,6 +36,9 @@ public class EditaDiscoController {
 	@FXML
 	private TextField valorAluguel;
 
+	private long idDisco;
+	private long idEmprestavel;
+
 	@FXML
 	public void pesquisar() {
 		String stringPesquisaDisco = titulo.getText();
@@ -46,6 +49,8 @@ public class EditaDiscoController {
 
 		if (quantidadeDiscos == 1) {
 			DiscoVO discoAtual = discos.get(0);
+			idDisco = discoAtual.getId();
+			idEmprestavel = discoAtual.getIdEmprestavel();
 
 			banda.setText(discoAtual.getBanda());
 			estilo.setText(discoAtual.getEstilo());
@@ -104,6 +109,8 @@ public class EditaDiscoController {
 			// 'numeroDiasAlugado', anoLancamento, valorAluguel
 			DiscoVO discoVO = new DiscoVO(stringTitulo, stringBanda, stringEstilo, intNumeroExemplares,
 					intNumeroEmprestimos, intNumeroDiasAlugado, intAnoLancamento, floatValorAluguel);
+			discoVO.setId(idDisco);
+			discoVO.setIdEmprestavel(idEmprestavel);
 
 			discoBO.alterar(discoVO);
 
@@ -137,7 +144,7 @@ public class EditaDiscoController {
 		if (quantidadeDiscos == 1) {
 			DiscoVO discoAtual = discos.get(0);
 
-			discoBO.deletar(discoAtual.getIdEmprestavel());
+			discoBO.deletar(discoAtual);
 
 			naoEncontrado.setVisible(false);
 			dadosIncompletos.setVisible(false);

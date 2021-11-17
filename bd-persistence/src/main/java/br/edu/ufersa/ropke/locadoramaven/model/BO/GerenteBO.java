@@ -60,13 +60,13 @@ public class GerenteBO extends UsuarioBO<GerenteVO> {
 	}
 
 	@Override
-	public void deletar(long idGerente) throws NotFoundException, InvalidParameterException {
-		if (idGerente != 0) {
-			ResultSet rs = gerenteDAO.pesquisarId(idGerente);
+	public void deletar(GerenteVO gerente) throws NotFoundException, InvalidParameterException {
+		if (!super.isInvalid(gerente)) {
+			ResultSet rs = gerenteDAO.pesquisarId(gerente.getId());
 
 			try {
 				if (rs.next()) {
-					gerenteDAO.deletar(idGerente);
+					gerenteDAO.deletar(gerente);
 				} else {
 					throw new NotFoundException();
 				}

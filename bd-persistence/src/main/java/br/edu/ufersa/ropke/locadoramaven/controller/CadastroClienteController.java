@@ -34,18 +34,49 @@ public class CadastroClienteController {
 
 		String stringNome = nome.getText();
 		String stringCpf = cpf.getText();
-		String stringEndereco = endereco.getText();
-		String stringEmail = email.getText();
-		String stringTelefone = telefone.getText();
 
 		try {
 			List<EnderecoVO> enderecos = new ArrayList<EnderecoVO>();
 			List<String> emails = new ArrayList<String>();
 			List<TelefoneVO> telefones = new ArrayList<TelefoneVO>();
 
-			enderecos.add(new EnderecoVO(stringEndereco));
-			emails.add(stringEmail);
-			telefones.add( new TelefoneVO(stringTelefone));
+			List<String> camposEndereco = new ArrayList<String>();
+			String campoAtual = "";
+			for (char caractereAtual : endereco.getText().toCharArray()) {
+				if (caractereAtual != ';') {
+					campoAtual += caractereAtual;
+				} else {
+					camposEndereco.add(campoAtual);
+					campoAtual = "";
+				}
+			}
+			enderecos.add(new EnderecoVO(camposEndereco.get(0), camposEndereco.get(1), camposEndereco.get(2),
+					camposEndereco.get(3), camposEndereco.get(4), camposEndereco.get(5), camposEndereco.get(6),
+					camposEndereco.get(7)));
+
+			List<String> camposEmails = new ArrayList<String>();
+			campoAtual = "";
+			for (char caractereAtual : email.getText().toCharArray()) {
+				if (caractereAtual != ';') {
+					campoAtual += caractereAtual;
+				} else {
+					camposEmails.add(campoAtual);
+					campoAtual = "";
+				}
+			}
+			emails.addAll(camposEmails);
+
+			List<String> camposTelefone = new ArrayList<String>();
+			campoAtual = "";
+			for (char caractereAtual : telefone.getText().toCharArray()) {
+				if (caractereAtual != ';') {
+					campoAtual += caractereAtual;
+				} else {
+					camposTelefone.add(campoAtual);
+					campoAtual = "";
+				}
+			}
+			telefones.add(new TelefoneVO(camposTelefone.get(0), camposTelefone.get(1)));
 
 			// nome, cpf, endereco, 'email', 'telefone'
 			ClienteVO clienteVO = new ClienteVO(stringNome, stringCpf, enderecos, emails, telefones);

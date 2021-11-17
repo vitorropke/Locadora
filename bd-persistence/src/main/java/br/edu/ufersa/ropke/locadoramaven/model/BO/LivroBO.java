@@ -13,6 +13,7 @@ import br.edu.ufersa.ropke.locadoramaven.model.VO.LivroVO;
 public class LivroBO extends EmprestavelBO<LivroVO> {
 	private static final LivroDAO livroDAO = new LivroDAO();
 
+	@Override
 	public boolean isInvalid(LivroVO livro) {
 		if (!super.isInvalid(livro) && (livro.getGenero() != null) && (livro.getNumeroPaginas() != 0)) {
 			return false;
@@ -23,7 +24,7 @@ public class LivroBO extends EmprestavelBO<LivroVO> {
 
 	@Override
 	public void cadastrar(LivroVO livro) throws InvalidParameterException {
-		if (!super.isInvalid(livro)) {
+		if (!isInvalid(livro)) {
 			livroDAO.cadastrar(livro);
 		} else {
 			throw new InvalidParameterException();
@@ -32,7 +33,7 @@ public class LivroBO extends EmprestavelBO<LivroVO> {
 
 	@Override
 	public void alterar(LivroVO livro) throws NotFoundException, InvalidParameterException {
-		if (!super.isInvalid(livro)) {
+		if (!isInvalid(livro)) {
 			ResultSet rs = livroDAO.pesquisarId(livro.getId());
 
 			try {
@@ -50,13 +51,13 @@ public class LivroBO extends EmprestavelBO<LivroVO> {
 	}
 
 	@Override
-	public void deletar(long idLivro) throws NotFoundException, InvalidParameterException {
-		if (idLivro != 0) {
-			ResultSet rs = livroDAO.pesquisarId(idLivro);
+	public void deletar(LivroVO livro) throws NotFoundException, InvalidParameterException {
+		if (!isInvalid(livro)) {
+			ResultSet rs = livroDAO.pesquisarId(livro.getId());
 
 			try {
 				if (rs.next()) {
-					livroDAO.deletar(idLivro);
+					livroDAO.deletar(livro);
 				} else {
 					throw new NotFoundException();
 				}

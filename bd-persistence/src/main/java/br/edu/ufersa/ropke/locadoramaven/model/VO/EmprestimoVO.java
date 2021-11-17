@@ -11,10 +11,6 @@ public class EmprestimoVO {
 	private ClienteVO cliente;
 	private List<ObjetoEmprestadoVO> objetos = new ArrayList<ObjetoEmprestadoVO>();
 
-	public EmprestimoVO() {
-		dataOperacao = Calendar.getInstance();
-	}
-
 	public EmprestimoVO(ClienteVO cliente, List<ObjetoEmprestadoVO> objetos) {
 		dataOperacao = Calendar.getInstance();
 		setCliente(cliente);
@@ -111,30 +107,6 @@ public class EmprestimoVO {
 
 	public List<ObjetoEmprestadoVO> getObjetos() {
 		return objetos;
-	}
-
-	private void setObjetos(List<ObjetoEmprestadoVO> objetos) {
-		if ((objetos != null) && !objetos.isEmpty()) {
-			int indice = 0;
-			// Procura por objetos vazios ou inválidos
-			for (ObjetoEmprestadoVO objetoAtual : objetos) {
-				Calendar dataAtual = Calendar.getInstance();
-				// Verifica se o objeto atual é nulo
-				// Se a data não é no futuro
-				// Se a quantidade a ser emprestada é 0
-				if ((objetoAtual == null) || (objetoAtual.getObjeto() == null)
-						|| (objetoAtual.getDataDevolucao() == null) || !objetoAtual.getDataDevolucao().after(dataAtual)
-						|| (objetoAtual.getQuantidade() == 0)) {
-					System.out.println("Objeto " + indice + " vazio ou invalido");
-					return;
-				}
-				indice++;
-			}
-
-			this.objetos.addAll(objetos);
-		} else {
-			System.out.println("Objetos vazios");
-		}
 	}
 
 	public void emprestar(List<ObjetoEmprestadoVO> objetosEmprestados) {
@@ -237,24 +209,8 @@ public class EmprestimoVO {
 				indice++;
 			}
 
-			// Adiciona a devolução no cliente
-			EmprestimoVO devolucao = new EmprestimoVO();
-			devolucao.setObjetos(objetosDevolvidos);
-			devolucao.setCliente(cliente);
-			indice = 0;
-			for (ObjetoEmprestadoVO objetoAtual : devolucao.getObjetos()) {
-				objetoAtual.setQuantidade(quantidadeDevolucao.get(indice));
-				indice++;
-			}
-			cliente.addDevolucao(devolucao);
-
 			// Remove objetos com quantidade 0
 			objetos.removeAll(objetosRemoviveis);
-
-			// Se não sobrarem objetos emprestados, apague esse empréstimo
-			if (objetos.isEmpty()) {
-				// apaga esse empréstimo do BD
-			}
 		} else {
 			System.out.println("Dados invalidos");
 		}

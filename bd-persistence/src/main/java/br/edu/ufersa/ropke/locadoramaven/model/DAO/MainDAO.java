@@ -264,6 +264,7 @@ public class MainDAO {
 
 		livro2.setAnoLancamento(1999);
 		livroDAO.alterar(livro2);
+
 		System.out.println("============================================");
 		System.out.println("Pesquisar usando ID");
 		System.out.println("============================================");
@@ -326,7 +327,7 @@ public class MainDAO {
 		System.out.println("============================================");
 		System.out.println("Listar");
 		System.out.println("============================================");
-		// imprimirEmprestimos(emprestimoDAO.listar());
+		imprimirEmprestimos(emprestimoDAO.listar());
 
 		// Devolução
 		List<Integer> quantidadesDevolucao = new ArrayList<>();
@@ -336,10 +337,11 @@ public class MainDAO {
 
 		emprestimo1.devolver(objetosEmprestados, quantidadesDevolucao);
 		emprestimoDAO.alterar(emprestimo1);
+
 		System.out.println("============================================");
 		System.out.println("Listar");
 		System.out.println("============================================");
-		// imprimirEmprestimos(emprestimoDAO.listar());
+		imprimirEmprestimos(emprestimoDAO.listar());
 
 		// emprestimoDAO.deletar(emprestimo1);
 		// System.out.println("============================================");
@@ -488,6 +490,98 @@ public class MainDAO {
 				disco.setIdEmprestavel(rs.getLong("id_emprestavel"));
 
 				System.out.println(disco);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void imprimirEmprestimos(ResultSet rs) {
+		try {
+			while (rs.next()) {
+				ClienteDAO clienteDAO = new ClienteDAO();
+				ResultSet rsCliente = clienteDAO.pesquisarId(rs.getLong("id_cliente"));
+
+				List<EnderecoVO> enderecos = new ArrayList<EnderecoVO>();
+				List<String> emails = new ArrayList<String>();
+				List<TelefoneVO> telefones = new ArrayList<TelefoneVO>();
+
+				long idPessoa = rsCliente.getLong("id_pessoa");
+
+				ResultSet rsEnderecos = EnderecoDAO.listar(idPessoa);
+				while (rsEnderecos.next()) {
+					enderecos.add(new EnderecoVO(rsEnderecos.getString("logradouro"), rsEnderecos.getString("numero"),
+							rsEnderecos.getString("complemento"), rsEnderecos.getString("referencia"),
+							rsEnderecos.getString("bairro"), rsEnderecos.getString("cidade"),
+							rsEnderecos.getString("estado"), rsEnderecos.getString("cep")));
+				}
+				ResultSet rsEmails = EmailDAO.listar(idPessoa);
+				while (rsEmails.next()) {
+					emails.add(new String(rsEmails.getString("email")));
+				}
+				ResultSet rsTelefones = TelefoneDAO.listar(idPessoa);
+				while (rsTelefones.next()) {
+					telefones.add(new TelefoneVO(rsTelefones.getString("ddd"), rsTelefones.getString("telefone")));
+				}
+
+				ClienteVO cliente = new ClienteVO(rsCliente.getString("nome"), rsCliente.getString("cpf"), enderecos,
+						emails, telefones);
+				cliente.setId(rsCliente.getLong("id"));
+				cliente.setIdPessoa(idPessoa);
+
+				List<ObjetoEmprestadoVO> objetos = new ArrayList<ObjetoEmprestadoVO>();
+
+				long idEmprestimo = rs.getLong("id");
+
+				ResultSet rsObjetos = ObjetoEmprestadoDAO.listar(idEmprestimo);
+				while (rsObjetos.next()) {
+					// Procura por livros. Se o id_emprestavel do livro for igual ao id_emprestavel
+					// do objeto então ele é adicionado como emprestado. Senão procura por discos
+					boolean encontrado = false;
+					LivroDAO livroDAO = new LivroDAO();
+					ResultSet rsLivros = livroDAO.listar();
+					while (rsLivros.next() && !encontrado) {
+						if (rsLivros.getLong("id_emprestavel") == rsObjetos.getLong("id_emprestavel")) {
+							LivroVO livro = new LivroVO(rsLivros.getString("titulo"), rsLivros.getString("genero"),
+									rsLivros.getInt("numero_paginas"), rsLivros.getInt("numero_exemplares"),
+									rsLivros.getInt("numero_emprestimos"), rsLivros.getInt("numero_dias_alugado"),
+									rsLivros.getInt("ano_lancamento"), rsLivros.getFloat("valor_aluguel"));
+							livro.setId(rsLivros.getLong("id"));
+							livro.setIdEmprestavel(rsLivros.getLong("id_emprestavel"));
+
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(rsObjetos.getDate("data_devolucao"));
+
+							objetos.add(new ObjetoEmprestadoVO(livro, calendar, rsObjetos.getInt("quantidade")));
+							encontrado = true;
+						}
+					}
+					if (!encontrado) {
+						DiscoDAO discoDAO = new DiscoDAO();
+						ResultSet rsDiscos = discoDAO.listar();
+						while (rsDiscos.next() && !encontrado) {
+							if (rsDiscos.getLong("id_emprestavel") == rsObjetos.getLong("id_emprestavel")) {
+								DiscoVO disco = new DiscoVO(rsDiscos.getString("titulo"), rsDiscos.getString("banda"),
+										rsDiscos.getString("estilo"), rsDiscos.getInt("numero_exemplares"),
+										rsDiscos.getInt("numero_emprestimos"), rsDiscos.getInt("numero_dias_alugado"),
+										rsDiscos.getInt("ano_lancamento"), rsDiscos.getFloat("valor_aluguel"));
+								disco.setId(rsDiscos.getLong("id"));
+								disco.setIdEmprestavel(rsDiscos.getLong("id_emprestavel"));
+
+								Calendar calendar = Calendar.getInstance();
+								calendar.setTime(rsObjetos.getDate("data_devolucao"));
+
+								objetos.add(new ObjetoEmprestadoVO(disco, calendar, rsObjetos.getInt("quantidade")));
+								encontrado = true;
+							}
+						}
+					}
+				}
+
+				EmprestimoVO emprestimo = new EmprestimoVO(cliente, objetos);
+				emprestimo.setId(idEmprestimo);
+
+				System.out.println(emprestimo);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

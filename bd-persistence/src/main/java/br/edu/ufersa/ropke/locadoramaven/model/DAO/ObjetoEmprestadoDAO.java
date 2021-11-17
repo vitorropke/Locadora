@@ -39,8 +39,8 @@ public class ObjetoEmprestadoDAO extends ConexaoDAO {
 		}
 	}
 
-	public void alterar(ObjetoEmprestadoVO objeto) {
-		String sql = "UPDATE pessoas SET (data_devolucao, quantidade) = (?, ?) WHERE id = ?;";
+	public static void alterar(ObjetoEmprestadoVO objeto) {
+		String sql = "UPDATE objetos_emprestados SET (data_devolucao, quantidade) = (?, ?) WHERE id = ?;";
 		PreparedStatement ptst;
 
 		try {

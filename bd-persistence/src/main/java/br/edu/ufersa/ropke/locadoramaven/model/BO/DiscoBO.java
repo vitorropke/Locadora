@@ -51,13 +51,13 @@ public class DiscoBO extends EmprestavelBO<DiscoVO> {
 	}
 
 	@Override
-	public void deletar(long idDisco) throws NotFoundException, InvalidParameterException {
-		if (idDisco != 0) {
-			ResultSet rs = discoDAO.pesquisarId(idDisco);
+	public void deletar(DiscoVO disco) throws NotFoundException, InvalidParameterException {
+		if (!isInvalid(disco)) {
+			ResultSet rs = discoDAO.pesquisarId(disco.getId());
 
 			try {
 				if (rs.next()) {
-					discoDAO.deletar(idDisco);
+					discoDAO.deletar(disco);
 				} else {
 					throw new NotFoundException();
 				}

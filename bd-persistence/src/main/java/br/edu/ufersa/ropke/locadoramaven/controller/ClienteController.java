@@ -35,7 +35,6 @@ public class ClienteController extends ComumController implements Initializable 
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
 		loadClientes();
 
 		ClienteBO discoBO = new ClienteBO();
@@ -48,9 +47,9 @@ public class ClienteController extends ComumController implements Initializable 
 	private void loadClientes() {
 		colunaNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
 		colunaCpf.setCellValueFactory(new PropertyValueFactory<>("cpf"));
-		colunaEndereco.setCellValueFactory(new PropertyValueFactory<>("endereco"));
-		colunaEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-		colunaTelefone.setCellValueFactory(new PropertyValueFactory<>("telefone"));
+		colunaEndereco.setCellValueFactory(new PropertyValueFactory<>("enderecos"));
+		colunaEmail.setCellValueFactory(new PropertyValueFactory<>("emails"));
+		colunaTelefone.setCellValueFactory(new PropertyValueFactory<>("telefones"));
 	}
 
 	@FXML

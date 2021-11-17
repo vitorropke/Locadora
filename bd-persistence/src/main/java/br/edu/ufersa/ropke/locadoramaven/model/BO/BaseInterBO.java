@@ -11,7 +11,7 @@ public interface BaseInterBO<VO> {
 
 	public void alterar(VO entidade) throws NotFoundException, InvalidParameterException;
 
-	public void deletar(long id) throws NotFoundException, InvalidParameterException;
+	public void deletar(VO entidade) throws NotFoundException, InvalidParameterException;
 
 	public List<VO> listar();
 

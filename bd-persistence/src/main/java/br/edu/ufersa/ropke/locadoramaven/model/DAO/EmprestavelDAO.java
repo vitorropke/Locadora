@@ -66,14 +66,14 @@ public abstract class EmprestavelDAO<VO extends EmprestavelVO> extends ConexaoDA
 	}
 
 	@Override
-	public void deletar(long idEmprestavel) {
+	public void deletar(VO emprestavel) {
 		String sql = "DELETE FROM emprestaveis WHERE id = ?;";
 		PreparedStatement ptst;
 
 		try {
 			ptst = getConnection().prepareStatement(sql);
 
-			ptst.setLong(1, idEmprestavel);
+			ptst.setLong(1, emprestavel.getIdEmprestavel());
 
 			ptst.executeUpdate();
 		} catch (SQLException e) {

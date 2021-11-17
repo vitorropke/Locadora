@@ -1,6 +1,7 @@
 package br.edu.ufersa.ropke.locadoramaven.controller;
 
 import br.edu.ufersa.ropke.locadoramaven.exception.InvalidParameterException;
+import br.edu.ufersa.ropke.locadoramaven.exception.NotFoundException;
 import br.edu.ufersa.ropke.locadoramaven.exception.AuthenticationException;
 import br.edu.ufersa.ropke.locadoramaven.model.BO.FuncionarioBO;
 import br.edu.ufersa.ropke.locadoramaven.model.BO.GerenteBO;
@@ -13,9 +14,7 @@ import javafx.scene.control.TextField;
 
 public class LoginController {
 	@FXML
-	private Label usuarioNaoEncontrado;
-	@FXML
-	private Label senhaIncorreta;
+	private Label usuarioSenhaIncorretos;
 	@FXML
 	private TextField login;
 	@FXML
@@ -30,23 +29,20 @@ public class LoginController {
 		// Busca pelos gerentes
 		try {
 			if (gerenteBO.autenticar(stringLogin, stringSenha)) {
-				usuarioNaoEncontrado.setVisible(false);
-				senhaIncorreta.setVisible(false);
+				usuarioSenhaIncorretos.setVisible(false);
 				ViewSwitcher.switchTo(View.PRINCIPAL_GERENTE);
 			}
-		} catch (AuthenticationException | InvalidParameterException e) {
+		} catch (AuthenticationException | InvalidParameterException | NotFoundException e) {
 			// Se dar errado, busca pelos funcionários
 			FuncionarioBO funcionarioBO = new FuncionarioBO();
 
 			try {
 				if (funcionarioBO.autenticar(stringLogin, stringSenha)) {
-					usuarioNaoEncontrado.setVisible(false);
-					senhaIncorreta.setVisible(false);
+					usuarioSenhaIncorretos.setVisible(false);
 					ViewSwitcher.switchTo(View.PRINCIPAL_FUNCIONARIO);
 				}
-			} catch (AuthenticationException | InvalidParameterException f) {
-				usuarioNaoEncontrado.setVisible(true);
-				senhaIncorreta.setVisible(false);
+			} catch (AuthenticationException | InvalidParameterException | NotFoundException f) {
+				usuarioSenhaIncorretos.setVisible(true);
 			}
 		}
 	}

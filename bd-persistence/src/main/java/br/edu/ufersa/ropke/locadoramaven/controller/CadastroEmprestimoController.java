@@ -92,9 +92,16 @@ public class CadastroEmprestimoController {
 
 			List<ObjetoEmprestadoVO> objetos = new ArrayList<ObjetoEmprestadoVO>();
 
-			for (int i = 0; i < datas.size(); i++) {
-				objetos.add(new ObjetoEmprestadoVO(livros.get(i), datas.get(i), quantidades.get(i)));
+			if (!livros.isEmpty()) {
+				for (int i = 0; i < datas.size(); i++) {
+					objetos.add(new ObjetoEmprestadoVO(livros.get(i), datas.get(i), quantidades.get(i)));
+				}
+			} else {
+				for (int i = 0; i < datas.size(); i++) {
+					objetos.add(new ObjetoEmprestadoVO(discos.get(i), datas.get(i), quantidades.get(i)));
+				}
 			}
+			
 
 			EmprestimoVO emprestimoVO = new EmprestimoVO(clienteVO, objetos);
 			emprestimoBO.cadastrar(emprestimoVO);

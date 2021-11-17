@@ -45,22 +45,20 @@ public class EmprestimoDAO extends ConexaoDAO implements BaseInterDAO<Emprestimo
 
 	@Override
 	public void alterar(EmprestimoVO emprestimo) {
-		ObjetoEmprestadoDAO.deletar(emprestimo.getId());
-
 		for (ObjetoEmprestadoVO objetoAtual : emprestimo.getObjetos()) {
-			ObjetoEmprestadoDAO.cadastrar(objetoAtual, emprestimo.getId());
+			ObjetoEmprestadoDAO.alterar(objetoAtual);
 		}
 	}
 
 	@Override
-	public void deletar(long idEmprestimo) {
+	public void deletar(EmprestimoVO emprestimo) {
 		String sql = "DELETE FROM emprestimos WHERE id = ?;";
 		PreparedStatement ptst;
 
 		try {
 			ptst = getConnection().prepareStatement(sql);
 
-			ptst.setLong(1, idEmprestimo);
+			ptst.setLong(1, emprestimo.getId());
 
 			ptst.executeUpdate();
 		} catch (SQLException e) {

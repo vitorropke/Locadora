@@ -59,13 +59,13 @@ public class ClienteBO extends PessoaBO<ClienteVO> {
 	}
 
 	@Override
-	public void deletar(long idCliente) throws NotFoundException, InvalidParameterException {
-		if (idCliente != 0) {
-			ResultSet rs = clienteDAO.pesquisarId(idCliente);
+	public void deletar(ClienteVO cliente) throws NotFoundException, InvalidParameterException {
+		if (!super.isInvalid(cliente)) {
+			ResultSet rs = clienteDAO.pesquisarId(cliente.getId());
 
 			try {
 				if (rs.next()) {
-					clienteDAO.deletar(idCliente);
+					clienteDAO.deletar(cliente);
 				} else {
 					throw new NotFoundException();
 				}

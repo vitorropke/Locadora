@@ -31,6 +31,9 @@ public class EditaClienteController {
 	@FXML
 	private TextField telefone;
 
+	private long idCliente;
+	private long idPessoa;
+
 	@FXML
 	public void pesquisar() {
 		String stringNome = nome.getText();
@@ -42,6 +45,8 @@ public class EditaClienteController {
 
 		if (quantidadeClientes == 1) {
 			ClienteVO clienteAtual = clientes.get(0);
+			idCliente = clienteAtual.getId();
+			idPessoa = clienteAtual.getIdPessoa();
 
 			nome.setText(clienteAtual.getNome());
 			cpf.setText(clienteAtual.getCpf());
@@ -74,6 +79,9 @@ public class EditaClienteController {
 			ClienteVO clienteAtual = clienteBO.pesquisarCpf(stringCpf);
 
 			if (clienteAtual != null) {
+				idCliente = clienteAtual.getId();
+				idPessoa = clienteAtual.getIdPessoa();
+
 				nome.setText(clienteAtual.getNome());
 				cpf.setText(clienteAtual.getCpf());
 
@@ -113,21 +121,54 @@ public class EditaClienteController {
 
 		String stringNome = nome.getText();
 		String stringCpf = cpf.getText();
-		String stringEndereco = endereco.getText();
-		String stringEmail = email.getText();
-		String stringTelefone = telefone.getText();
 
 		try {
 			List<EnderecoVO> enderecos = new ArrayList<EnderecoVO>();
 			List<String> emails = new ArrayList<String>();
 			List<TelefoneVO> telefones = new ArrayList<TelefoneVO>();
 
-			enderecos.add(new EnderecoVO(stringEndereco));
-			emails.add(stringEmail);
-			telefones.add(new EnderecoVO(stringTelefone));
+			List<String> camposEndereco = new ArrayList<String>();
+			String campoAtual = "";
+			for (char caractereAtual : endereco.getText().toCharArray()) {
+				if (caractereAtual != ';') {
+					campoAtual += caractereAtual;
+				} else {
+					camposEndereco.add(campoAtual);
+					campoAtual = "";
+				}
+			}
+			enderecos.add(new EnderecoVO(camposEndereco.get(0), camposEndereco.get(1), camposEndereco.get(2),
+					camposEndereco.get(3), camposEndereco.get(4), camposEndereco.get(5), camposEndereco.get(6),
+					camposEndereco.get(7)));
+
+			List<String> camposEmails = new ArrayList<String>();
+			campoAtual = "";
+			for (char caractereAtual : email.getText().toCharArray()) {
+				if (caractereAtual != ';') {
+					campoAtual += caractereAtual;
+				} else {
+					camposEmails.add(campoAtual);
+					campoAtual = "";
+				}
+			}
+			emails.addAll(camposEmails);
+
+			List<String> camposTelefone = new ArrayList<String>();
+			campoAtual = "";
+			for (char caractereAtual : telefone.getText().toCharArray()) {
+				if (caractereAtual != ';') {
+					campoAtual += caractereAtual;
+				} else {
+					camposTelefone.add(campoAtual);
+					campoAtual = "";
+				}
+			}
+			telefones.add(new TelefoneVO(camposTelefone.get(0), camposTelefone.get(1)));
 
 			// nome, cpf, endereco, 'email', 'telefone'
 			ClienteVO clienteVO = new ClienteVO(stringNome, stringCpf, enderecos, emails, telefones);
+			clienteVO.setId(idCliente);
+			clienteVO.setIdPessoa(idPessoa);
 
 			clienteBO.alterar(clienteVO);
 
@@ -160,7 +201,7 @@ public class EditaClienteController {
 		if (quantidadeClientes == 1) {
 			ClienteVO clienteAtual = clientes.get(0);
 
-			clienteBO.deletar(clienteAtual.getIdPessoa());
+			clienteBO.deletar(clienteAtual);
 
 			naoEncontrado.setVisible(false);
 			dadosIncompletos.setVisible(false);
@@ -170,7 +211,7 @@ public class EditaClienteController {
 			ClienteVO clienteAtual = clienteBO.pesquisarCpf(stringCpf);
 
 			if (clienteAtual != null) {
-				clienteBO.deletar(clienteAtual.getIdPessoa());
+				clienteBO.deletar(clienteAtual);
 
 				naoEncontrado.setVisible(false);
 				dadosIncompletos.setVisible(false);
